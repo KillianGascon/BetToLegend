@@ -10,12 +10,12 @@ export default function RootLayout({}: Readonly<{
 
       <div>
         <div>
-          <h1>MISEZ SUR VOS ÉQUIPES, DEVENEZ UNE LÉGENDE</h1>
-          <h2>Paris E-Sport en direct, rapide et sécurisés.</h2>
+          <h1 className="text-6xl">MISEZ SUR VOS ÉQUIPES, DEVENEZ UNE LÉGENDE</h1>
+          <h2 className="text-xl">Paris E-Sport en direct, rapide et sécurisés.</h2>
         </div>
         <div>
-          <button>Commencer à parier</button>
-          <button>Voir les matchs</button>
+          <button className="text-xl">Commencer à parier</button>
+          <button className="text-xl">Voir les matchs</button>
         </div>
       </div>
     </body>

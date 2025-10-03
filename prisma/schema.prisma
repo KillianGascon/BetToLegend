@@ -144,5 +144,6 @@ model users {
   total_won  Decimal?  @default(0) @db.Decimal(10, 2)
   created_at DateTime? @default(now()) @db.Timestamp(6)
   clerkid    String?   @unique @db.VarChar(255)
+  role       String    @default("user") @db.VarChar(20)
   bets       bets[]
 }
