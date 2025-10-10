@@ -1,38 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-
-// Storacha SDK
-import { UploadAPI } from "@storacha/upload-api";
-import { Agent } from "@storacha/access/agent";
-import { StoreConf } from "@storacha/access/stores/store-conf";
-import { generate } from "@ucanto/principal/ed25519";
-
-async function uploadToStoracha(file: File): Promise<string> {
-    // store conf pour garder l’agent
-    const store = new StoreConf({ profile: "teams-backend" });
-
-    let agent;
-    if (await store.exists()) {
-        const data = await store.load();
-        agent = Agent.from(data, { store });
-    } else {
-        const principal = await generate();
-        agent = await Agent.create(
-            { meta: { name: "teams-backend" }, principal },
-            { store }
-        );
-    }
-
-    // créer un espace si besoin
-    const space = await agent.createSpace();
-
-    // uploader avec l’API
-    const uploader = new UploadAPI({ agent });
-    const res = await uploader.upload(file, { space: space.did });
-
-    // Retourne un lien IPFS via la gateway Storacha
-    return `https://${res.cid}.ipfs.storacha.network/${file.name}`;
-}
+import fs from "fs/promises";
+import path from "path";
+import crypto from "crypto"; // pour générer un nom unique
 
 export async function POST(req: Request) {
     try {
@@ -62,9 +32,23 @@ export async function POST(req: Request) {
         let logo_url: string | undefined = undefined;
 
         if (file) {
-            console.log("⬆️ Upload du fichier vers Storacha :", file.name);
-            logo_url = await uploadToStoracha(file);
-            console.log("✅ Fichier uploadé sur Storacha :", logo_url);
+            console.log("⬆️ Sauvegarde du fichier localement :", file.name);
+
+            const bytes = await file.arrayBuffer();
+            const buffer = Buffer.from(bytes);
+
+            const uploadDir = path.join(process.cwd(), "public", "uploads");
+            await fs.mkdir(uploadDir, { recursive: true });
+
+            // Génération d’un nom unique (UUID-like) + conservation de l’extension
+            const ext = path.extname(file.name) || ".png";
+            const uniqueName = `${Date.now()}-${crypto.randomUUID()}${ext}`;
+            const filePath = path.join(uploadDir, uniqueName);
+
+            await fs.writeFile(filePath, buffer);
+            console.log("✅ Fichier sauvegardé :", filePath);
+
+            logo_url = `/uploads/${uniqueName}`;
         } else {
             console.log("ℹ️ Aucun fichier reçu, pas de logo_url");
         }

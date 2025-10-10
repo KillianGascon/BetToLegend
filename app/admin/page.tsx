@@ -15,6 +15,7 @@ export default function AdminPage() {
     const [teams, setTeams] = useState<Team[]>([]);
     const [form, setForm] = useState<Partial<Team>>({});
     const [file, setFile] = useState<File | null>(null);
+    const [editingId, setEditingId] = useState<string | null>(null);
 
     // Charger toutes les équipes
     async function fetchTeams() {
@@ -27,7 +28,7 @@ export default function AdminPage() {
         fetchTeams();
     }, []);
 
-    // Créer une équipe (multipart/form-data avec image)
+    // Créer une équipe
     async function createTeam(e: React.FormEvent) {
         e.preventDefault();
 
@@ -35,7 +36,8 @@ export default function AdminPage() {
         if (form.name) formData.append("name", form.name);
         if (form.tag) formData.append("tag", form.tag);
         if (form.country) formData.append("country", form.country);
-        if (form.founded_year) formData.append("founded_year", String(form.founded_year));
+        if (form.founded_year)
+            formData.append("founded_year", String(form.founded_year));
         if (file) formData.append("file", file);
 
         await fetch("/api/teams", {
@@ -48,14 +50,27 @@ export default function AdminPage() {
         fetchTeams();
     }
 
-    // Mettre à jour une équipe (ici tu pourrais faire pareil avec formData si tu veux changer le logo)
-    async function updateTeam(id: string) {
-        await fetch(`/api/teams/${id}`, {
+    // Mettre à jour une équipe (FormData)
+    async function updateTeam(e: React.FormEvent) {
+        e.preventDefault();
+        if (!editingId) return;
+
+        const formData = new FormData();
+        if (form.name) formData.append("name", form.name);
+        if (form.tag) formData.append("tag", form.tag);
+        if (form.country) formData.append("country", form.country);
+        if (form.founded_year)
+            formData.append("founded_year", String(form.founded_year));
+        if (file) formData.append("file", file);
+
+        await fetch(`/api/teams/${editingId}`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(form),
+            body: formData,
         });
+
         setForm({});
+        setFile(null);
+        setEditingId(null);
         fetchTeams();
     }
 
@@ -65,12 +80,35 @@ export default function AdminPage() {
         fetchTeams();
     }
 
+    // Remplir le formulaire avec les infos d'une équipe à modifier
+    function startEditing(team: Team) {
+        setForm(team);
+        setEditingId(team.id);
+        setFile(null);
+    }
+
+    // Réinitialiser le formulaire
+    function cancelEdit() {
+        setForm({});
+        setFile(null);
+        setEditingId(null);
+    }
+
     return (
         <div style={{ padding: "2rem" }}>
             <h1>Admin – Gestion des équipes</h1>
 
-            {/* Formulaire création/modif */}
-            <form onSubmit={createTeam} style={{ marginBottom: "2rem" }}>
+            {/* Formulaire de création / édition */}
+            <form
+                onSubmit={editingId ? updateTeam : createTeam}
+                style={{
+                    marginBottom: "2rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.5rem",
+                    maxWidth: "400px",
+                }}
+            >
                 <input
                     placeholder="Nom"
                     value={form.name || ""}
@@ -98,47 +136,53 @@ export default function AdminPage() {
                     type="file"
                     onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
                 />
-                <button type="submit" style={{ marginLeft: "10px" }}>
-                    Créer équipe
-                </button>
+
+                <div style={{ display: "flex", gap: "10px", marginTop: "0.5rem" }}>
+                    <button type="submit">
+                        {editingId ? "Enregistrer les modifications" : "Créer équipe"}
+                    </button>
+                    {editingId && (
+                        <button type="button" onClick={cancelEdit}>
+                            Annuler
+                        </button>
+                    )}
+                </div>
             </form>
 
             {/* Liste des équipes */}
-            <ul>
+            <ul style={{ listStyle: "none", padding: 0 }}>
                 {teams.map((team) => (
-                    <li key={team.id} style={{ marginBottom: "1rem" }}>
+                    <li
+                        key={team.id}
+                        style={{
+                            marginBottom: "1.5rem",
+                            padding: "1rem",
+                            border: "1px solid #ccc",
+                            borderRadius: "8px",
+                            maxWidth: "500px",
+                        }}
+                    >
                         <strong>
                             {team.name} ({team.tag})
                         </strong>{" "}
-                        - {team.country}{" "}
+                        – {team.country}{" "}
                         {team.logo_url && (
                             <img
                                 src={team.logo_url}
                                 alt="logo"
-                                width={30}
-                                height={30}
-                                style={{ display: "inline", marginLeft: "10px" }}
+                                width={40}
+                                height={40}
+                                style={{
+                                    display: "inline",
+                                    marginLeft: "10px",
+                                    borderRadius: "6px",
+                                    verticalAlign: "middle",
+                                }}
                             />
                         )}
-                        <div style={{ marginTop: "0.5rem" }}>
-                            <button
-                                onClick={() => setForm(team)}
-                                style={{ marginRight: "10px" }}
-                            >
-                                Modifier
-                            </button>
-                            <button
-                                onClick={() => updateTeam(team.id)}
-                                style={{ marginRight: "10px" }}
-                            >
-                                Enregistrer modif
-                            </button>
-                            <button
-                                onClick={() => deleteTeam(team.id)}
-                                style={{ marginRight: "10px" }}
-                            >
-                                Supprimer
-                            </button>
+                        <div style={{ marginTop: "0.5rem", display: "flex", gap: "10px" }}>
+                            <button onClick={() => startEditing(team)}>Modifier</button>
+                            <button onClick={() => deleteTeam(team.id)}>Supprimer</button>
                         </div>
                     </li>
                 ))}

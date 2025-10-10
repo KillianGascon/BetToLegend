@@ -12,9 +12,7 @@
   "dependencies": {
     "@clerk/nextjs": "^6.33.1",
     "@prisma/client": "^6.16.3",
-    "@storacha/upload-api": "^2.3.2",
     "next": "15.5.4",
-    "nft.storage": "^7.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "svix": "^1.76.1"
