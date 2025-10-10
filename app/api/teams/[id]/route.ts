@@ -4,18 +4,22 @@ import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";
 
-// Helper pour supprimer un fichier local s’il existe
+/**
+ * 🧹 Helper – Deletes a local file if it exists.
+ */
 async function deleteLocalFile(filePath: string) {
     try {
         const absolutePath = path.join(process.cwd(), "public", filePath);
         await fs.unlink(absolutePath);
-        console.log("🧹 Fichier supprimé :", absolutePath);
-    } catch (err) {
-        console.warn("⚠️ Fichier introuvable ou déjà supprimé :", filePath);
+        console.log("🧹 File deleted:", absolutePath);
+    } catch {
+        console.warn("⚠️ File not found or already deleted:", filePath);
     }
 }
 
-// Helper pour sauvegarder un nouveau fichier et renvoyer son chemin
+/**
+ * 💾 Helper – Saves a new uploaded file locally and returns its public path.
+ */
 async function saveLocalFile(file: File): Promise<string> {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
@@ -30,39 +34,39 @@ async function saveLocalFile(file: File): Promise<string> {
     const filePath = path.join(uploadDir, uniqueName);
 
     await fs.writeFile(filePath, buffer);
-    console.log("✅ Nouveau fichier enregistré :", filePath);
+    console.log("✅ New file saved:", filePath);
 
     return `/uploads/${uniqueName}`;
 }
 
-// 🔹 READ one team
-export async function GET(
-    req: Request,
-    { params }: { params: { id: string } }
-) {
+/**
+ * 🔹 GET /api/teams/[id]
+ * Retrieve a single team by ID.
+ */
+export async function GET(req: Request, { params }: { params: { id: string } }) {
     try {
         const team = await prisma.teams.findUnique({
             where: { id: params.id },
         });
 
         if (!team) {
-            return NextResponse.json({ error: "Not found" }, { status: 404 });
+            return NextResponse.json({ error: "Team not found" }, { status: 404 });
         }
 
         return NextResponse.json(team);
     } catch (error: unknown) {
-        if (error instanceof Error) {
+        console.error("❌ Error in GET /api/teams/[id]:", error);
+        if (error instanceof Error)
             return NextResponse.json({ error: error.message }, { status: 500 });
-        }
         return NextResponse.json({ error: "Unknown error" }, { status: 500 });
     }
 }
 
-// 🔹 UPDATE team (avec modification d'image)
-export async function PUT(
-    req: Request,
-    { params }: { params: { id: string } }
-) {
+/**
+ * 🔹 PUT /api/teams/[id]
+ * Update a team, optionally replacing its logo.
+ */
+export async function PUT(req: Request, { params }: { params: { id: string } }) {
     try {
         const formData = await req.formData();
 
@@ -75,6 +79,7 @@ export async function PUT(
 
         const file = formData.get("file") as File | null;
 
+        // Find existing team before update
         const existingTeam = await prisma.teams.findUnique({
             where: { id: params.id },
         });
@@ -85,15 +90,16 @@ export async function PUT(
 
         let logo_url = existingTeam.logo_url;
 
-        // Si un nouveau fichier est envoyé, on supprime l’ancien et on sauvegarde le nouveau
+        // If a new file is uploaded, delete the old one and save the new file
         if (file) {
-            console.log("🔄 Nouveau fichier reçu, remplacement de l'ancien...");
+            console.log("🔄 New file received, replacing old one...");
             if (existingTeam.logo_url) {
                 await deleteLocalFile(existingTeam.logo_url);
             }
             logo_url = await saveLocalFile(file);
         }
 
+        // Update team record in the database
         const updatedTeam = await prisma.teams.update({
             where: { id: params.id },
             data: {
@@ -105,14 +111,14 @@ export async function PUT(
             },
         });
 
-        console.log("✅ Équipe mise à jour :", updatedTeam);
+        console.log("✅ Team updated successfully:", updatedTeam);
         return NextResponse.json(updatedTeam);
     } catch (error: unknown) {
-        console.error("❌ Erreur PUT /api/teams :", error);
+        console.error("❌ Error in PUT /api/teams/[id]:", error);
         if (error instanceof Error) {
             if ((error as any).code === "P2002") {
                 return NextResponse.json(
-                    { error: "Une équipe avec ce tag existe déjà." },
+                    { error: "A team with this tag already exists." },
                     { status: 400 }
                 );
             }
@@ -122,11 +128,11 @@ export async function PUT(
     }
 }
 
-// 🔹 DELETE team (avec suppression du fichier)
-export async function DELETE(
-    req: Request,
-    { params }: { params: { id: string } }
-) {
+/**
+ * 🔹 DELETE /api/teams/[id]
+ * Delete a team and its associated local logo file if present.
+ */
+export async function DELETE(req: Request, { params }: { params: { id: string } }) {
     try {
         const team = await prisma.teams.findUnique({
             where: { id: params.id },
@@ -136,22 +142,22 @@ export async function DELETE(
             return NextResponse.json({ error: "Team not found" }, { status: 404 });
         }
 
-        // Supprimer le fichier local si présent
+        // Delete logo file if one exists
         if (team.logo_url) {
             await deleteLocalFile(team.logo_url);
         }
 
+        // Remove team from database
         await prisma.teams.delete({
             where: { id: params.id },
         });
 
-        console.log("🗑️ Équipe supprimée avec son image :", team.logo_url);
+        console.log("🗑️ Team deleted along with its logo:", team.logo_url);
         return NextResponse.json({ success: true });
     } catch (error: unknown) {
-        console.error("❌ Erreur DELETE /api/teams :", error);
-        if (error instanceof Error) {
+        console.error("❌ Error in DELETE /api/teams/[id]:", error);
+        if (error instanceof Error)
             return NextResponse.json({ error: error.message }, { status: 500 });
-        }
         return NextResponse.json({ error: "Unknown error" }, { status: 500 });
     }
 }
