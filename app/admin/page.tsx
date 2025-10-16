@@ -1,6 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import TeamsSection from "../../components/admin/TeamsSection";
+import GamesSection from "../../components/admin/GamesSection";
+import PlayersSection from "../../components/admin/PlayersSection";
+import TeamPlayersSection from "../../components/admin/TeamPlayersSection";
+import MatchesSection from "../../components/admin/MatchesSection";
+import TournamentsSection from "../../components/admin/TournamentsSection";
+import Navbar from "../../components/Navbar";
 
 type Team = {
     id: string;
@@ -55,6 +62,7 @@ type Tournament = {
 };
 
 export default function AdminPage() {
+    const [activeSection, setActiveSection] = useState<string>("teams");
     const [teams, setTeams] = useState<Team[]>([]);
     const [games, setGames] = useState<Game[]>([]);
     const [matches, setMatches] = useState<Match[]>([]);
@@ -188,6 +196,50 @@ export default function AdminPage() {
         setForm({});
         setFile(null);
         setEditingId(null);
+    }
+
+    // --------- PLAYER SUBMIT HANDLER ---------
+    async function handlePlayerSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        const formData = new FormData();
+        if (playerForm.username) formData.append("username", playerForm.username);
+        if (playerForm.real_name) formData.append("real_name", playerForm.real_name);
+        if (playerForm.country) formData.append("country", playerForm.country);
+        if (playerForm.age) formData.append("age", String(playerForm.age));
+        if (playerForm.role) formData.append("role", playerForm.role);
+        if (playerForm.twitch_followers)
+            formData.append("twitch_followers", String(playerForm.twitch_followers));
+        if (playerForm.youtube_subscribers)
+            formData.append("youtube_subscribers", String(playerForm.youtube_subscribers));
+        if (playerFile) formData.append("file", playerFile);
+
+        if (editingPlayerId) {
+            await fetch(`/api/players/${editingPlayerId}`, {
+                method: "PUT",
+                body: formData,
+            });
+        } else {
+            await fetch("/api/players", {
+                method: "POST",
+                body: formData,
+            });
+        }
+
+        setPlayerForm({});
+        setPlayerFile(null);
+        setEditingPlayerId(null);
+        fetchPlayers();
+    }
+
+    function startEditingPlayer(player: Player) {
+        const {avatar_url, ...rest} = player;
+        setPlayerForm(rest);
+        setEditingPlayerId(player.id);
+    }
+
+    async function deletePlayer(id: string) {
+        await fetch(`/api/players/${id}`, {method: "DELETE"});
+        fetchPlayers();
     }
 
     // --------- CRUD MATCHES ---------
@@ -354,732 +406,151 @@ export default function AdminPage() {
         fetchMatches();
     }
 
+    // --------- SIDEBAR NAVIGATION ---------
+    const sidebarItems = [
+        { id: "teams", label: "Équipes", icon: "⚙️" },
+        { id: "games", label: "Jeux", icon: "🎯" },
+        { id: "players", label: "Joueurs", icon: "👤" },
+        { id: "teamplayers", label: "Équipes/Joueurs", icon: "👥" },
+        { id: "matches", label: "Matchs", icon: "🎮" },
+        { id: "tournaments", label: "Tournois", icon: "🏆" },
+    ];
+
+    const renderActiveSection = () => {
+        switch (activeSection) {
+            case "teams":
+                return (
+                    <TeamsSection
+                        teams={teams}
+                        form={form}
+                        file={file}
+                        editingId={editingId}
+                        onSubmit={(e) => (editingId ? updateTeam(e) : createTeam(e))}
+                        cancelEdit={cancelEdit}
+                        startEditing={startEditing}
+                        deleteTeam={deleteTeam}
+                        setForm={(u) => setForm(u)}
+                        setFile={(f) => setFile(f)}
+                    />
+                );
+            case "games":
+                return (
+                    <GamesSection
+                        games={games}
+                        gameForm={gameForm}
+                        editingGameId={editingGameId}
+                        onSubmit={(e) => (editingGameId ? updateGame(e) : createGame(e))}
+                        cancelEditGame={cancelEditGame}
+                        startEditingGame={startEditingGame}
+                        deleteGame={deleteGame}
+                        setGameForm={(u) => setGameForm(u)}
+                    />
+                );
+            case "players":
+                return (
+                    <PlayersSection
+                        players={players}
+                        playerForm={playerForm}
+                        playerFile={playerFile}
+                        editingPlayerId={editingPlayerId}
+                        onSubmit={handlePlayerSubmit}
+                        setPlayerForm={(u) => setPlayerForm(u)}
+                        setPlayerFile={(f) => setPlayerFile(f)}
+                        setEditingPlayerId={(id) => setEditingPlayerId(id)}
+                        startEditingPlayer={startEditingPlayer}
+                        deletePlayer={deletePlayer}
+                    />
+                );
+            case "teamplayers":
+                return (
+                    <TeamPlayersSection
+                        teamPlayers={teamPlayers}
+                        teamPlayerForm={teamPlayerForm}
+                        teams={teams}
+                        players={players}
+                        onSubmit={addPlayerToTeam}
+                        setTeamPlayerForm={(u) => setTeamPlayerForm(u)}
+                        removePlayerFromTeam={removePlayerFromTeam}
+                    />
+                );
+            case "matches":
+                return (
+                    <MatchesSection
+                        matches={matches}
+                        matchForm={matchForm}
+                        editingMatchId={editingMatchId}
+                        teams={teams}
+                        games={games}
+                        tournaments={tournaments}
+                        onSubmit={(e) => (editingMatchId ? updateMatch(e) : createMatch(e))}
+                        cancelEditMatch={cancelEditMatch}
+                        startEditingMatch={startEditingMatch}
+                        deleteMatch={deleteMatch}
+                        assignMatchToTournament={assignMatchToTournament}
+                        setMatchForm={(u) => setMatchForm(u)}
+                    />
+                );
+            case "tournaments":
+                return (
+                    <TournamentsSection
+                        tournaments={tournaments}
+                        tournamentForm={tournamentForm}
+                        editingTournamentId={editingTournamentId}
+                        games={games}
+                        onSubmit={(e) => (editingTournamentId ? updateTournament(e) : createTournament(e))}
+                        cancelEditTournament={cancelEditTournament}
+                        startEditingTournament={startEditingTournament}
+                        deleteTournament={deleteTournament}
+                        setTournamentForm={(u) => setTournamentForm(u)}
+                    />
+                );
+            default:
+                return null;
+        }
+    };
+
     // --------- UI ---------
     return (
-        <div style={{padding: "2rem"}}>
-            <h1>Admin – Gestion</h1>
+        <div className="min-h-screen bg-gray-900">
 
-            {/* --------- EQUIPES --------- */}
-            <section style={{marginBottom: "4rem"}}>
-                <h2>⚙️ Gestion des équipes</h2>
-
-                <form
-                    onSubmit={editingId ? updateTeam : createTeam}
-                    style={{
-                        marginBottom: "2rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.5rem",
-                        maxWidth: "400px",
-                    }}
-                >
-                    <input
-                        placeholder="Nom"
-                        value={form.name || ""}
-                        onChange={(e) => setForm({...form, name: e.target.value})}
-                    />
-                    <input
-                        placeholder="Tag"
-                        value={form.tag || ""}
-                        onChange={(e) => setForm({...form, tag: e.target.value})}
-                    />
-                    <input
-                        placeholder="Pays"
-                        value={form.country || ""}
-                        onChange={(e) => setForm({...form, country: e.target.value})}
-                    />
-                    <input
-                        type="number"
-                        placeholder="Année fondation"
-                        value={form.founded_year || ""}
-                        onChange={(e) =>
-                            setForm({...form, founded_year: Number(e.target.value)})
-                        }
-                    />
-                    <input
-                        type="file"
-                        onChange={(e) =>
-                            setFile(e.target.files ? e.target.files[0] : null)
-                        }
-                    />
-
-                    <div style={{display: "flex", gap: "10px", marginTop: "0.5rem"}}>
-                        <button type="submit">
-                            {editingId ? "Enregistrer les modifications" : "Créer équipe"}
-                        </button>
-                        {editingId && (
-                            <button type="button" onClick={cancelEdit}>
-                                Annuler
-                            </button>
-                        )}
+            <Navbar />
+            
+            
+            <div className="flex">
+                {/* Sidebar */}
+                <div className="w-64 bg-gray-800 shadow-xl h-screen overflow-hidden sticky top-0 self-start">
+                    <div className="h-full flex flex-col">
+                        <div className="p-6 border-b border-gray-700">
+                            <h1 className="text-2xl font-bold text-white mb-8">Admin Dashboard</h1>
+                        </div>
+                        <div className="flex-1 overflow-y-auto">
+                            <nav className="p-4 space-y-2">
+                                {sidebarItems.map((item) => (
+                                    <button
+                                        key={item.id}
+                                        onClick={() => setActiveSection(item.id)}
+                                        className={`w-full flex items-center px-4 py-3 text-left rounded-lg transition-colors ${
+                                            activeSection === item.id
+                                                ? "bg-blue-600 text-white border-r-4 border-blue-400"
+                                                : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                                        }`}
+                                    >
+                                        <span className="text-xl mr-3">{item.icon}</span>
+                                        <span className="font-medium">{item.label}</span>
+                                    </button>
+                                ))}
+                            </nav>
+                        </div>
                     </div>
-                </form>
+                </div>
 
-                <ul style={{listStyle: "none", padding: 0}}>
-                    {teams.map((team) => (
-                        <li
-                            key={team.id}
-                            style={{
-                                marginBottom: "1rem",
-                                padding: "0.5rem",
-                                border: "1px solid #ccc",
-                                borderRadius: "6px",
-                                maxWidth: "500px",
-                            }}
-                        >
-                            <strong>
-                                {team.name} ({team.tag})
-                            </strong>{" "}
-                            – {team.country}
-                            {team.logo_url && (
-                                <img
-                                    src={team.logo_url}
-                                    alt="logo"
-                                    width={40}
-                                    height={40}
-                                    style={{
-                                        marginLeft: "10px",
-                                        borderRadius: "6px",
-                                        verticalAlign: "middle",
-                                    }}
-                                />
-                            )}
-                            <div style={{marginTop: "0.5rem", display: "flex", gap: "10px"}}>
-                                <button onClick={() => startEditing(team)}>Modifier</button>
-                                <button onClick={() => deleteTeam(team.id)}>Supprimer</button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-
-            {/* --------- JEUX --------- */}
-            <section style={{marginBottom: "4rem"}}>
-                <h2>🎯 Gestion des jeux</h2>
-
-                <form
-                    onSubmit={editingGameId ? updateGame : createGame}
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.5rem",
-                        maxWidth: "400px",
-                        marginBottom: "2rem",
-                    }}
-                >
-                    <input
-                        placeholder="Nom du jeu"
-                        value={gameForm.name || ""}
-                        onChange={(e) =>
-                            setGameForm({...gameForm, name: e.target.value})
-                        }
-                    />
-                    <input
-                        placeholder="Catégorie (ex: FPS, MOBA...)"
-                        value={gameForm.category || ""}
-                        onChange={(e) =>
-                            setGameForm({...gameForm, category: e.target.value})
-                        }
-                    />
-                    <div style={{display: "flex", gap: "10px"}}>
-                        <button type="submit">
-                            {editingGameId ? "Modifier le jeu" : "Créer un jeu"}
-                        </button>
-                        {editingGameId && (
-                            <button type="button" onClick={cancelEditGame}>
-                                Annuler
-                            </button>
-                        )}
+                {/* Main Content */}
+                <div className="flex-1 p-8 bg-gray-900">
+                    <div className="max-w-7xl mx-auto">
+                        {renderActiveSection()}
                     </div>
-                </form>
-
-                <ul style={{listStyle: "none", padding: 0}}>
-                    {games.map((g) => (
-                        <li
-                            key={g.id}
-                            style={{
-                                marginBottom: "1rem",
-                                padding: "0.5rem",
-                                border: "1px solid #ccc",
-                                borderRadius: "6px",
-                                maxWidth: "500px",
-                            }}
-                        >
-                            <strong>{g.name}</strong> – {g.category}
-                            <div style={{marginTop: "0.5rem", display: "flex", gap: "10px"}}>
-                                <button onClick={() => startEditingGame(g)}>Modifier</button>
-                                <button onClick={() => deleteGame(g.id)}>Supprimer</button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-
-            {/* --------- JOUEURS --------- */}
-            <section style={{marginTop: "4rem"}}>
-                <h2>👤 Gestion des joueurs</h2>
-
-                <form
-                    onSubmit={async (e) => {
-                        e.preventDefault();
-                        const formData = new FormData();
-                        if (playerForm.username) formData.append("username", playerForm.username);
-                        if (playerForm.real_name) formData.append("real_name", playerForm.real_name);
-                        if (playerForm.country) formData.append("country", playerForm.country);
-                        if (playerForm.age) formData.append("age", String(playerForm.age));
-                        if (playerForm.role) formData.append("role", playerForm.role);
-                        if (playerForm.twitch_followers)
-                            formData.append("twitch_followers", String(playerForm.twitch_followers));
-                        if (playerForm.youtube_subscribers)
-                            formData.append("youtube_subscribers", String(playerForm.youtube_subscribers));
-                        if (playerFile) formData.append("file", playerFile);
-
-                        if (editingPlayerId) {
-                            await fetch(`/api/players/${editingPlayerId}`, {
-                                method: "PUT",
-                                body: formData,
-                            });
-                        } else {
-                            await fetch("/api/players", {
-                                method: "POST",
-                                body: formData,
-                            });
-                        }
-
-                        setPlayerForm({});
-                        setPlayerFile(null);
-                        setEditingPlayerId(null);
-                        fetchPlayers();
-                    }}
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.5rem",
-                        maxWidth: "400px",
-                        marginBottom: "2rem",
-                    }}
-                >
-                    <input
-                        placeholder="Username"
-                        value={playerForm.username || ""}
-                        onChange={(e) => setPlayerForm({...playerForm, username: e.target.value})}
-                    />
-                    <input
-                        placeholder="Nom réel"
-                        value={playerForm.real_name || ""}
-                        onChange={(e) => setPlayerForm({...playerForm, real_name: e.target.value})}
-                    />
-                    <input
-                        placeholder="Pays (FR, US...)"
-                        value={playerForm.country || ""}
-                        onChange={(e) => setPlayerForm({...playerForm, country: e.target.value})}
-                    />
-                    <input
-                        type="number"
-                        placeholder="Âge"
-                        value={playerForm.age || ""}
-                        onChange={(e) => setPlayerForm({...playerForm, age: Number(e.target.value)})}
-                    />
-                    <input
-                        placeholder="Rôle (ex: Top, Jungler)"
-                        value={playerForm.role || ""}
-                        onChange={(e) => setPlayerForm({...playerForm, role: e.target.value})}
-                    />
-                    <input
-                        type="number"
-                        placeholder="Followers Twitch"
-                        value={playerForm.twitch_followers || ""}
-                        onChange={(e) =>
-                            setPlayerForm({...playerForm, twitch_followers: Number(e.target.value)})
-                        }
-                    />
-                    <input
-                        type="number"
-                        placeholder="Abonnés YouTube"
-                        value={playerForm.youtube_subscribers || ""}
-                        onChange={(e) =>
-                            setPlayerForm({
-                                ...playerForm,
-                                youtube_subscribers: Number(e.target.value),
-                            })
-                        }
-                    />
-                    <input type="file" onChange={(e) => setPlayerFile(e.target.files?.[0] || null)}/>
-
-                    <button type="submit">
-                        {editingPlayerId ? "Mettre à jour le joueur" : "Créer joueur"}
-                    </button>
-                    {editingPlayerId && (
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setPlayerForm({});
-                                setPlayerFile(null);
-                                setEditingPlayerId(null);
-                            }}
-                        >
-                            Annuler
-                        </button>
-                    )}
-                </form>
-
-                <ul style={{listStyle: "none", padding: 0}}>
-                    {players.map((p) => (
-                        <li
-                            key={p.id}
-                            style={{
-                                marginBottom: "1rem",
-                                padding: "0.5rem",
-                                border: "1px solid #ccc",
-                                borderRadius: "6px",
-                                maxWidth: "500px",
-                            }}
-                        >
-                            <strong>{p.username}</strong> – {p.role || "Aucun rôle"} ({p.country})
-                            {p.avatar_url && (
-                                <img
-                                    src={p.avatar_url}
-                                    alt="avatar"
-                                    width={40}
-                                    height={40}
-                                    style={{
-                                        marginLeft: "10px",
-                                        borderRadius: "6px",
-                                        verticalAlign: "middle",
-                                    }}
-                                />
-                            )}
-                            <div style={{marginTop: "0.5rem", display: "flex", gap: "10px"}}>
-                                <button
-                                    onClick={() => {
-                                        const {avatar_url, ...rest} = p;
-                                        setPlayerForm(rest);
-                                        setEditingPlayerId(p.id);
-                                    }}
-                                >
-                                    Modifier
-                                </button>
-                                <button
-                                    onClick={async () => {
-                                        await fetch(`/api/players/${p.id}`, {method: "DELETE"});
-                                        fetchPlayers();
-                                    }}
-                                >
-                                    Supprimer
-                                </button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-
-            {/*---------JOEURS/EQUIPE----------*/}
-            <section style={{marginTop: "4rem"}}>
-                <h2>👥 Gestion des joueurs dans les équipes</h2>
-
-                <form
-                    onSubmit={addPlayerToTeam}
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.5rem",
-                        maxWidth: "400px",
-                        marginBottom: "2rem",
-                    }}
-                >
-                    <label>Équipe</label>
-                    <select
-                        value={teamPlayerForm.team_id}
-                        onChange={(e) =>
-                            setTeamPlayerForm({...teamPlayerForm, team_id: e.target.value})
-                        }
-                    >
-                        <option value="">-- Sélectionner --</option>
-                        {teams.map((t) => (
-                            <option key={t.id} value={t.id}>
-                                {t.name}
-                            </option>
-                        ))}
-                    </select>
-
-                    <label>Joueur</label>
-                    <select
-                        value={teamPlayerForm.player_id}
-                        onChange={(e) =>
-                            setTeamPlayerForm({...teamPlayerForm, player_id: e.target.value})
-                        }
-                    >
-                        <option value="">-- Sélectionner --</option>
-                        {players.map((p) => (
-                            <option key={p.id} value={p.id}>
-                                {p.username}
-                            </option>
-                        ))}
-                    </select>
-
-                    <label>Poste</label>
-                    <input
-                        placeholder="Poste (ex: ADC)"
-                        value={teamPlayerForm.position}
-                        onChange={(e) =>
-                            setTeamPlayerForm({...teamPlayerForm, position: e.target.value})
-                        }
-                    />
-
-                    <label>Salaire</label>
-                    <input
-                        type="number"
-                        placeholder="Salaire (€)"
-                        value={teamPlayerForm.salary}
-                        onChange={(e) =>
-                            setTeamPlayerForm({
-                                ...teamPlayerForm,
-                                salary: parseFloat(e.target.value),
-                            })
-                        }
-                    />
-
-                    <label>Date d'entrée</label>
-                    <input
-                        type="date"
-                        value={teamPlayerForm.join_date}
-                        onChange={(e) =>
-                            setTeamPlayerForm({...teamPlayerForm, join_date: e.target.value})
-                        }
-                    />
-
-
-                    <button type="submit">Ajouter joueur à l’équipe</button>
-                </form>
-
-                <ul style={{listStyle: "none", padding: 0}}>
-                    {teamPlayers.map((tp) => (
-                        <li
-                            key={tp.id}
-                            style={{
-                                marginBottom: "1rem",
-                                padding: "0.5rem",
-                                border: "1px solid #ccc",
-                                borderRadius: "6px",
-                                maxWidth: "500px",
-                            }}
-                        >
-                            <strong>
-                                {tp.players?.username} → {tp.teams?.name}
-                            </strong>{" "}
-                            ({tp.position || "?"}, {tp.salary || 0}€)
-                            <br/>
-                            <small>
-                                📅 Entré le{" "}
-                                {tp.join_date
-                                    ? new Date(tp.join_date).toLocaleDateString("fr-FR")
-                                    : "—"}
-                            </small>
-                            <button
-                                style={{marginLeft: "10px"}}
-                                onClick={() => removePlayerFromTeam(tp.id)}
-                            >
-                                Retirer
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-
-
-            {/* --------- MATCHES --------- */}
-            <section>
-                <h2>🎮 Gestion des matchs</h2>
-
-                <form
-                    onSubmit={editingMatchId ? updateMatch : createMatch}
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.5rem",
-                        maxWidth: "400px",
-                        marginBottom: "2rem",
-                    }}
-                >
-                    <label>Jeu</label>
-                    <select
-                        value={matchForm.game_id || ""}
-                        onChange={(e) => setMatchForm({...matchForm, game_id: e.target.value})}
-                    >
-                        <option value="">-- Sélectionner un jeu --</option>
-                        {games.map((g) => (
-                            <option key={g.id} value={g.id}>
-                                {g.name}
-                            </option>
-                        ))}
-                    </select>
-
-                    <label>Équipe 1</label>
-                    <select
-                        value={matchForm.team1_id || ""}
-                        onChange={(e) => setMatchForm({...matchForm, team1_id: e.target.value})}
-                    >
-                        <option value="">-- Sélectionner --</option>
-                        {teams.map((t) => (
-                            <option key={t.id} value={t.id}>
-                                {t.name}
-                            </option>
-                        ))}
-                    </select>
-
-                    <label>Équipe 2</label>
-                    <select
-                        value={matchForm.team2_id || ""}
-                        onChange={(e) => setMatchForm({...matchForm, team2_id: e.target.value})}
-                    >
-                        <option value="">-- Sélectionner --</option>
-                        {teams.map((t) => (
-                            <option key={t.id} value={t.id}>
-                                {t.name}
-                            </option>
-                        ))}
-                    </select>
-
-                    <label>Date du match</label>
-                    <input
-                        type="datetime-local"
-                        value={matchForm.match_date || ""}
-                        onChange={(e) =>
-                            setMatchForm({...matchForm, match_date: e.target.value})
-                        }
-                    />
-
-                    <input
-                        placeholder="Format (ex: BO3)"
-                        value={matchForm.format || ""}
-                        onChange={(e) => setMatchForm({...matchForm, format: e.target.value})}
-                    />
-
-                    <label>Statut</label>
-                    <select
-                        value={matchForm.status || "scheduled"}
-                        onChange={(e) => setMatchForm({...matchForm, status: e.target.value})}
-                    >
-                        <option value="scheduled">Prévu</option>
-                        <option value="ongoing">En cours</option>
-                        <option value="finished">Terminé</option>
-                    </select>
-
-                    <button type="submit">
-                        {editingMatchId ? "Mettre à jour le match" : "Créer match"}
-                    </button>
-                    {editingMatchId && (
-                        <button type="button" onClick={cancelEditMatch}>
-                            Annuler
-                        </button>
-                    )}
-                </form>
-
-                <ul style={{listStyle: "none", padding: 0}}>
-                    {matches.map((m) => (
-                        <li
-                            key={m.id}
-                            style={{
-                                marginBottom: "1rem",
-                                padding: "0.5rem",
-                                border: "1px solid #ccc",
-                                borderRadius: "6px",
-                                maxWidth: "500px",
-                            }}
-                        >
-                            <strong>
-                                {teams.find((t) => t.id === m.team1_id)?.name || "?"} vs{" "}
-                                {teams.find((t) => t.id === m.team2_id)?.name || "?"}
-                            </strong>{" "}
-                            – {games.find((g) => g.id === m.game_id)?.name || "?"} – {m.status}{" "}
-                            ({m.format || "?"})
-                            <br/>
-                            🏆 Tournoi :{" "}
-                            {m.tournament_id
-                                ? tournaments.find((t) => t.id === m.tournament_id)?.name || "—"
-                                : "Aucun"}
-                            <div
-                                style={{
-                                    marginTop: "0.5rem",
-                                    display: "flex",
-                                    flexWrap: "wrap",
-                                    gap: "10px",
-                                }}
-                            >
-                                <button onClick={() => startEditingMatch(m)}>Modifier</button>
-                                <button onClick={() => deleteMatch(m.id)}>Supprimer</button>
-
-                                {/* Sélecteur de tournoi pour assignation */}
-                                <select
-                                    defaultValue=""
-                                    onChange={(e) =>
-                                        assignMatchToTournament(m.id, e.target.value)
-                                    }
-                                >
-                                    <option value="">-- Assigner à un tournoi --</option>
-                                    {tournaments.map((t) => (
-                                        <option key={t.id} value={t.id}>
-                                            {t.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-
-            {/* --------- TOURNOIS --------- */}
-            <section style={{marginBottom: "4rem"}}>
-                <h2>🏆 Gestion des tournois</h2>
-
-                <form
-                    onSubmit={editingTournamentId ? updateTournament : createTournament}
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.5rem",
-                        maxWidth: "400px",
-                        marginBottom: "2rem",
-                    }}
-                >
-                    <input
-                        placeholder="Nom du tournoi"
-                        value={tournamentForm.name || ""}
-                        onChange={(e) =>
-                            setTournamentForm({...tournamentForm, name: e.target.value})
-                        }
-                    />
-
-                    <label>Jeu associé</label>
-                    <select
-                        value={tournamentForm.game_id || ""}
-                        onChange={(e) =>
-                            setTournamentForm({...tournamentForm, game_id: e.target.value})
-                        }
-                    >
-                        <option value="">-- Sélectionner un jeu --</option>
-                        {games.map((g) => (
-                            <option key={g.id} value={g.id}>
-                                {g.name}
-                            </option>
-                        ))}
-                    </select>
-
-                    <input
-                        type="number"
-                        placeholder="Prize Pool (€)"
-                        value={tournamentForm.prize_pool || ""}
-                        onChange={(e) =>
-                            setTournamentForm({
-                                ...tournamentForm,
-                                prize_pool: Number(e.target.value),
-                            })
-                        }
-                    />
-
-                    <label>Date de début</label>
-                    <input
-                        type="date"
-                        value={tournamentForm.start_date || ""}
-                        onChange={(e) =>
-                            setTournamentForm({
-                                ...tournamentForm,
-                                start_date: e.target.value,
-                            })
-                        }
-                    />
-
-                    <label>Date de fin</label>
-                    <input
-                        type="date"
-                        value={tournamentForm.end_date || ""}
-                        onChange={(e) =>
-                            setTournamentForm({
-                                ...tournamentForm,
-                                end_date: e.target.value,
-                            })
-                        }
-                    />
-
-                    <input
-                        placeholder="Lieu"
-                        value={tournamentForm.location || ""}
-                        onChange={(e) =>
-                            setTournamentForm({
-                                ...tournamentForm,
-                                location: e.target.value,
-                            })
-                        }
-                    />
-
-                    <label>Statut</label>
-                    <select
-                        value={tournamentForm.status || "upcoming"}
-                        onChange={(e) =>
-                            setTournamentForm({
-                                ...tournamentForm,
-                                status: e.target.value,
-                            })
-                        }
-                    >
-                        <option value="upcoming">À venir</option>
-                        <option value="ongoing">En cours</option>
-                        <option value="finished">Terminé</option>
-                    </select>
-
-                    <div style={{display: "flex", gap: "10px", marginTop: "0.5rem"}}>
-                        <button type="submit">
-                            {editingTournamentId ? "Modifier le tournoi" : "Créer tournoi"}
-                        </button>
-                        {editingTournamentId && (
-                            <button type="button" onClick={cancelEditTournament}>
-                                Annuler
-                            </button>
-                        )}
-                    </div>
-                </form>
-
-                <ul style={{listStyle: "none", padding: 0}}>
-                    {tournaments.map((t) => (
-                        <li
-                            key={t.id}
-                            style={{
-                                marginBottom: "1rem",
-                                padding: "0.5rem",
-                                border: "1px solid #ccc",
-                                borderRadius: "6px",
-                                maxWidth: "500px",
-                            }}
-                        >
-                            <strong>{t.name}</strong> –{" "}
-                            {games.find((g) => g.id === t.game_id)?.name || "?"}
-                            <br/>
-                            💰 {t.prize_pool ? `${t.prize_pool} €` : "N/A"} | 📅{" "}
-                            {t.start_date
-                                ? new Date(t.start_date).toLocaleDateString("fr-FR")
-                                : "?"}{" "}
-                            →{" "}
-                            {t.end_date
-                                ? new Date(t.end_date).toLocaleDateString("fr-FR")
-                                : "?"}
-                            <br/>
-                            📍 {t.location || "—"} | {t.status}
-                            <div
-                                style={{marginTop: "0.5rem", display: "flex", gap: "10px"}}
-                            >
-                                <button onClick={() => startEditingTournament(t)}>
-                                    Modifier
-                                </button>
-                                <button onClick={() => deleteTournament(t.id)}>
-                                    Supprimer
-                                </button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-
+                </div>
+            </div>
         </div>
     );
 }
