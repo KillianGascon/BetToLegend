@@ -63,8 +63,15 @@ export async function GET() {
                 teams_matches_team1_idToteams: true, // Team 1 info
                 teams_matches_team2_idToteams: true, // Team 2 info
                 teams_matches_winner_idToteams: true, // Winner info
+                games: true, // Game info
+                tournaments: true, // Tournament info
+                match_odds: {
+                    include: {
+                        teams: true, // Team info for odds
+                    }
+                }, // Match odds
             },
-            orderBy: { created_at: "desc" },
+            orderBy: { match_date: "asc" },
         });
 
         // Return the list of matches as JSON

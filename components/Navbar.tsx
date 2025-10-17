@@ -45,7 +45,7 @@ export default function Navbar() {
                 {/* Navbar links */}
                 <nav className="w-6/12 bg-[#111461]/30 rounded-xl px-6 py-3 flex justify-center space-x-16">
                     <a
-                        href="/"
+                        href="/matchs"
                         className="text-white text-lg font-medium hover:text-red-400 transition-colors"
                     >
                         Matchs

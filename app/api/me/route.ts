@@ -14,5 +14,10 @@ export async function GET() {
         where: { clerkid: userId },
     });
 
-    return NextResponse.json({ role: user?.role ?? "user" });
+    return NextResponse.json({ 
+        role: user?.role ?? "user",
+        balance: user?.balance ? Number(user.balance) : 0,
+        username: user?.username,
+        email: user?.email
+    });
 }
