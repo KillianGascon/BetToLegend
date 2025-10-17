@@ -172,8 +172,8 @@ export default function MatchesSection(props: MatchesSectionProps) {
                                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
                                 <option value="scheduled">Prévu</option>
-                                <option value="ongoing">En cours</option>
-                                <option value="finished">Terminé</option>
+                                <option value="live">En cours</option>
+                                <option value="completed">Terminé</option>
                             </select>
                         </div>
                     </div>

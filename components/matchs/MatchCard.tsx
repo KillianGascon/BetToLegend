@@ -72,9 +72,9 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
         switch (status) {
             case "scheduled":
                 return "bg-blue-100 text-blue-800";
-            case "ongoing":
+            case "live":
                 return "bg-green-100 text-green-800";
-            case "finished":
+            case "completed":
                 return "bg-gray-100 text-gray-800";
             default:
                 return "bg-gray-100 text-gray-800";
@@ -90,9 +90,9 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
         switch (status) {
             case "scheduled":
                 return "Prévu";
-            case "ongoing":
+            case "live":
                 return "En cours";
-            case "finished":
+            case "completed":
                 return "Terminé";
             default:
                 return status || "";

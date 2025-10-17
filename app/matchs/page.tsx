@@ -1,9 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useUser } from "@clerk/nextjs";
+import { ClerkProvider, useUser } from "@clerk/nextjs";
 import { MatchList } from "@/components/matchs";
 import Navbar from "@/components/Navbar";
+import {
+    SignedIn,
+    SignedOut,
+    SignInButton,
+    UserButton,
+} from "@clerk/nextjs";
 
 export default function MatchesPage() {
     const { isSignedIn, user } = useUser();
@@ -58,12 +64,21 @@ export default function MatchesPage() {
                         <p className="text-gray-300 mb-6">
                             Vous devez être connecté pour accéder aux matchs et placer des paris.
                         </p>
-                        <button
-                            onClick={() => globalThis.location.href = "/sign-in"}
-                            className="px-6 py-3 bg-[#2621BF] text-white rounded-xl hover:bg-[#3c36e0] transition-colors font-medium"
-                        >
-                            Se connecter
-                        </button>
+                        <ClerkProvider>
+                                <SignedOut>
+                                <SignInButton>
+                                    <button
+                                        type="button"
+                                        className="bg-[#2621BF] w-full text-white rounded-xl font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-6 cursor-pointer hover:bg-[#3c36e0] transition-colors"
+                                    >
+                                        Sign In
+                                    </button>
+                                </SignInButton>
+                            </SignedOut>
+                            <SignedIn>
+                                <UserButton />
+                            </SignedIn>
+                        </ClerkProvider>
                     </div>
                 </div>
             </div>

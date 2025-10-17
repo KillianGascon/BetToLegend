@@ -260,15 +260,33 @@ export default function AdminPage() {
         e.preventDefault();
         if (!editingMatchId) return;
 
-        await fetch(`/api/matches/${editingMatchId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(matchForm),
-        });
+        console.log("Updating match with ID:", editingMatchId);
+        console.log("Match form data:", matchForm);
 
-        setEditingMatchId(null);
-        setMatchForm({});
-        fetchMatches();
+        try {
+            const response = await fetch(`/api/matches/${editingMatchId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(matchForm),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Update failed:", errorData);
+                alert(`Erreur lors de la mise à jour: ${errorData.error}`);
+                return;
+            }
+
+            const updatedMatch = await response.json();
+            console.log("Match updated successfully:", updatedMatch);
+
+            setEditingMatchId(null);
+            setMatchForm({});
+            fetchMatches();
+        } catch (error) {
+            console.error("Error updating match:", error);
+            alert("Erreur lors de la mise à jour du match");
+        }
     }
 
     async function deleteMatch(id: string) {
@@ -335,7 +353,7 @@ export default function AdminPage() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 ...teamPlayerForm,
-                salary: parseFloat(String(teamPlayerForm.salary)) || 0,
+                salary: Number.parseFloat(String(teamPlayerForm.salary)) || 0,
             }),
         });
 

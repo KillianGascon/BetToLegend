@@ -9,6 +9,7 @@ import {
 } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export const metadata: Metadata = {
@@ -32,12 +33,14 @@ export default function Navbar() {
             <div className="w-full max-w-7xl mx-auto flex items-center justify-between py-6 relative h-auto">
                 {/* Logo */}
                 <div className="flex items-center justify-between w-1/12 relative h-10">
-                    <Image
+                    <Link href="/" className="relative w-full h-full">
+                        <Image
                         src="/logoBTL.ico"
                         alt="Mon icône"
                         fill
-                        className="object-contain"
-                    />
+                        className="object-contain cursor-pointer"
+                        />
+                    </Link>
                 </div>
 
                 <div className="w-2/12"></div>

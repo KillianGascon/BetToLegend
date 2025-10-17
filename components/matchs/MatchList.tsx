@@ -64,7 +64,7 @@ export default function MatchList({ userBalance, onBalanceUpdate }: MatchListPro
     const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
     const [selectedOdds, setSelectedOdds] = useState<number>(0);
     const [isBetModalOpen, setIsBetModalOpen] = useState(false);
-    const [filter, setFilter] = useState<"all" | "scheduled" | "ongoing" | "finished">("all");
+    const [filter, setFilter] = useState<"all" | "scheduled" | "live" | "completed">("all");
 
     useEffect(() => {
         fetchMatches();
@@ -143,8 +143,8 @@ export default function MatchList({ userBalance, onBalanceUpdate }: MatchListPro
         return {
             all: matches.length,
             scheduled: matches.filter(m => m.status === "scheduled").length,
-            ongoing: matches.filter(m => m.status === "ongoing").length,
-            finished: matches.filter(m => m.status === "finished").length,
+            live: matches.filter(m => m.status === "live").length,
+            completed: matches.filter(m => m.status === "completed").length,
         };
     };
 
@@ -186,8 +186,8 @@ export default function MatchList({ userBalance, onBalanceUpdate }: MatchListPro
                 {[
                     { key: "all", label: "Tous", count: counts.all },
                     { key: "scheduled", label: "Prévus", count: counts.scheduled },
-                    { key: "ongoing", label: "En cours", count: counts.ongoing },
-                    { key: "finished", label: "Terminés", count: counts.finished },
+                    { key: "live", label: "En cours", count: counts.live },
+                    { key: "completed", label: "Terminés", count: counts.completed },
                 ].map(({ key, label, count }) => (
                     <button
                         key={key}
