@@ -9,7 +9,7 @@ import { auth } from "@clerk/nextjs/server";
 export async function POST(req: Request) {
     try {
         const { userId } = await auth();
-        
+
         if (!userId) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
@@ -25,8 +25,8 @@ export async function POST(req: Request) {
 
         // Validate required fields
         if (!match_id || !team_id || !amount || !odds) {
-            return NextResponse.json({ 
-                error: "Missing required fields: match_id, team_id, amount, odds" 
+            return NextResponse.json({
+                error: "Missing required fields: match_id, team_id, amount, odds"
             }, { status: 400 });
         }
 
@@ -41,8 +41,8 @@ export async function POST(req: Request) {
 
         // Check if user has sufficient balance
         if (user.balance && user.balance < amount) {
-            return NextResponse.json({ 
-                error: "Insufficient balance" 
+            return NextResponse.json({
+                error: "Insufficient balance"
             }, { status: 400 });
         }
 
@@ -66,8 +66,8 @@ export async function POST(req: Request) {
         await prisma.users.update({
             where: { id: user.id },
             data: {
-                total_bet: (user.total_bet || 0) + Number(amount),
-                balance: (user.balance || 0) - Number(amount),
+                total_bet: (user.total_bet || 0) + (amount),
+                balance: (user.balance || 0) - (amount),
             },
         });
 
@@ -91,7 +91,7 @@ export async function POST(req: Request) {
 export async function GET() {
     try {
         const { userId } = await auth();
-        
+
         if (!userId) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
