@@ -38,13 +38,15 @@ model games {
 
 model match_odds {
   id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  match_id   String?   @db.Uuid
-  team_id    String?   @db.Uuid
-  odds       Decimal   @db.Decimal(4, 2)
+  match_id   String    @db.Uuid
+  team_id    String    @db.Uuid
+  odds       Decimal   @default(0) @db.Decimal(4, 2)
   created_at DateTime? @default(now()) @db.Timestamp(6)
   updated_at DateTime? @default(now()) @db.Timestamp(6)
-  matches    matches?  @relation(fields: [match_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  teams      teams?    @relation(fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  matches    matches   @relation(fields: [match_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  teams      teams     @relation(fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([match_id, team_id], map: "uq_match_odds_match_team")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
