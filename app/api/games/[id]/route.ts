@@ -1,81 +1,177 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { z } from "zod";
+import type { games } from "@prisma/client";
 
 /**
- * 🎮 GET /api/games/[id]
- * Retrieve a single game by its ID.
+ * Route params schema for /api/games/[id]
+ * - Ensures "id" is a valid UUID.
  */
-export async function GET(req: Request, { params }: { params: { id: string } }) {
-    try {
-        // Find the game using the ID from the dynamic route
-        const game = await prisma.games.findUnique({
-            where: { id: params.id },
-        });
+const GameParamsSchema = z.object({
+  id: z.uuid("Invalid game id"),
+});
 
-        // If no game was found, return a 404 error
-        if (!game)
-            return NextResponse.json({ error: "Game not found" }, { status: 404 });
+type GameRouteParams = z.infer<typeof GameParamsSchema>;
 
-        // Return the game data as JSON
-        return NextResponse.json(game);
-    } catch (error: unknown) {
-        // Log the error for debugging
-        console.error("❌ Error in GET /api/games/[id]:", error);
+/**
+ * Body schema for updating a game:
+ * - "name" and "category" are both optional strings (non-empty if present).
+ * - At least one of them must be provided.
+ */
+const UpdateGameBodySchema = z
+  .object({
+    name: z.string().min(1).optional(),
+    category: z.string().min(1).optional(),
+  })
+  .refine(
+    (data) => data.name !== undefined || data.category !== undefined,
+    { message: "At least one of 'name' or 'category' must be provided" },
+  );
 
-        // Return proper error response
-        if (error instanceof Error)
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        return NextResponse.json({ error: "Unknown error" }, { status: 500 });
+type UpdateGameBody = z.infer<typeof UpdateGameBodySchema>;
+
+/**
+ * GET /api/games/[id]
+ *
+ * Returns a single game by ID.
+ * - Validates route params with Zod.
+ * - Looks up the game in the database.
+ * - 404 if not found, 200 with game JSON if found.
+ * - 400 on validation error.
+ * - 500 on unexpected errors.
+ */
+export async function GET(
+  _req: Request,
+  { params }: { params: GameRouteParams },
+) {
+  try {
+    // Validate and extract "id" from params
+    const { id } = GameParamsSchema.parse(params);
+
+    // Fetch game by primary key
+    const game = await prisma.games.findUnique({
+      where: { id },
+    });
+
+    if (!game) {
+      return NextResponse.json(
+        { error: "Game not found" },
+        { status: 404 },
+      );
     }
+
+    // Typed JSON response with game
+    return NextResponse.json<games>(game);
+  } catch (error: unknown) {
+    console.error("Error in GET /api/games/[id]:", error);
+
+    // Validation error on params
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        {
+          error: "Validation failed",
+          issues: error.issues,
+        },
+        { status: 400 },
+      );
+    }
+
+    // Fallback technical error
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
 
 /**
- * ✏️ PUT /api/games/[id]
- * Update a game’s information (name and/or category).
+ * PUT /api/games/[id]
+ *
+ * Updates a game by ID.
+ * - Validates route params.
+ * - Validates body with UpdateGameBodySchema:
+ *   * At least one of "name" or "category" must be present.
+ * - Performs prisma.games.update with the provided fields.
+ * - Returns updated game or validation/technical errors.
  */
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
-    try {
-        // Extract data from the JSON body
-        const { name, category } = await req.json();
+export async function PUT(
+  req: Request,
+  { params }: { params: GameRouteParams },
+) {
+  try {
+    // Validate route params
+    const { id } = GameParamsSchema.parse(params);
 
-        // Update the game in the database
-        const updated = await prisma.games.update({
-            where: { id: params.id },
-            data: { name, category },
-        });
+    // Parse and validate request body
+    const body = UpdateGameBodySchema.parse(await req.json()) as UpdateGameBody;
 
-        // Return the updated game data
-        return NextResponse.json(updated);
-    } catch (error: unknown) {
-        // Log and return errors properly
-        console.error("❌ Error in PUT /api/games/[id]:", error);
-        if (error instanceof Error)
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        return NextResponse.json({ error: "Unknown error" }, { status: 500 });
+    // Update only provided fields (name / category)
+    const updated = await prisma.games.update({
+      where: { id },
+      data: body,
+    });
+
+    // Typed JSON response with updated game
+    return NextResponse.json<games>(updated);
+  } catch (error: unknown) {
+    console.error("Error in PUT /api/games/[id]:", error);
+
+    // Validation error (params or body)
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        {
+          error: "Validation failed",
+          issues: error.issues,
+        },
+        { status: 400 },
+      );
     }
+
+    // Fallback technical error
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
 
 /**
- * 🗑️ DELETE /api/games/[id]
- * Permanently delete a game by its ID.
+ * DELETE /api/games/[id]
+ *
+ * Deletes a game by ID.
+ * - Validates route params.
+ * - Deletes the game if it exists.
+ * - Returns { success: true } on success.
+ * - 400 on validation error.
+ * - 500 on technical error.
  */
 export async function DELETE(
-    req: Request,
-    { params }: { params: { id: string } }
+  _req: Request,
+  { params }: { params: GameRouteParams },
 ) {
-    try {
-        // Delete the game from the database
-        await prisma.games.delete({
-            where: { id: params.id },
-        });
+  try {
+    // Validate route params
+    const { id } = GameParamsSchema.parse(params);
 
-        // Return a simple success message
-        return NextResponse.json({ success: true });
-    } catch (error: unknown) {
-        // Handle and log any database or Prisma errors
-        console.error("❌ Error in DELETE /api/games/[id]:", error);
-        if (error instanceof Error)
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        return NextResponse.json({ error: "Unknown error" }, { status: 500 });
+    // Delete game entry
+    await prisma.games.delete({
+      where: { id },
+    });
+
+    // Simple success payload
+    return NextResponse.json<{ success: true }>({ success: true });
+  } catch (error: unknown) {
+    console.error("Error in DELETE /api/games/[id]:", error);
+
+    // Validation error on params
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        {
+          error: "Validation failed",
+          issues: error.issues,
+        },
+        { status: 400 },
+      );
     }
+
+    // Fallback technical error
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
