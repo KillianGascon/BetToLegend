@@ -3,6 +3,10 @@
 :root {
   --background: #000511;
   --foreground: #171717;
+
+  --legend-red: #A01E41;
+  --legend-blue: #2621BF;
+  --legend-dark: #111461;
 }
 
 @theme inline {
@@ -10,12 +14,22 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Tes couleurs custom accessibles en classes Tailwind */
+  --color-legend-red: var(--legend-red);
+  --color-legend-blue: var(--legend-blue);
+  --color-legend-dark: var(--legend-dark);
+
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #000511;
     --foreground: #ededed;
+
+    --legend-red: #A01E41;
+    --legend-blue: #2621BF;
+    --legend-dark: #111461;
   }
 }
 
