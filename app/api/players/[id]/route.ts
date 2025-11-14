@@ -119,3 +119,76 @@ export async function GET() {
         return NextResponse.json({ error: "Unknown error" }, { status: 500 });
     }
 }
+
+
+export async function DELETE(
+    req: Request,
+    { params }: { params: { id: string } }
+  ) {
+    try {
+      const { id } = params;
+  
+      console.log(`🗑️ DELETE /api/players/${id}`);
+  
+      // Vérifier si le joueur existe
+      const player = await prisma.players.findUnique({
+        where: { id },
+      });
+  
+      if (!player) {
+        return NextResponse.json(
+          { error: "Player not found" },
+          { status: 404 }
+        );
+      }
+  
+      // Vérifier si FK team_players existe
+      const linked = await prisma.team_players.count({
+        where: { player_id: id },
+      });
+  
+      if (linked > 0) {
+        return NextResponse.json(
+          {
+            error:
+              "Impossible de supprimer ce joueur : il est encore assigné à une équipe.",
+          },
+          { status: 400 }
+        );
+      }
+  
+      // Supprimer avatar si existant
+      if (player.avatar_url) {
+        const filePath = path.join(process.cwd(), "public", player.avatar_url);
+  
+        try {
+          await fs.unlink(filePath);
+          console.log("🧹 Avatar deleted:", filePath);
+        } catch (err) {
+          console.warn("⚠️ Avatar file not found or already deleted:", filePath);
+        }
+      }
+  
+      // Supprimer en DB
+      await prisma.players.delete({
+        where: { id },
+      });
+  
+      console.log(`✅ Player ${id} deleted successfully`);
+  
+      return NextResponse.json({ success: true });
+    } catch (error: unknown) {
+      console.error("❌ Error in DELETE /api/players/[id]:", error);
+  
+      if (error instanceof Error)
+        return NextResponse.json(
+          { error: error.message },
+          { status: 500 }
+        );
+  
+      return NextResponse.json(
+        { error: "Unknown error" },
+        { status: 500 }
+      );
+    }
+  }
