@@ -27,7 +27,7 @@ type Tournament = {
 type MatchOdds = {
     id: string;
     team_id: string;
-    odds: number;
+    odds: number | string;
     teams: Team;
 };
 
@@ -83,10 +83,18 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
         }
     };
 
+    const toNum = (v: unknown) => {
+        if (v === null || v === undefined) return undefined;
+        const n = typeof v === "string" ? parseFloat(v) : Number(v);
+        return Number.isFinite(n) ? n : undefined;
+    };    
+
     const getOddsForTeam = (teamId: string) => {
-        const odds = match.match_odds?.find(odd => odd.team_id === teamId);
-        return odds?.odds || 1;
+        const row = match.match_odds?.find(odd => odd.team_id === teamId);
+        const n = toNum(row?.odds);
+        return n && n > 0 ? n : 1; // fallback 1 si pas de valeur valide
     };
+    
 
     const getStatusText = (status?: string) => {
         switch (status) {
@@ -101,7 +109,7 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
         }
     };
 
-    const canBet = match.status === "scheduled" && match.match_odds && match.match_odds.length > 0;
+    const canBet = match.status === "live" && match.match_odds && match.match_odds.length > 0;
 
     return (
         <div className="bg-gray-800 rounded-lg shadow-md border border-gray-700 p-6 hover:shadow-lg transition-shadow">
@@ -223,7 +231,7 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
                             >
                                 {match.teams_matches_team1_idToteams?.name || "Team 1"}
                                 <span className="ml-2 text-xs bg-[#3c36e0] px-2 py-1 rounded">
-                  {getOddsForTeam(match.team1_id as string).toFixed(2)}
+                    {getOddsForTeam(match.team2_id as string).toFixed(2)}
                 </span>
                             </button>
                         )}
@@ -240,7 +248,7 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
                             >
                                 {match.teams_matches_team2_idToteams?.name || "Team 2"}
                                 <span className="ml-2 text-xs bg-red-500 px-2 py-1 rounded">
-                  {getOddsForTeam(match.team2_id as string).toFixed(2)}
+                    {getOddsForTeam(match.team2_id as string).toFixed(2)}
                 </span>
                             </button>
                         )}

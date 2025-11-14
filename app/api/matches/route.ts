@@ -21,7 +21,7 @@ export async function POST(req: Request) {
         format,
       } = body;
   
-      const START_ODDS = new Decimal(2.0);
+      const START_ODDS = new Decimal(1.0);
   
       const result = await prisma.$transaction(async (tx) => {
         const match = await tx.matches.create({

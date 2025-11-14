@@ -53,6 +53,7 @@ type MatchesSectionProps = {
     deleteMatch: (id: string) => void;
     assignMatchToTournament: (matchId: string, tournamentId: string) => void;
     setMatchForm: (updater: Partial<Match>) => void;
+    closeMatch: (matchId: string) => void;
 };
 
 export default function MatchesSection(props: MatchesSectionProps) {
@@ -67,8 +68,9 @@ export default function MatchesSection(props: MatchesSectionProps) {
         cancelEditMatch,
         startEditingMatch,
         deleteMatch,
-        assignMatchToTournament,
+        assignMatchToTournament,    
         setMatchForm,
+        closeMatch,
     } = props;
 
     return (
@@ -176,6 +178,60 @@ export default function MatchesSection(props: MatchesSectionProps) {
                                 <option value="completed">Terminé</option>
                             </select>
                         </div>
+                        {matchForm.status === "live" && (
+                            <>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                                        Score équipe 1
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min={0}
+                                        step={1}
+                                        value={
+                                            typeof matchForm.team1_score === "number"
+                                                ? matchForm.team1_score
+                                                : ""
+                                        }
+                                        onChange={(e) =>
+                                            setMatchForm({
+                                                ...matchForm,
+                                                team1_score:
+                                                    e.target.value === ""
+                                                        ? undefined
+                                                        : Number.parseInt(e.target.value, 10),
+                                            })
+                                        }
+                                        className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">
+                                        Score équipe 2
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min={0}
+                                        step={1}
+                                        value={
+                                            typeof matchForm.team2_score === "number"
+                                                ? matchForm.team2_score
+                                                : ""
+                                        }
+                                        onChange={(e) =>
+                                            setMatchForm({
+                                                ...matchForm,
+                                                team2_score:
+                                                    e.target.value === ""
+                                                        ? undefined
+                                                        : Number.parseInt(e.target.value, 10),
+                                            })
+                                        }
+                                        className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    />
+                                </div>
+                            </>
+                        )}
                     </div>
                     <div className="flex gap-3">
                         <button
@@ -235,6 +291,15 @@ export default function MatchesSection(props: MatchesSectionProps) {
                                         >
                                             Supprimer
                                         </button>
+
+                                        {m.status !== "completed" && (
+                                            <button
+                                                onClick={() => closeMatch(m.id)}
+                                                className="px-3 py-1 text-sm bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors"
+                                            >
+                                                Clôturer & régler
+                                            </button>   
+                                        )}
                                     </div>
                                     <select
                                         defaultValue=""

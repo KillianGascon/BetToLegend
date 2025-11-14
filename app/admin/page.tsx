@@ -424,6 +424,21 @@ export default function AdminPage() {
         fetchMatches();
     }
 
+    async function closeMatch(matchId: string) {
+        await fetch(`/api/matches/${matchId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            status: "completed", // ou "finished" selon ce que ton backend attend
+            // optionnel: si tu veux forcer côté admin, tu peux envoyer team1_score / team2_score ici
+          }),
+        });
+      
+        // recharger la liste des matchs
+        await fetchMatches(); // ta fonction existante qui refetch /api/matches
+      }
+      
+
     // --------- SIDEBAR NAVIGATION ---------
     const sidebarItems = [
         { id: "teams", label: "Équipes", icon: "⚙️" },
@@ -506,6 +521,7 @@ export default function AdminPage() {
                         deleteMatch={deleteMatch}
                         assignMatchToTournament={assignMatchToTournament}
                         setMatchForm={(u) => setMatchForm(u)}
+                        closeMatch={closeMatch}
                     />
                 );
             case "tournaments":
