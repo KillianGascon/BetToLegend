@@ -12,9 +12,12 @@
   "dependencies": {
     "@clerk/nextjs": "^6.33.1",
     "@prisma/client": "^6.19.0",
+    "i18next": "^25.6.2",
+    "i18next-browser-languagedetector": "^8.2.0",
     "next": "15.5.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-i18next": "^16.3.3",
     "svix": "^1.76.1",
     "zod": "^4.1.12"
   },

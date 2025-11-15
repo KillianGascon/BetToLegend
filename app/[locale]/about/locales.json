@@ -1,0 +1,186 @@
+{
+    "fr": {
+      "hero": {
+        "ctaSectionTitle": "Prêt à entrer dans la légende ?",
+        "ctaSectionSubtitle": "Créez votre compte, suivez vos équipes préférées et vivez les compétitions autrement, en direct.",
+        "primaryCta": "Commencer à parier",
+        "secondaryCta": "Voir les matchs",
+        "eyebrow": "À PROPOS DE",
+        "title": "BET TO LEGEND",
+        "description": "Bet To Legend est une plateforme de paris E-sport pensée pour les joueurs, les fans et les structures. Notre objectif : rendre les paris E-sport aussi fluides, rapides et sécurisés que le jeu lui-même."
+      },
+      "liveBetting": {
+        "title": "Paris E-Sport en direct",
+        "description": "Suivez les matchs en temps réel, placez vos paris en quelques secondes et gardez le contrôle grâce à une interface claire, responsive et pensée pour limiter la charge cognitive dans les moments clés.",
+        "highlightMatches": "Matchs & marchés disponibles en continu.",
+        "highlightCompetitionsValue": "+100",
+        "highlightCompetitionsLabel": "Compétitions et ligues couvertes.",
+        "highlightSecureTag": "Secure",
+        "highlightSecureLabel": "Transactions chiffrées et contrôles renforcés."
+      },
+      "unique": {
+        "title": "Ce qui rend Legend unique",
+        "ultraReactiveTitle": "Expérience ultra-réactive",
+        "ultraReactiveDescription": "Interface optimisée pour les matchs intenses : transitions fluides, délais minimisés et retours visuels clairs pour garder l'utilisateur focus sur l'essentiel.",
+        "uxTitle": "Design centré utilisateur",
+        "uxDescription": "Architecture en composants (faible charge cognitive), affordances explicites et état de chaque action facilement lisible, même en multi-task (stream + paris).",
+        "communitiesTitle": "Pensé pour les équipes & communautés",
+        "communitiesDescription": "Misez sur vos équipes préférées, suivez vos rosters et partagez vos paris avec votre communauté, tout en gardant un cadre maîtrisé et sécurisé."
+      },
+      "mission": {
+        "title": "Notre mission",
+        "body1": "Créer une expérience de paris E-sport qui respecte le rythme des compétitions, les joueurs et les communautés. Nous voulons réduire la friction à chaque étape : compréhension des cotes, navigation, placements de paris et suivi des résultats.",
+        "body2": "L’interface est conçue pour accompagner l'utilisateur pendant tout le match : hiérarchie visuelle claire, boutons facilement cliquables (Fitts's law), feedback immédiat sur chaque action et lecture rapide des informations critiques."
+      },
+      "product": {
+        "title": "Une plateforme pensée produit",
+        "readabilityTitle": "Lisibilité d’abord",
+        "readabilityDescription": "Contenu structuré, informations essentielles toujours au-dessus de la ligne de flottaison, contrastes conformes aux standards d’accessibilité (WCAG).",
+        "flowTitle": "Flow en temps réel",
+        "flowDescription": "Mesures anti-fraude, suivi d’historique et transparence sur chaque transaction."
+      },
+      "values": {
+        "title": "Nos valeurs",
+        "items": [
+          {
+            "id": "1",
+            "label": "#1 Transparence",
+            "description": "Des règles claires, des cotes explicites, un historique toujours accessible. Ici, rien n’est caché."
+          },
+          {
+            "id": "2",
+            "label": "#2 Responsabilité",
+            "description": "Outils de limitation, rappels et indicateurs pour un usage sain et maîtrisé de la plateforme."
+          },
+          {
+            "id": "3",
+            "label": "#3 Pour les joueurs",
+            "description": "Nous venons du jeu, pour les joueurs. L’expérience est pensée pour respecter l’intensité et la magie des compétitions."
+          }
+        ]
+      }
+    },
+    "en": {
+      "hero": {
+        "ctaSectionTitle": "Ready to enter the legend?",
+        "ctaSectionSubtitle": "Create your account, follow your favorite teams and experience competitions differently, live.",
+        "primaryCta": "Start betting",
+        "secondaryCta": "View matches",
+        "eyebrow": "ABOUT",
+        "title": "BET TO LEGEND",
+        "description": "Bet To Legend is an esports betting platform built for players, fans and organizations. Our goal: make esports betting as smooth, fast and secure as the game itself."
+      },
+      "liveBetting": {
+        "title": "Live esports betting",
+        "description": "Follow matches in real time, place your bets in seconds and stay in control with a clear, responsive interface designed to reduce cognitive load during key moments.",
+        "highlightMatches": "Matches & markets available continuously.",
+        "highlightCompetitionsValue": "+100",
+        "highlightCompetitionsLabel": "Competitions and leagues covered.",
+        "highlightSecureTag": "Secure",
+        "highlightSecureLabel": "Encrypted transactions and reinforced checks."
+      },
+      "unique": {
+        "title": "What makes Legend unique",
+        "ultraReactiveTitle": "Ultra-reactive experience",
+        "ultraReactiveDescription": "Interface optimized for intense matches: smooth transitions, minimized delays and clear visual feedback so users stay focused on what matters.",
+        "uxTitle": "User-centered design",
+        "uxDescription": "Component-based architecture (low cognitive load), explicit affordances and clearly readable states for every action, even in multi-task mode (stream + bets).",
+        "communitiesTitle": "Built for teams & communities",
+        "communitiesDescription": "Bet on your favorite teams, follow your rosters and share your bets with your community, all within a controlled and secured environment."
+      },
+      "mission": {
+        "title": "Our mission",
+        "body1": "Create an esports betting experience that respects the pace of competitions, players and communities. We want to reduce friction at every step: understanding odds, navigating, placing bets and tracking results.",
+        "body2": "The interface is designed to support the user throughout the match: clear visual hierarchy, easily clickable buttons (Fitts's law), instant feedback on each action and fast reading of critical information."
+      },
+      "product": {
+        "title": "A product-driven platform",
+        "readabilityTitle": "Readability first",
+        "readabilityDescription": "Structured content, key information always above the fold, and contrast levels aligned with accessibility standards (WCAG).",
+        "flowTitle": "Real-time flow",
+        "flowDescription": "Anti-fraud measures, history tracking and transparency on every transaction."
+      },
+      "values": {
+        "title": "Our values",
+        "items": [
+          {
+            "id": "1",
+            "label": "#1 Transparency",
+            "description": "Clear rules, explicit odds, and a history that’s always accessible. Nothing is hidden."
+          },
+          {
+            "id": "2",
+            "label": "#2 Responsibility",
+            "description": "Limit tools, reminders and indicators to encourage healthy, controlled use of the platform."
+          },
+          {
+            "id": "3",
+            "label": "#3 From players, for players",
+            "description": "We come from gaming. The experience is crafted to respect the intensity and magic of competitions."
+          }
+        ]
+      }
+    },
+    "ko": {
+      "hero": {
+        "ctaSectionTitle": "전설에 합류할 준비가 되었나요?",
+        "ctaSectionSubtitle": "계정을 만들고, 좋아하는 팀을 팔로우하며 라이브로 색다른 방식의 경쟁을 즐기세요.",
+        "primaryCta": "베팅 시작하기",
+        "secondaryCta": "경기 보기",
+        "eyebrow": "소개",
+        "title": "BET TO LEGEND",
+        "description": "Bet To Legend는 선수, 팬, 그리고 팀을 위한 e-스포츠 베팅 플랫폼입니다. 우리의 목표는 e-스포츠 베팅을 게임만큼이나 부드럽고, 빠르고, 안전하게 만드는 것입니다."
+      },
+      "liveBetting": {
+        "title": "라이브 E-스포츠 베팅",
+        "description": "경기를 실시간으로 시청하고, 몇 초 만에 베팅을 완료하며, 중요한 순간에도 인지 부하를 줄여주는 명확하고 반응형인 인터페이스로 상황을 완전히 파악하세요.",
+        "highlightMatches": "경기 및 마켓이 연속적으로 제공됩니다.",
+        "highlightCompetitionsValue": "+100",
+        "highlightCompetitionsLabel": "커버되는 대회 및 리그 수.",
+        "highlightSecureTag": "Secure",
+        "highlightSecureLabel": "암호화된 트랜잭션과 강화된 보안 검증."
+      },
+      "unique": {
+        "title": "Legend만의 차별점",
+        "ultraReactiveTitle": "초반응형 경험",
+        "ultraReactiveDescription": "격렬한 경기 상황을 위해 최적화된 인터페이스: 부드러운 전환, 최소화된 지연, 명확한 시각 피드백으로 사용자가 핵심에 집중할 수 있도록 합니다.",
+        "uxTitle": "사용자 중심 디자인",
+        "uxDescription": "컴포넌트 기반 아키텍처(낮은 인지 부하), 명확한 어포던스, 스트림과 베팅을 동시에 하는 상황에서도 쉽게 읽히는 상태 표시.",
+        "communitiesTitle": "팀과 커뮤니티를 위한 설계",
+        "communitiesDescription": "좋아하는 팀에 베팅하고, 로스터를 팔로우하며, 커뮤니티와 베팅을 공유하면서도 통제된 안전한 환경을 유지합니다."
+      },
+      "mission": {
+        "title": "우리의 미션",
+        "body1": "대회의 리듬, 플레이어, 커뮤니티를 존중하는 e-스포츠 베팅 경험을 만드는 것. 우리는 배당 이해, 내비게이션, 베팅 과정, 결과 추적까지 모든 단계에서 마찰을 줄이고자 합니다.",
+        "body2": "인터페이스는 경기 전체를 함께하는 파트너처럼 설계되었습니다: 명확한 시각적 계층 구조, 쉽게 클릭할 수 있는 버튼(Fitts's law), 각 행동에 대한 즉각적인 피드백, 그리고 중요한 정보의 빠른 판독."
+      },
+      "product": {
+        "title": "프로덕트 중심 플랫폼",
+        "readabilityTitle": "가독성이 우선",
+        "readabilityDescription": "구조화된 콘텐츠, 화면 상단에 배치된 핵심 정보, 접근성 기준(WCAG)에 맞는 대비.",
+        "flowTitle": "실시간 플로우",
+        "flowDescription": "안티-프로드 장치, 히스토리 추적, 모든 트랜잭션에 대한 높은 투명성."
+      },
+      "values": {
+        "title": "우리의 가치",
+        "items": [
+          {
+            "id": "1",
+            "label": "#1 투명성",
+            "description": "명확한 규칙, 이해하기 쉬운 배당, 언제든 확인 가능한 히스토리. 숨겨진 것은 없습니다."
+          },
+          {
+            "id": "2",
+            "label": "#2 책임감",
+            "description": "건강하고 통제된 사용을 돕는 한도 설정, 리마인더, 인디케이터 제공."
+          },
+          {
+            "id": "3",
+            "label": "#3 플레이어로부터, 플레이어를 위해",
+            "description": "우리는 게임 세계에서 왔습니다. 경험 전체가 경쟁의 긴장감과 매력을 존중하도록 설계되어 있습니다."
+          }
+        ]
+      }
+    }
+  }
+  

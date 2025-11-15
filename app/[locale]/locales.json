@@ -1,0 +1,54 @@
+{
+    "en": {
+      "hero": {
+        "titleFirstLine": "BET ON YOUR TEAMS,",
+        "titleSecondLinePrefix": "BECOME A",
+        "titleSecondLineAccent": "LEGEND",
+        "subtitle": "Live e-sports betting, fast and secure."
+      },
+      "cta": {
+        "primary": "Start betting",
+        "secondary": "View matches"
+      },
+      "language": {
+        "select": "Language",
+        "name": "English",
+        "code": "EN"
+      }
+    },
+    "fr": {
+      "hero": {
+        "titleFirstLine": "MISEZ SUR VOS ÉQUIPES,",
+        "titleSecondLinePrefix": "DEVENEZ UNE",
+        "titleSecondLineAccent": "LÉGENDE",
+        "subtitle": "Paris E-Sport en direct, rapide et sécurisés."
+      },
+      "cta": {
+        "primary": "Commencer à parier",
+        "secondary": "Voir les matchs"
+      },
+      "language": {
+        "select": "Langue",
+        "name": "Français",
+        "code": "FR"
+      }
+    },
+    "ko": {
+      "hero": {
+        "titleFirstLine": "당신의 팀에 베팅하고,",
+        "titleSecondLinePrefix": "진짜",
+        "titleSecondLineAccent": "전설이 되세요",
+        "subtitle": "실시간 e-스포츠 베팅, 빠르고 안전하게."
+      },
+      "cta": {
+        "primary": "베팅 시작하기",
+        "secondary": "경기 보기"
+      },
+      "language": {
+        "select": "언어",
+        "name": "한국어",
+        "code": "KO"
+      }
+    }
+  }
+  
