@@ -43,13 +43,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
                   <div className="flex w-full flex-col sm:flex-row gap-4 lg:gap-5 sm:items-center sm:justify-start">
                     <button
-                      className="w-full sm:w-auto sm:min-w-[220px] lg:min-w-[260px] px-6 lg:px-8 py-3 lg:py-4 rounded-[12px] bg-legend-red text-white font-montserrat font-medium text-base sm:text-lg lg:text-2xl hover:bg-legend-red/80 transition-transform transition-colors duration-200 hover:scale-105 active:scale-95"
+                      className="w-1/2 h-full px-6 lg:px-8 py-3 lg:py-4 rounded-[12px] bg-legend-red text-white font-montserrat font-medium text-base sm:text-lg lg:text-2xl hover:bg-legend-red/80 duration-200 hover:scale-105 active:scale-95"
                     >
                       Commencer à parier
                     </button>
-
                     <button
-                      className="w-full sm:w-auto sm:min-w-[220px] lg:min-w-[260px] px-6 lg:px-8 py-3 lg:py-4 rounded-[12px] border-2 border-legend-blue bg-legend-blue/15 flex items-center justify-center transition-transform transition-colors duration-200 hover:bg-legend-blue/25 hover:scale-105 active:scale-95"
+                      className="w-1/2 h-full px-6 lg:px-8 py-3 lg:py-4 rounded-[12px] border-2 border-legend-blue bg-legend-blue/15 flex items-center justify-center duration-200 hover:bg-legend-blue/25 hover:scale-105 active:scale-95"
                     >
                       <span className="text-white font-montserrat font-medium text-base sm:text-lg lg:text-2xl leading-normal">
                         Voir les matchs
