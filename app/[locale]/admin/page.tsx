@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import TeamsSection from "../../components/admin/TeamsSection";
-import GamesSection from "../../components/admin/GamesSection";
-import PlayersSection from "../../components/admin/PlayersSection";
-import TeamPlayersSection from "../../components/admin/TeamPlayersSection";
-import MatchesSection from "../../components/admin/MatchesSection";
-import TournamentsSection from "../../components/admin/TournamentsSection";
-import Navbar from "../../components/Navbar";
+import TeamsSection from "@/components/admin/TeamsSection";
+import GamesSection from "@/components/admin/GamesSection";
+import PlayersSection from "@/components/admin/PlayersSection";
+import TeamPlayersSection from "@/components/admin/TeamPlayersSection";
+import MatchesSection from "@/components/admin/MatchesSection";
+import TournamentsSection from "@/components/admin/TournamentsSection";
+import Navbar from "@/components/Navbar";
+import adminLocales from "@/app/[locale]/admin/locales.json";
 
 type Team = {
     id: string;
@@ -62,6 +63,8 @@ type Tournament = {
 };
 
 export default function AdminPage() {
+    const [localeKey, setLocaleKey] = useState<keyof typeof adminLocales>("fr");
+    const copy = adminLocales[localeKey];
     const [activeSection, setActiveSection] = useState<string>("teams");
     const [teams, setTeams] = useState<Team[]>([]);
     const [games, setGames] = useState<Game[]>([]);
@@ -127,6 +130,14 @@ export default function AdminPage() {
     }
 
     useEffect(() => {
+        try {
+            const path = window.location.pathname;
+            const maybe = path.split("/")[1];
+            const lk = (["en", "fr", "ko"].includes(maybe) ? maybe : "fr") as keyof typeof adminLocales;
+            setLocaleKey(lk);
+        } catch {
+            setLocaleKey("fr");
+        }
         fetchTeams();
         fetchGames();
         fetchMatches();
@@ -273,7 +284,7 @@ export default function AdminPage() {
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error("Update failed:", errorData);
-                alert(`Erreur lors de la mise à jour: ${errorData.error}`);
+                alert(`${copy.messages.updateErrorPrefix} ${errorData.error}`);
                 return;
             }
 
@@ -285,7 +296,7 @@ export default function AdminPage() {
             fetchMatches();
         } catch (error) {
             console.error("Error updating match:", error);
-            alert("Erreur lors de la mise à jour du match");
+            alert(copy.messages.updateMatchError);
         }
     }
 
@@ -415,7 +426,7 @@ export default function AdminPage() {
 
     // --------- ASSIGN MATCH TO TOURNAMENT ---------
     async function assignMatchToTournament(matchId: string, tournamentId: string) {
-        if (!tournamentId) return alert("Sélectionnez un tournoi.");
+        if (!tournamentId) return alert(copy.messages.selectTournament);
         await fetch(`/api/matches/${matchId}/assign-tournament`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -441,12 +452,12 @@ export default function AdminPage() {
 
     // --------- SIDEBAR NAVIGATION ---------
     const sidebarItems = [
-        { id: "teams", label: "Équipes", icon: "⚙️" },
-        { id: "games", label: "Jeux", icon: "🎯" },
-        { id: "players", label: "Joueurs", icon: "👤" },
-        { id: "teamplayers", label: "Équipes/Joueurs", icon: "👥" },
-        { id: "matches", label: "Matchs", icon: "🎮" },
-        { id: "tournaments", label: "Tournois", icon: "🏆" },
+        { id: "teams", label: copy.sidebar.teams, icon: "⚙️" },
+        { id: "games", label: copy.sidebar.games, icon: "🎯" },
+        { id: "players", label: copy.sidebar.players, icon: "👤" },
+        { id: "teamplayers", label: copy.sidebar.teamplayers, icon: "👥" },
+        { id: "matches", label: copy.sidebar.matches, icon: "🎮" },
+        { id: "tournaments", label: copy.sidebar.tournaments, icon: "🏆" },
     ];
 
     const renderActiveSection = () => {
@@ -464,6 +475,7 @@ export default function AdminPage() {
                         deleteTeam={deleteTeam}
                         setForm={(u) => setForm(u)}
                         setFile={(f) => setFile(f)}
+                        copy={copy.teams}
                     />
                 );
             case "games":
@@ -477,6 +489,7 @@ export default function AdminPage() {
                         startEditingGame={startEditingGame}
                         deleteGame={deleteGame}
                         setGameForm={(u) => setGameForm(u)}
+                        copy={copy.games}
                     />
                 );
             case "players":
@@ -492,6 +505,7 @@ export default function AdminPage() {
                         setEditingPlayerId={(id) => setEditingPlayerId(id)}
                         startEditingPlayer={startEditingPlayer}
                         deletePlayer={deletePlayer}
+                        copy={copy.players}
                     />
                 );
             case "teamplayers":
@@ -504,6 +518,7 @@ export default function AdminPage() {
                         onSubmit={addPlayerToTeam}
                         setTeamPlayerForm={(u) => setTeamPlayerForm(u)}
                         removePlayerFromTeam={removePlayerFromTeam}
+                        copy={copy.teamPlayers}
                     />
                 );
             case "matches":
@@ -522,6 +537,7 @@ export default function AdminPage() {
                         assignMatchToTournament={assignMatchToTournament}
                         setMatchForm={(u) => setMatchForm(u)}
                         closeMatch={closeMatch}
+                        copy={copy.matches}
                     />
                 );
             case "tournaments":
@@ -536,6 +552,7 @@ export default function AdminPage() {
                         startEditingTournament={startEditingTournament}
                         deleteTournament={deleteTournament}
                         setTournamentForm={(u) => setTournamentForm(u)}
+                        copy={copy.tournaments}
                     />
                 );
             default:
@@ -555,7 +572,7 @@ export default function AdminPage() {
                 <div className="w-64 bg-gray-800 shadow-xl h-screen overflow-hidden sticky top-0 self-start">
                     <div className="h-full flex flex-col">
                         <div className="p-6 border-b border-gray-700">
-                            <h1 className="text-2xl font-bold text-white mb-8">Admin Dashboard</h1>
+                            <h1 className="text-2xl font-bold text-white mb-8">{copy.title}</h1>
                         </div>
                         <div className="flex-1 overflow-y-auto">
                             <nav className="p-4 space-y-2">

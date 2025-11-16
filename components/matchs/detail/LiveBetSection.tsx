@@ -19,7 +19,25 @@ export type LiveBetSectionProps = {
   team1?: Team | null;
   team2?: Team | null;
   odds?: { team1?: number; team2?: number };
-  onBetPlaced?: () => void; // appelé pour recharger les cotes côté parent
+  onBetPlaced?: () => void;
+  copy?: {
+    notLive: { title: string; description: string };
+    title: string;
+    signedOutText: string;
+    signIn: string;
+    form: {
+      amountLabel: string;
+      amountPlaceholder: string;
+      potentialTitle: string;
+      submit: string;
+      submitting: string;
+      disclaimer: string;
+      teamOddsPrefix: string;
+      errorChooseTeam: string;
+      errorInvalidAmount: string;
+      successPattern: string;
+    };
+  };
 };
 
 export default function LiveBetSection({
@@ -29,29 +47,26 @@ export default function LiveBetSection({
   team2,
   odds,
   onBetPlaced,
+  copy,
 }: LiveBetSectionProps) {
   if (!isLive) {
     return (
       <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6">
-        <h3 className="text-white font-semibold mb-2">Parier sur ce match</h3>
-        <p className="text-gray-400 text-sm">
-          Les paris ouvrent uniquement lorsque le match est en direct.
-        </p>
+        <h3 className="text-white font-semibold mb-2">{copy?.notLive.title ?? "Parier sur ce match"}</h3>
+        <p className="text-gray-400 text-sm">{copy?.notLive.description ?? "Les paris ouvrent uniquement lorsque le match est en direct."}</p>
       </div>
     );
   }
 
   return (
     <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6">
-      <h3 className="text-white font-semibold mb-4">Parier en direct</h3>
+      <h3 className="text-white font-semibold mb-4">{copy?.title ?? "Parier en direct"}</h3>
 
       <SignedOut>
-        <p className="text-gray-300 text-sm mb-4">
-          Connecte-toi pour placer un pari en direct.
-        </p>
+        <p className="text-gray-300 text-sm mb-4">{copy?.signedOutText ?? "Connecte-toi pour placer un pari en direct."}</p>
         <SignInButton mode="modal">
           <button className="w-full px-4 py-2 rounded-xl bg-[#2621BF] hover:bg-[#3c36e0] text-white transition">
-            Se connecter
+            {copy?.signIn ?? "Se connecter"}
           </button>
         </SignInButton>
       </SignedOut>
@@ -63,6 +78,7 @@ export default function LiveBetSection({
           team2={team2}
           odds={odds}
           onBetPlaced={onBetPlaced}
+          copy={copy?.form}
         />
       </SignedIn>
     </div>
@@ -77,12 +93,25 @@ function BetForm({
   team2,
   odds,
   onBetPlaced,
+  copy,
 }: {
   matchId: string;
   team1?: Team | null;
   team2?: Team | null;
   odds?: { team1?: number; team2?: number };
   onBetPlaced?: () => void;
+  copy?: {
+    amountLabel: string;
+    amountPlaceholder: string;
+    potentialTitle: string;
+    submit: string;
+    submitting: string;
+    disclaimer: string;
+    teamOddsPrefix: string;
+    errorChooseTeam: string;
+    errorInvalidAmount: string;
+    successPattern: string;
+  };
 }) {
   const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
   const [amount, setAmount] = useState<string>("");
@@ -105,8 +134,8 @@ function BetForm({
     setSuccess(null);
 
     const amt = Number(amount);
-    if (!selectedTeamId) return setError("Choisis une équipe.");
-    if (!Number.isFinite(amt) || amt <= 0) return setError("Montant invalide.");
+    if (!selectedTeamId) return setError(copy?.errorChooseTeam ?? "Choisis une équipe.");
+    if (!Number.isFinite(amt) || amt <= 0) return setError(copy?.errorInvalidAmount ?? "Montant invalide.");
 
     try {
       setLoading(true);
@@ -133,9 +162,8 @@ function BetForm({
       const serverOdds: number | string | undefined = json?.odds;
       const serverPayout: number | string | undefined = json?.potential_payout;
 
-      setSuccess(
-        `Pari placé : cote ${fmtNum(serverOdds)} • gains potentiels ${fmtNum(serverPayout)}`
-      );
+      const pattern = copy?.successPattern ?? "Pari placé : cote {odds} • gains potentiels {payout}";
+      setSuccess(pattern.replace("{odds}", fmtNum(serverOdds)).replace("{payout}", fmtNum(serverPayout)));
       setAmount("");
       setSelectedTeamId(null);
 
@@ -168,7 +196,7 @@ function BetForm({
 
       {/* Montant */}
       <div>
-        <label className="block text-sm text-gray-300 mb-1">Montant</label>
+        <label className="block text-sm text-gray-300 mb-1">{copy?.amountLabel ?? "Montant"}</label>
         <input
           type="number"
           min="0"
@@ -176,15 +204,15 @@ function BetForm({
           inputMode="decimal"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          placeholder="Ex: 10.00"
+          placeholder={copy?.amountPlaceholder ?? "Ex: 10.00"}
           className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none focus:border-[#6a66ff]"
-          aria-label="Montant du pari"
+          aria-label={copy?.amountLabel ?? "Montant du pari"}
         />
       </div>
 
       {/* Gains estimés (indicatif client) */}
       <div className="text-sm text-gray-300">
-        Gains potentiels&nbsp;:&nbsp;
+        {(copy?.potentialTitle ?? "Gains potentiels")}&nbsp;:&nbsp;
         <span className="text-white font-semibold">
           {payout ? payout.toFixed(2) : "—"}
         </span>
@@ -198,12 +226,10 @@ function BetForm({
         disabled={loading || !selectedTeamId || !amount}
         className="w-full px-4 py-2 rounded-xl bg-[#2621BF] hover:bg-[#3c36e0] text-white disabled:opacity-50 transition"
       >
-        {loading ? "Placement..." : "Placer le pari"}
+        {loading ? (copy?.submitting ?? "Placement...") : (copy?.submit ?? "Placer le pari")}
       </button>
 
-      <p className="text-xs text-gray-500">
-        Les cotes peuvent évoluer. Les gains sont validés côté serveur.
-      </p>
+      <p className="text-xs text-gray-500">{copy?.disclaimer ?? "Les cotes peuvent évoluer. Les gains sont validés côté serveur."}</p>
     </form>
   );
 }
@@ -215,11 +241,13 @@ function TeamButton({
   odds,
   selected,
   onSelect,
+  oddsPrefix,
 }: {
   team?: Team | null;
   odds?: number;
   selected: boolean;
   onSelect: () => void;
+  oddsPrefix?: string;
 }) {
   return (
     <button
@@ -234,7 +262,7 @@ function TeamButton({
         <MiniLogo src={team?.logo_url} alt={team?.name || "Équipe"} />
         <div>
           <div className="text-white font-medium">{team?.name ?? "Équipe"}</div>
-          <div className="text-gray-400 text-sm">Cote {formatOdds(odds)}</div>
+          <div className="text-gray-400 text-sm">{(oddsPrefix ?? "Cote")} {formatOdds(odds)}</div>
         </div>
       </div>
     </button>

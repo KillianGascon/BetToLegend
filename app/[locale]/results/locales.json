@@ -1,0 +1,142 @@
+{
+  "fr": {
+    "page": {
+      "ariaSmartView": "Vue intelligente",
+      "metaTitle": "Résultats"
+    },
+    "header": {
+      "title": "Résultats",
+      "subtitle": "Les 3 derniers matchs + vue intelligente (carousel / calendrier / liste)."
+    },
+    "hero": {
+      "ariaTop3": "Trois derniers matchs",
+      "title": "Derniers matchs",
+      "empty": "Aucun match pour le moment."
+    },
+    "smart": {
+      "empty": "Rien à afficher pour l'instant.",
+      "recentFinished": "Récemment terminés"
+    },
+    "calendar": {
+      "title": "Calendrier (14 derniers jours)",
+      "more": "+ {count} autres…"
+    },
+    "list": {
+      "title": "Tous les matchs"
+    },
+    "matchCard": {
+      "status": {
+        "scheduled": "Programmé",
+        "live": "En direct",
+        "finished": "Terminé"
+      },
+      "dash": "—",
+      "tournamentFallback": "Tournoi",
+      "formatFallback": "Format ?",
+      "oddsLabel": "Cote {team}"
+    },
+    "miniRow": {
+      "vs": "vs",
+      "teamAlt": "Team",
+      "dash": "—"
+    },
+    "teamMini": {
+      "teamAlt": "Team",
+      "dash": "—"
+    }
+  },
+
+  "en": {
+    "page": {
+      "ariaSmartView": "Smart view",
+      "metaTitle": "Results"
+    },
+    "header": {
+      "title": "Results",
+      "subtitle": "The last 3 matches + smart view (carousel / calendar / list)."
+    },
+    "hero": {
+      "ariaTop3": "Top three matches",
+      "title": "Latest matches",
+      "empty": "No matches available yet."
+    },
+    "smart": {
+      "empty": "Nothing to display for now.",
+      "recentFinished": "Recently finished"
+    },
+    "calendar": {
+      "title": "Calendar (last 14 days)",
+      "more": "+ {count} more…"
+    },
+    "list": {
+      "title": "All matches"
+    },
+    "matchCard": {
+      "status": {
+        "scheduled": "Scheduled",
+        "live": "Live",
+        "finished": "Finished"
+      },
+      "dash": "—",
+      "tournamentFallback": "Tournament",
+      "formatFallback": "Format ?",
+      "oddsLabel": "Odds {team}"
+    },
+    "miniRow": {
+      "vs": "vs",
+      "teamAlt": "Team",
+      "dash": "—"
+    },
+    "teamMini": {
+      "teamAlt": "Team",
+      "dash": "—"
+    }
+  },
+
+  "ko": {
+    "page": {
+      "ariaSmartView": "스마트 뷰",
+      "metaTitle": "결과"
+    },
+    "header": {
+      "title": "결과",
+      "subtitle": "최근 3개의 경기 + 스마트 뷰 (캐러셀 / 캘린더 / 리스트)."
+    },
+    "hero": {
+      "ariaTop3": "최근 세 경기",
+      "title": "최근 경기",
+      "empty": "아직 표시할 경기가 없습니다."
+    },
+    "smart": {
+      "empty": "현재 표시할 내용이 없습니다.",
+      "recentFinished": "최근 종료됨"
+    },
+    "calendar": {
+      "title": "캘린더 (최근 14일)",
+      "more": "+ {count} 더 보기…"
+    },
+    "list": {
+      "title": "전체 경기"
+    },
+    "matchCard": {
+      "status": {
+        "scheduled": "예정됨",
+        "live": "라이브",
+        "finished": "종료됨"
+      },
+      "dash": "—",
+      "tournamentFallback": "토너먼트",
+      "formatFallback": "포맷 ?",
+      "oddsLabel": "배당 {team}"
+    },
+    "miniRow": {
+      "vs": "vs",
+      "teamAlt": "팀",
+      "dash": "—"
+    },
+    "teamMini": {
+      "teamAlt": "팀",
+      "dash": "—"
+    }
+  }
+}

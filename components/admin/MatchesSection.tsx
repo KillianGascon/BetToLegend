@@ -54,6 +54,47 @@ type MatchesSectionProps = {
     assignMatchToTournament: (matchId: string, tournamentId: string) => void;
     setMatchForm: (updater: Partial<Match>) => void;
     closeMatch: (matchId: string) => void;
+    copy: {
+        headerTitle: string;
+        headerSubtitle: string;
+        formTitleCreate: string;
+        formTitleEdit: string;
+        labels: {
+            game: string;
+            format: string;
+            team1: string;
+            team2: string;
+            date: string;
+            status: string;
+            score1: string;
+            score2: string;
+        };
+        placeholders: {
+            format: string;
+            select: string;
+            selectGame: string;
+        };
+        status: {
+            scheduled: string;
+            live: string;
+            completed: string;
+        };
+        buttons: {
+            submitCreate: string;
+            submitUpdate: string;
+            cancel: string;
+            modify: string;
+            delete: string;
+            closeAndSettle: string;
+        };
+        listTitle: string;
+        empty: string;
+        tournament: {
+            label: string;
+            none: string;
+            assignPlaceholder: string;
+        };
+    };
 };
 
 export default function MatchesSection(props: MatchesSectionProps) {
@@ -71,33 +112,34 @@ export default function MatchesSection(props: MatchesSectionProps) {
         assignMatchToTournament,    
         setMatchForm,
         closeMatch,
+        copy,
     } = props;
 
     return (
         <div className="space-y-8">
             {/* Header */}
             <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
-                <h2 className="text-2xl font-bold text-white mb-2">🎮 Gestion des matchs</h2>
-                <p className="text-gray-300">Créez et gérez les matchs entre équipes</p>
+                <h2 className="text-2xl font-bold text-white mb-2">{copy.headerTitle}</h2>
+                <p className="text-gray-300">{copy.headerSubtitle}</p>
             </div>
 
             {/* Form */}
             <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">
-                    {editingMatchId ? "Modifier le match" : "Créer un nouveau match"}
+                    {editingMatchId ? copy.formTitleEdit : copy.formTitleCreate}
                 </h3>
                 <form onSubmit={onSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Jeu
+                                {copy.labels.game}
                             </label>
                             <select
                                 value={matchForm.game_id || ""}
                                 onChange={(e) => setMatchForm({...matchForm, game_id: e.target.value})}
                                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                                <option value="">-- Sélectionner un jeu --</option>
+                                <option value="">{copy.placeholders.selectGame}</option>
                                 {games.map((g) => (
                                     <option key={g.id} value={g.id}>
                                         {g.name}
@@ -107,11 +149,11 @@ export default function MatchesSection(props: MatchesSectionProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Format
+                                {copy.labels.format}
                             </label>
                             <input
                                 type="text"
-                                placeholder="Format (ex: BO3)"
+                                placeholder={copy.placeholders.format}
                                 value={matchForm.format || ""}
                                 onChange={(e) => setMatchForm({...matchForm, format: e.target.value})}
                                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -119,14 +161,14 @@ export default function MatchesSection(props: MatchesSectionProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Équipe 1
+                                {copy.labels.team1}
                             </label>
                             <select
                                 value={matchForm.team1_id || ""}
                                 onChange={(e) => setMatchForm({...matchForm, team1_id: e.target.value})}
                                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                                <option value="">-- Sélectionner --</option>
+                                <option value="">{copy.placeholders.select}</option>
                                 {teams.map((t) => (
                                     <option key={t.id} value={t.id}>
                                         {t.name}
@@ -136,14 +178,14 @@ export default function MatchesSection(props: MatchesSectionProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Équipe 2
+                                {copy.labels.team2}
                             </label>
                             <select
                                 value={matchForm.team2_id || ""}
                                 onChange={(e) => setMatchForm({...matchForm, team2_id: e.target.value})}
                                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                                <option value="">-- Sélectionner --</option>
+                                <option value="">{copy.placeholders.select}</option>
                                 {teams.map((t) => (
                                     <option key={t.id} value={t.id}>
                                         {t.name}
@@ -153,7 +195,7 @@ export default function MatchesSection(props: MatchesSectionProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Date du match
+                                {copy.labels.date}
                             </label>
                             <input
                                 type="datetime-local"
@@ -166,23 +208,23 @@ export default function MatchesSection(props: MatchesSectionProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Statut
+                                {copy.labels.status}
                             </label>
                             <select
                                 value={matchForm.status || "scheduled"}
                                 onChange={(e) => setMatchForm({...matchForm, status: e.target.value})}
                                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                                <option value="scheduled">Prévu</option>
-                                <option value="live">En cours</option>
-                                <option value="completed">Terminé</option>
+                                <option value="scheduled">{copy.status.scheduled}</option>
+                                <option value="live">{copy.status.live}</option>
+                                <option value="completed">{copy.status.completed}</option>
                             </select>
                         </div>
                         {matchForm.status === "live" && (
                             <>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-300 mb-1">
-                                        Score équipe 1
+                                        {copy.labels.score1}
                                     </label>
                                     <input
                                         type="number"
@@ -207,7 +249,7 @@ export default function MatchesSection(props: MatchesSectionProps) {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-300 mb-1">
-                                        Score équipe 2
+                                        {copy.labels.score2}
                                     </label>
                                     <input
                                         type="number"
@@ -238,7 +280,7 @@ export default function MatchesSection(props: MatchesSectionProps) {
                             type="submit"
                             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
                         >
-                            {editingMatchId ? "Mettre à jour le match" : "Créer match"}
+                            {editingMatchId ? copy.buttons.submitUpdate : copy.buttons.submitCreate}
                         </button>
                         {editingMatchId && (
                             <button
@@ -246,7 +288,7 @@ export default function MatchesSection(props: MatchesSectionProps) {
                                 onClick={cancelEditMatch}
                                 className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
                             >
-                                Annuler
+                                {copy.buttons.cancel}
                             </button>
                         )}
                     </div>
@@ -256,7 +298,7 @@ export default function MatchesSection(props: MatchesSectionProps) {
             {/* Matches List */}
             <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700">
                 <div className="px-6 py-4 border-b border-gray-700">
-                    <h3 className="text-lg font-semibold text-white">Matchs existants</h3>
+                    <h3 className="text-lg font-semibold text-white">{copy.listTitle}</h3>
                 </div>
                 <div className="divide-y divide-gray-700">
                     {matches.map((m) => (
@@ -271,10 +313,10 @@ export default function MatchesSection(props: MatchesSectionProps) {
                                         {games.find((g) => g.id === m.game_id)?.name || "?"} • {m.status} • {m.format || "?"}
                                     </p>
                                     <p className="text-sm text-gray-400">
-                                        🏆 Tournoi:{" "}
+                                        {copy.tournament.label}{" "}
                                         {m.tournament_id
                                             ? tournaments.find((t) => t.id === m.tournament_id)?.name || "—"
-                                            : "Aucun"}
+                                            : copy.tournament.none}
                                     </p>
                                 </div>
                                 <div className="flex flex-col space-y-2">
@@ -283,13 +325,13 @@ export default function MatchesSection(props: MatchesSectionProps) {
                                             onClick={() => startEditingMatch(m)}
                                             className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                                         >
-                                            Modifier
+                                            {copy.buttons.modify}
                                         </button>
                                         <button
                                             onClick={() => deleteMatch(m.id)}
                                             className="px-3 py-1 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
                                         >
-                                            Supprimer
+                                            {copy.buttons.delete}
                                         </button>
 
                                         {m.status !== "completed" && (
@@ -297,7 +339,7 @@ export default function MatchesSection(props: MatchesSectionProps) {
                                                 onClick={() => closeMatch(m.id)}
                                                 className="px-3 py-1 text-sm bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors"
                                             >
-                                                Clôturer & régler
+                                                {copy.buttons.closeAndSettle}
                                             </button>   
                                         )}
                                     </div>
@@ -308,7 +350,7 @@ export default function MatchesSection(props: MatchesSectionProps) {
                                         }
                                         className="px-3 py-1 text-sm bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
-                                        <option value="">-- Assigner à un tournoi --</option>
+                                        <option value="">{copy.tournament.assignPlaceholder}</option>
                                         {tournaments.map((t) => (
                                             <option key={t.id} value={t.id}>
                                                 {t.name}
@@ -321,7 +363,7 @@ export default function MatchesSection(props: MatchesSectionProps) {
                     ))}
                     {matches.length === 0 && (
                         <div className="p-6 text-center text-gray-400">
-                            Aucun match créé pour le moment.
+                            {copy.empty}
                         </div>
                     )}
                 </div>

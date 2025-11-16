@@ -27,6 +27,47 @@ type TournamentsSectionProps = {
     startEditingTournament: (tournament: Tournament) => void;
     deleteTournament: (id: string) => void;
     setTournamentForm: (updater: Partial<Tournament>) => void;
+    copy: {
+        headerTitle: string;
+        headerSubtitle: string;
+        formTitleCreate: string;
+        formTitleEdit: string;
+        labels: {
+            name: string;
+            game: string;
+            prizePool: string;
+            location: string;
+            startDate: string;
+            endDate: string;
+            status: string;
+        };
+        placeholders: {
+            name: string;
+            prizePool: string;
+            location: string;
+            selectGame: string;
+        };
+        status: {
+            upcoming: string;
+            ongoing: string;
+            finished: string;
+        };
+        buttons: {
+            submitCreate: string;
+            submitUpdate: string;
+            cancel: string;
+            modify: string;
+            delete: string;
+        };
+        listTitle: string;
+        empty: string;
+        misc: {
+            prize: string;
+            dateRangeSep: string;
+            dateUnknown: string;
+            locationPrefix: string;
+        };
+    };
 };
 
 export default function TournamentsSection(props: TournamentsSectionProps) {
@@ -40,30 +81,31 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
         startEditingTournament,
         deleteTournament,
         setTournamentForm,
+        copy,
     } = props;
 
     return (
         <div className="space-y-8">
             {/* Header */}
             <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
-                <h2 className="text-2xl font-bold text-white mb-2">🏆 Gestion des tournois</h2>
-                <p className="text-gray-300">Créez et gérez les tournois de votre plateforme</p>
+                <h2 className="text-2xl font-bold text-white mb-2">{copy.headerTitle}</h2>
+                <p className="text-gray-300">{copy.headerSubtitle}</p>
             </div>
 
             {/* Form */}
             <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">
-                    {editingTournamentId ? "Modifier le tournoi" : "Créer un nouveau tournoi"}
+                    {editingTournamentId ? copy.formTitleEdit : copy.formTitleCreate}
                 </h3>
                 <form onSubmit={onSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Nom du tournoi
+                                {copy.labels.name}
                             </label>
                             <input
                                 type="text"
-                                placeholder="Nom du tournoi"
+                                placeholder={copy.placeholders.name}
                                 value={tournamentForm.name || ""}
                                 onChange={(e) =>
                                     setTournamentForm({...tournamentForm, name: e.target.value})
@@ -73,7 +115,7 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Jeu associé
+                                {copy.labels.game}
                             </label>
                             <select
                                 value={tournamentForm.game_id || ""}
@@ -82,7 +124,7 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                                 }
                                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                                <option value="">-- Sélectionner un jeu --</option>
+                                <option value="">{copy.placeholders.selectGame}</option>
                                 {games.map((g) => (
                                     <option key={g.id} value={g.id}>
                                         {g.name}
@@ -92,11 +134,11 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Prize Pool (€)
+                                {copy.labels.prizePool}
                             </label>
                             <input
                                 type="number"
-                                placeholder="Prize Pool (€)"
+                                placeholder={copy.placeholders.prizePool}
                                 value={tournamentForm.prize_pool || ""}
                                 onChange={(e) =>
                                     setTournamentForm({
@@ -109,11 +151,11 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Lieu
+                                {copy.labels.location}
                             </label>
                             <input
                                 type="text"
-                                placeholder="Lieu"
+                                placeholder={copy.placeholders.location}
                                 value={tournamentForm.location || ""}
                                 onChange={(e) =>
                                     setTournamentForm({
@@ -126,7 +168,7 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Date de début
+                                {copy.labels.startDate}
                             </label>
                             <input
                                 type="date"
@@ -142,7 +184,7 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Date de fin
+                                {copy.labels.endDate}
                             </label>
                             <input
                                 type="date"
@@ -158,7 +200,7 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Statut
+                                {copy.labels.status}
                             </label>
                             <select
                                 value={tournamentForm.status || "upcoming"}
@@ -170,9 +212,9 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                                 }
                                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
-                                <option value="upcoming">À venir</option>
-                                <option value="ongoing">En cours</option>
-                                <option value="finished">Terminé</option>
+                                <option value="upcoming">{copy.status.upcoming}</option>
+                                <option value="ongoing">{copy.status.ongoing}</option>
+                                <option value="finished">{copy.status.finished}</option>
                             </select>
                         </div>
                     </div>
@@ -181,7 +223,7 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                             type="submit"
                             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
                         >
-                            {editingTournamentId ? "Modifier le tournoi" : "Créer tournoi"}
+                            {editingTournamentId ? copy.buttons.submitUpdate : copy.buttons.submitCreate}
                         </button>
                         {editingTournamentId && (
                             <button
@@ -189,7 +231,7 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                                 onClick={cancelEditTournament}
                                 className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
                             >
-                                Annuler
+                                {copy.buttons.cancel}
                             </button>
                         )}
                     </div>
@@ -199,7 +241,7 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
             {/* Tournaments List */}
             <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700">
                 <div className="px-6 py-4 border-b border-gray-700">
-                    <h3 className="text-lg font-semibold text-white">Tournois existants</h3>
+                    <h3 className="text-lg font-semibold text-white">{copy.listTitle}</h3>
                 </div>
                 <div className="divide-y divide-gray-700">
                     {tournaments.map((t) => (
@@ -212,19 +254,19 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                                     </p>
                                     <div className="mt-2 space-y-1">
                                         <p className="text-sm text-gray-400">
-                                            💰 Prize Pool: {t.prize_pool ? `${t.prize_pool} €` : "N/A"}
+                                            {copy.misc.prize} {t.prize_pool ? `${t.prize_pool} €` : "N/A"}
                                         </p>
                                         <p className="text-sm text-gray-400">
                                             📅 {t.start_date
                                                 ? new Date(t.start_date).toLocaleDateString("fr-FR")
-                                                : "?"}{" "}
-                                            →{" "}
+                                                : copy.misc.dateUnknown}{" "}
+                                            {copy.misc.dateRangeSep}
                                             {t.end_date
                                                 ? new Date(t.end_date).toLocaleDateString("fr-FR")
-                                                : "?"}
+                                                : copy.misc.dateUnknown}
                                         </p>
                                         <p className="text-sm text-gray-400">
-                                            📍 {t.location || "—"}
+                                            {copy.misc.locationPrefix}{t.location || "—"}
                                         </p>
                                     </div>
                                 </div>
@@ -233,13 +275,13 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                                         onClick={() => startEditingTournament(t)}
                                         className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                                     >
-                                        Modifier
+                                        {copy.buttons.modify}
                                     </button>
                                     <button
                                         onClick={() => deleteTournament(t.id)}
                                         className="px-3 py-1 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
                                     >
-                                        Supprimer
+                                        {copy.buttons.delete}
                                     </button>
                                 </div>
                             </div>
@@ -247,7 +289,7 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                     ))}
                     {tournaments.length === 0 && (
                         <div className="p-6 text-center text-gray-400">
-                            Aucun tournoi créé pour le moment.
+                            {copy.empty}
                         </div>
                     )}
                 </div>
