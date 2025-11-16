@@ -19,7 +19,7 @@ export default function LandingPage({
   const copy = locales[locale];
 
   return (
-    <div className="relative h-screen">
+    <div className="relative min-h-screen h-screen">
       {/* Background image */}
       <div className="absolute inset-0 w-full h-full">
         <img
@@ -30,14 +30,12 @@ export default function LandingPage({
       </div>
 
       {/* Bloc landing */}
-      <div className="relative z-10 h-full flex flex-col">
-        {/* Navbar */}
-        <header className="container mx-auto px-6 py-4 lg:px-16 lg:py-6 shrink-0">
-          <Navbar />
-        </header>
+      <div className="relative z-10 min-h-screen h-full flex flex-col">
+        {/* Navbar - Fixed, no wrapper needed */}
+        <Navbar />
 
         {/* Hero section */}
-        <main className="flex-1">
+        <main className="flex-1 flex items-center pt-20 lg:pt-24 pb-8 lg:pb-12">
           <LandingHeroSection copy={copy} />
         </main>
       </div>
