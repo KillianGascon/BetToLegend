@@ -63,7 +63,7 @@ export default function SignUpPage() {
                 <h1 className="font-montserrat font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white mb-3">
                   Join BetToLegend
                 </h1>
-                <p className="text-white/80 font-montserrat text-base sm:text-lg">
+                <p className="text-white font-montserrat text-base sm:text-lg">
                   Create your account to start betting
                 </p>
               </div>
@@ -75,26 +75,47 @@ export default function SignUpPage() {
                   fallbackRedirectUrl={fallbackRedirect}
                   forceRedirectUrl={fallbackRedirect}
                   appearance={{
+                    variables: {
+                      colorText: "white",
+                      colorTextSecondary: "white",
+                      colorInputText: "white",
+                    },
                     elements: {
                       rootBox: "mx-auto",
                       card: "bg-transparent shadow-none border-none",
                       headerTitle: "font-montserrat font-bold text-2xl text-white hidden",
-                      headerSubtitle: "font-montserrat text-white/80 hidden",
+                      headerSubtitle: "font-montserrat text-white hidden",
                       socialButtonsBlockButton:
                         "bg-white/10 border-2 border-legend-blue text-white font-montserrat font-medium rounded-[12px] hover:bg-legend-blue/30 transition-all duration-200",
                       socialButtonsBlockButtonText: "font-montserrat text-white",
                       dividerLine: "bg-white/20",
-                      dividerText: "font-montserrat text-white/70",
-                      formFieldLabel: "font-montserrat font-medium text-white/70",
+                      dividerText: "font-montserrat text-white",
+                      formFieldLabel: "font-montserrat font-medium text-white !important",
+                      formFieldLabelText:
+                        "text-white !important",
                       formFieldInput:
                         "bg-white/10 border-2 border-legend-blue rounded-[12px] text-white font-montserrat placeholder-white/50 focus:border-legend-red focus:ring-2 focus:ring-legend-red",
+                      formFieldInputText:
+                        "text-white !important",
                       formButtonPrimary:
                         "bg-legend-red text-white font-montserrat font-medium rounded-[12px] hover:bg-legend-red/80 transition-all duration-200 hover:scale-105 active:scale-95",
+                      footer:
+                        "bg-transparent rounded-[12px] px-4 py-3 mt-4",
+                      footerAction:
+                        "bg-[#111461]/80 rounded-[12px] px-4 py-3 mt-4",
+                      footerActionText:
+                        "text-white font-montserrat bg-transparent",
                       footerActionLink: "text-legend-red font-montserrat font-medium hover:text-legend-red/80",
                       identityPreviewText: "font-montserrat text-white",
                       identityPreviewEditButton: "text-legend-red hover:text-legend-red/80",
-                      formFieldInputShowPasswordButton: "text-white/70 hover:text-white",
+                      formFieldInputShowPasswordButton: "text-white hover:text-white/80",
                       formResendCodeLink: "text-legend-red font-montserrat font-medium hover:text-legend-red/80",
+                      formFieldErrorText:
+                        "text-white",
+                      formFieldSuccessText:
+                        "text-white",
+                      formFieldHintText:
+                        "text-white",
                     },
                   }}
                 />
