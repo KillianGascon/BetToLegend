@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import type { team_players } from "@prisma/client";
@@ -51,12 +51,12 @@ type UpdateTeamPlayerInput = z.infer<typeof UpdateTeamPlayerSchema>;
  * - Unknown shape → 500 generic.
  */
 export async function PUT(
-  req: Request,
-  { params }: { params: TeamPlayerRouteParams },
+  req: NextRequest,
+  context: { params: Promise<TeamPlayerRouteParams> },
 ) {
   try {
     // Validate route params
-    const { id } = TeamPlayerParamsSchema.parse(params);
+    const { id } = TeamPlayerParamsSchema.parse(await context.params);
 
     // Parse request body
     const json = await req.json();
@@ -140,12 +140,12 @@ export async function PUT(
  * - Unknown error shape → 500 generic.
  */
 export async function DELETE(
-  _req: Request,
-  { params }: { params: TeamPlayerRouteParams },
+  _req: NextRequest,
+  context: { params: Promise<TeamPlayerRouteParams> },
 ) {
   try {
     // Validate route params
-    const { id } = TeamPlayerParamsSchema.parse(params);
+    const { id } = TeamPlayerParamsSchema.parse(await context.params);
 
     // Hard delete the team-player association
     await prisma.team_players.delete({

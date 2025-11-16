@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import type { tournaments } from "@prisma/client";
@@ -50,11 +50,11 @@ type TournamentUpdateInput = z.infer<typeof TournamentUpdateSchema>;
  * 5. 500 on server errors.
  */
 export async function GET(
-  _req: Request,
-  { params }: { params: TournamentRouteParams },
+  _req: NextRequest,
+  context: { params: Promise<TournamentRouteParams> },
 ) {
   try {
-    const { id } = TournamentParamsSchema.parse(params);
+    const { id } = TournamentParamsSchema.parse(await context.params);
 
     const tournament = await prisma.tournaments.findUnique({
       where: { id },
@@ -122,11 +122,11 @@ export async function GET(
  *    - status: undefined if not provided (no change).
  */
 export async function PUT(
-  req: Request,
-  { params }: { params: TournamentRouteParams },
+  req: NextRequest,
+  context: { params: Promise<TournamentRouteParams> },
 ) {
   try {
-    const { id } = TournamentParamsSchema.parse(params);
+    const { id } = TournamentParamsSchema.parse(await context.params);
 
     const json = await req.json();
     const body = TournamentUpdateSchema.parse(
@@ -211,11 +211,11 @@ export async function PUT(
  * - Other errors → 500.
  */
 export async function DELETE(
-  _req: Request,
-  { params }: { params: TournamentRouteParams },
+  _req: NextRequest,
+  context: { params: Promise<TournamentRouteParams> },
 ) {
   try {
-    const { id } = TournamentParamsSchema.parse(params);
+    const { id } = TournamentParamsSchema.parse(await context.params);
 
     await prisma.tournaments.delete({
       where: { id },

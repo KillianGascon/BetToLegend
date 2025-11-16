@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { Decimal } from "@prisma/client/runtime/library";
 import { z } from "zod";
@@ -30,7 +30,7 @@ const UpdateMatchBodySchema = z.object({
   status: z.string().optional(),
   team1_score: z.number().int().nullable().optional(),
   team2_score: z.number().int().nullable().optional(),
-  winner_id: z.string().uuid().nullable().optional(),
+  winner_id: z.string().uuid().nullable().optional().or(z.null()),
   format: z.string().optional(),
 });
 
@@ -46,12 +46,12 @@ type UpdateMatchBody = z.infer<typeof UpdateMatchBodySchema>;
  * - Each odds row includes the related team
  */
 export async function GET(
-  _req: Request,
-  { params }: { params: MatchRouteParams },
+  _req: NextRequest,
+  context: { params: Promise<MatchRouteParams> },
 ) {
   try {
     // Validate and extract "id" from params
-    const { id } = MatchParamsSchema.parse(params);
+    const { id } = MatchParamsSchema.parse(await context.params);
 
     // Fetch match and all related entities
     const match = await prisma.matches.findUnique({
@@ -117,12 +117,12 @@ export async function GET(
  * 3. Return full updated match with relations.
  */
 export async function PUT(
-  req: Request,
-  { params }: { params: MatchRouteParams },
+  req: NextRequest,
+  context: { params: Promise<MatchRouteParams> },
 ) {
   try {
     // Validate route params
-    const { id } = MatchParamsSchema.parse(params);
+    const { id } = MatchParamsSchema.parse(await context.params);
 
     // Parse and validate body
     const body = UpdateMatchBodySchema.parse(
@@ -355,12 +355,12 @@ export async function PUT(
  * Everything runs inside a transaction to ensure referential integrity.
  */
 export async function DELETE(
-  _req: Request,
-  { params }: { params: MatchRouteParams },
+  _req: NextRequest,
+  context: { params: Promise<MatchRouteParams> },
 ) {
   try {
     // Validate and extract "id" from params
-    const { id } = MatchParamsSchema.parse(params);
+    const { id } = MatchParamsSchema.parse(await context.params);
 
     // Transactionally delete dependent rows then the match
     await prisma.$transaction(async (tx: Tx) => {

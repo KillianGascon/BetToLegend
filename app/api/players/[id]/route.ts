@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import fs from "fs/promises";
 import path from "path";
@@ -62,11 +62,11 @@ async function saveNewAvatar(file: File): Promise<string> {
 }
 
 export async function GET(
-  _req: Request,
-  { params }: { params: PlayerRouteParams },
+  _req: NextRequest,
+  context: { params: Promise<PlayerRouteParams> },
 ) {
   try {
-    const { id } = PlayerParamsSchema.parse(params);
+    const { id } = PlayerParamsSchema.parse(await context.params);
 
     const player = await prisma.players.findUnique({
       where: { id },
@@ -105,11 +105,11 @@ export async function GET(
 }
 
 export async function PUT(
-  req: Request,
-  { params }: { params: PlayerRouteParams },
+  req: NextRequest,
+  context: { params: Promise<PlayerRouteParams> },
 ) {
   try {
-    const { id } = PlayerParamsSchema.parse(params);
+    const { id } = PlayerParamsSchema.parse(await context.params);
 
     const formData = await req.formData();
 
@@ -192,11 +192,11 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _req: Request,
-  { params }: { params: PlayerRouteParams },
+  _req: NextRequest,
+  context: { params: Promise<PlayerRouteParams> },
 ) {
   try {
-    const { id } = PlayerParamsSchema.parse(params);
+    const { id } = PlayerParamsSchema.parse(await context.params);
 
     const player = await prisma.players.findUnique({
       where: { id },

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import type { games } from "@prisma/client";
@@ -41,12 +41,12 @@ type UpdateGameBody = z.infer<typeof UpdateGameBodySchema>;
  * - 500 on unexpected errors.
  */
 export async function GET(
-  _req: Request,
-  { params }: { params: GameRouteParams },
+  _req: NextRequest,
+  context: { params: Promise<GameRouteParams> },
 ) {
   try {
     // Validate and extract "id" from params
-    const { id } = GameParamsSchema.parse(params);
+    const { id } = GameParamsSchema.parse(await context.params);
 
     // Fetch game by primary key
     const game = await prisma.games.findUnique({
@@ -93,12 +93,12 @@ export async function GET(
  * - Returns updated game or validation/technical errors.
  */
 export async function PUT(
-  req: Request,
-  { params }: { params: GameRouteParams },
+  req: NextRequest,
+  context: { params: Promise<GameRouteParams> },
 ) {
   try {
     // Validate route params
-    const { id } = GameParamsSchema.parse(params);
+    const { id } = GameParamsSchema.parse(await context.params);
 
     // Parse and validate request body
     const body = UpdateGameBodySchema.parse(await req.json()) as UpdateGameBody;
@@ -142,12 +142,12 @@ export async function PUT(
  * - 500 on technical error.
  */
 export async function DELETE(
-  _req: Request,
-  { params }: { params: GameRouteParams },
+  _req: NextRequest,
+  context: { params: Promise<GameRouteParams> },
 ) {
   try {
     // Validate route params
-    const { id } = GameParamsSchema.parse(params);
+    const { id } = GameParamsSchema.parse(await context.params);
 
     // Delete game entry
     await prisma.games.delete({
