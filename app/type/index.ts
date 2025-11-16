@@ -1,4 +1,2 @@
-export * from "./bets";
+export * from "./bet";
 export * from "./matchs";
-export * from "./users";
-export * from "./api";

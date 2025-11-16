@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import type { matches } from "@prisma/client";
@@ -40,12 +40,12 @@ type AssignTournamentBody = z.infer<typeof AssignTournamentBodySchema>;
  * - Other unexpected errors → 500.
  */
 export async function POST(
-  req: Request,
-  { params }: { params: MatchRouteParams },
+  req: NextRequest,
+  context: { params: Promise<MatchRouteParams> },
 ) {
   try {
     // Validate and extract "id" from URL params
-    const { id } = MatchParamsSchema.parse(params);
+    const { id } = MatchParamsSchema.parse(await context.params);
 
     // Parse and validate request body
     const body = AssignTournamentBodySchema.parse(

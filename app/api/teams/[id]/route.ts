@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import fs from "fs/promises";
 import path from "path";
@@ -102,11 +102,11 @@ type UpdateTeamInput = z.infer<typeof UpdateTeamSchema>;
  * - 500 on server error.
  */
 export async function GET(
-  _req: Request,
-  { params }: { params: TeamRouteParams },
+  _req: NextRequest,
+  context: { params: Promise<TeamRouteParams> },
 ) {
   try {
-    const { id } = TeamParamsSchema.parse(params);
+    const { id } = TeamParamsSchema.parse(await context.params);
 
     const team = await prisma.teams.findUnique({
       where: { id },
@@ -168,11 +168,11 @@ export async function GET(
  * 9. Update team with Prisma.
  */
 export async function PUT(
-  req: Request,
-  { params }: { params: TeamRouteParams },
+  req: NextRequest,
+  context: { params: Promise<TeamRouteParams> },
 ) {
   try {
-    const { id } = TeamParamsSchema.parse(params);
+    const { id } = TeamParamsSchema.parse(await context.params);
     const formData = await req.formData();
 
     // Raw form values as nullable strings
@@ -291,11 +291,11 @@ export async function PUT(
  * 5. Return { success: true } on success.
  */
 export async function DELETE(
-  _req: Request,
-  { params }: { params: TeamRouteParams },
+  _req: NextRequest,
+  context: { params: Promise<TeamRouteParams> },
 ) {
   try {
-    const { id } = TeamParamsSchema.parse(params);
+    const { id } = TeamParamsSchema.parse(await context.params);
 
     const team = await prisma.teams.findUnique({
       where: { id },
