@@ -44,31 +44,41 @@ export default async function ResultsPage({
   const copy = resultsLocales[locale];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Navbar />
+    <div className="relative min-h-screen">
+      {/* Background image */}
+      <div className="absolute inset-0 w-full h-full">
+        <img
+          src="/bg.png"
+          alt="Background"
+          className="w-full h-full object-cover opacity-80"
+        />
       </div>
 
-      {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700">
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex flex-col">
+        {/* Navbar */}
+        <header className="container mx-auto px-6 py-4 lg:px-16 lg:py-6 shrink-0">
+          <Navbar />
+        </header>
+
+        {/* Header */}
         <ResultHeaderSection title={copy.header.title} subtitle={copy.header.subtitle} />
-      </header>
 
+        {/* Main Content */}
+        <main className="flex-1 container mx-auto px-6 lg:px-16 py-8 lg:py-12 space-y-10 lg:space-y-12">
+          <ResultsHeroSection top3matchs={top3} copy={copy.hero} matchCardCopy={copy.matchCard} />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
-
-        <ResultsHeroSection top3matchs={top3} copy={copy.hero} matchCardCopy={copy.matchCard} />
-
-        <section aria-label={copy.page.ariaSmartView}>
-          <SmartMatchesView
-            matches={remaining}
-            copy={copy.smart}
-            calendar={copy.calendar}
-            list={copy.list}
-            matchCardCopy={copy.matchCard}
-          />
-        </section>
-      </main>
+          <section aria-label={copy.page.ariaSmartView}>
+            <SmartMatchesView
+              matches={remaining}
+              copy={copy.smart}
+              calendar={copy.calendar}
+              list={copy.list}
+              matchCardCopy={copy.matchCard}
+            />
+          </section>
+        </main>
+      </div>
     </div>
   );
 }

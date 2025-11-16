@@ -13,19 +13,31 @@ export default function TeamMini({
   align?: "left" | "right";
 }>) {
   return (
-    <div className={`flex items-center ${align === "right" ? "flex-row-reverse text-right" : ""} gap-2 min-w-0`}>
-      <div className="relative h-8 w-8 shrink-0">
-        <Image
-          src={team?.logo_url || "/placeholder-team.png"}
-          alt={team?.name || "Team"}
-          fill
-          sizes="32px"
-          className="object-contain rounded"
-        />
+    <div className={`flex items-center ${align === "right" ? "flex-row-reverse text-right" : ""} gap-3 min-w-0 flex-1`}>
+      <div className="relative h-10 w-10 sm:h-12 sm:w-12 lg:h-14 lg:w-14 shrink-0">
+        {team?.logo_url ? (
+          <Image
+            src={team.logo_url}
+            alt={team?.name || "Team"}
+            fill
+            sizes="(max-width: 640px) 40px, (max-width: 1024px) 48px, 56px"
+            className="object-contain rounded-lg"
+          />
+        ) : (
+          <div className="w-full h-full bg-white/20 rounded-lg flex items-center justify-center">
+            <span className="text-white font-montserrat font-bold text-sm sm:text-base">
+              {(team?.tag || team?.name || "?").charAt(0).toUpperCase()}
+            </span>
+          </div>
+        )}
       </div>
-      <div className="truncate">
-        <div className="truncate">{team?.tag || team?.name || "—"}</div>
-        <div className="text-xs text-gray-400">{Number.isFinite(score) ? score : " "}</div>
+      <div className="truncate min-w-0">
+        <div className="text-white font-montserrat font-bold text-sm sm:text-base lg:text-lg truncate">
+          {team?.tag || team?.name || "—"}
+        </div>
+        <div className="text-white/70 font-montserrat text-xs sm:text-sm">
+          {Number.isFinite(score) ? score : " "}
+        </div>
       </div>
     </div>
   );

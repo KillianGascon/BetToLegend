@@ -56,6 +56,10 @@ export default function SmartMatchesView({
     );
   }
 
-  return <ListByDay matches={matches} title={list.title} matchCardCopy={matchCardCopy} />;
+  return (
+    <div className="space-y-6 lg:space-y-8">
+      <ListByDay matches={matches} title={list.title} matchCardCopy={matchCardCopy} />
+    </div>
+  );
 }
 

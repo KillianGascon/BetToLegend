@@ -14,18 +14,22 @@ export default function CalendarGrid({
   const days = Array.from(byDay.keys()).sort((a, b) => (a < b ? 1 : -1)).slice(0, 14);
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-lg font-semibold">{title}</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div className="space-y-6 lg:space-y-8">
+      <h2 className="font-montserrat font-bold text-2xl sm:text-3xl lg:text-4xl text-white">
+        {title}
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
         {days.map((d) => (
-          <div key={d} className="bg-gray-800 border border-gray-700 rounded-2xl p-4">
-            <div className="text-sm text-gray-400 mb-2">{formatDateLabel(d)}</div>
+          <div key={d} className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-6">
+            <div className="text-sm sm:text-base text-white/80 font-montserrat font-medium mb-4">
+              {formatDateLabel(d)}
+            </div>
             <div className="space-y-3">
               {byDay.get(d)!.slice(0, 6).map((m) => (
                 <MiniRow key={m.id} match={m} />
               ))}
               {byDay.get(d)!.length > 6 && (
-                <div className="text-xs text-gray-500">
+                <div className="text-xs sm:text-sm text-white/60 font-montserrat pt-2">
                   {morePattern.replace("{count}", String(byDay.get(d)!.length - 6))}
                 </div>
               )}
