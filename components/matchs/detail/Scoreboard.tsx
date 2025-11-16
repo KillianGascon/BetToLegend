@@ -24,14 +24,24 @@ export default function Scoreboard({
       ? statusLabels.scheduled
       : statusLabels.completed;
   return (
-    <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6">
-      <div className="grid grid-cols-3 items-center">
+    <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-6 lg:p-8">
+      <div className="grid grid-cols-3 items-center gap-4 sm:gap-6">
         <TeamCell team={team1} align="left" />
         <div className="text-center">
-          <div className="text-4xl font-extrabold text-white">
+          <div className="text-4xl sm:text-5xl lg:text-6xl font-montserrat font-extrabold text-white mb-2">
             {(team1Score ?? 0)} — {(team2Score ?? 0)}
           </div>
-          <div className="text-gray-400 text-sm">{statusLabel}</div>
+          <div
+            className={`inline-block px-3 py-1.5 rounded-[8px] text-xs sm:text-sm font-montserrat font-medium ${
+              status === "live"
+                ? "bg-legend-red text-white"
+                : status === "scheduled"
+                  ? "bg-legend-blue text-white"
+                  : "bg-white/20 text-white/80"
+            }`}
+          >
+            {statusLabel}
+          </div>
         </div>
         <TeamCell team={team2} align="right" />
       </div>

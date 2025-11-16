@@ -17,13 +17,13 @@ export default function StatusPill({
       ? labels.pending
       : labels.unknown;
 
-  const base = "px-2 py-0.5 rounded-full border text-xs";
+  const base = "px-3 py-1.5 rounded-[8px] text-xs sm:text-sm font-montserrat font-medium";
   const cls =
     status === "won"
-      ? "border-emerald-600 text-emerald-400"
+      ? "bg-legend-red/30 border-2 border-legend-red text-white"
       : status === "lost"
-      ? "border-rose-600 text-rose-400"
-      : "border-gray-600 text-gray-300";
+        ? "bg-white/10 border-2 border-white/30 text-white/60"
+        : "bg-legend-blue/30 border-2 border-legend-blue text-white";
   return <span className={`${base} ${cls}`}>{label}</span>;
 }
 

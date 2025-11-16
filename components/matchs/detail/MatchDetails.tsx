@@ -32,11 +32,11 @@ export default function MatchDetails({
   odds?: { team1?: number; team2?: number };
 }>) {
   return (
-    <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6">
-      <h2 className="text-white font-semibold mb-4">{title}</h2>
-      <ul className="text-sm text-gray-300 space-y-2">
+    <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-6 lg:p-8">
+      <h2 className="text-white font-montserrat font-bold text-xl sm:text-2xl mb-6">{title}</h2>
+      <ul className="space-y-3 sm:space-y-4">
         <InfoRow label={labels.tournament} value={tournament ?? labels.unknown} />
-        <InfoRow label={labels.format} value={format ?? labels.unknown} />
+        <InfoRow label={labels.format} value={format ?? labels.unknownFormat} />
         <InfoRow label={labels.status} value={status ?? labels.unknown} />
         <InfoRow
           label={labels.dateTime}
