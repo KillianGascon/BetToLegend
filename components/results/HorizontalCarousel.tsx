@@ -3,7 +3,19 @@
 import MatchCard from "./MatchCard";
 import type { ViewMatch } from "@/types/results";
 
-export default function HorizontalCarousel({ matches, title }: Readonly<{ matches: ViewMatch[]; title: string }>) {
+type MatchCardCopy = {
+  status: { scheduled: string; live: string; finished: string };
+  dash: string;
+  tournamentFallback: string;
+  formatFallback: string;
+  oddsLabel: string;
+};
+
+export default function HorizontalCarousel({
+  matches,
+  title,
+  matchCardCopy,
+}: Readonly<{ matches: ViewMatch[]; title: string; matchCardCopy: MatchCardCopy }>) {
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold">{title}</h2>
@@ -13,7 +25,7 @@ export default function HorizontalCarousel({ matches, title }: Readonly<{ matche
       >
         {matches.map((m) => (
           <div key={m.id} className="min-w-[280px] max-w-[320px] snap-start">
-            <MatchCard match={m} />
+            <MatchCard match={m} copy={matchCardCopy} />
           </div>
         ))}
       </div>

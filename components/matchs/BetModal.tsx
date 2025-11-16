@@ -49,6 +49,28 @@ type BetModalProps = {
     readonly odds: number;
     readonly userBalance: number;
     readonly onPlaceBet: (amount: number) => Promise<void>;
+    readonly copy?: {
+        title: string;
+        vs: string;
+        betOn: string;
+        selectedTeamFallback: string;
+        odds: string;
+        balanceLabel: string;
+        amountLabel: string;
+        amountPlaceholder: string;
+        currencySuffix: string;
+        quickAmountsTitle: string;
+        potentialTitle: string;
+        stakeLabel: string;
+        profitLabel: string;
+        errorInvalidAmount: string;
+        errorInsufficient: string;
+        errorMinAmount: string; // contains {min}
+        errorGeneric: string;
+        cancel: string;
+        submitting: string;
+        submit: string;
+    };
 };
 
 export default function BetModal({ 
@@ -58,7 +80,8 @@ export default function BetModal({
     selectedTeamId, 
     odds, 
     userBalance,
-    onPlaceBet 
+    onPlaceBet,
+    copy
 }: BetModalProps) {
     const [amount, setAmount] = useState<string>("");
     const [isLoading, setIsLoading] = useState(false);
@@ -96,17 +119,18 @@ export default function BetModal({
         const numAmount = Number.parseFloat(amount);
         
         if (Number.isNaN(numAmount) || numAmount <= 0) {
-            setError("Veuillez entrer un montant valide");
+            setError(copy?.errorInvalidAmount ?? "Veuillez entrer un montant valide");
             return;
         }
         
         if (numAmount > userBalance) {
-            setError("Solde insuffisant");
+            setError(copy?.errorInsufficient ?? "Solde insuffisant");
             return;
         }
         
         if (numAmount < 1) {
-            setError("Le montant minimum est de 1€");
+            const msg = (copy?.errorMinAmount ?? "Le montant minimum est de {min}€").replace("{min}", "1");
+            setError(msg);
             return;
         }
 
@@ -117,7 +141,7 @@ export default function BetModal({
             await onPlaceBet(numAmount);
             onClose();
         } catch (err) {
-            setError(err instanceof Error ? err.message : "Erreur lors du placement du pari");
+            setError(err instanceof Error ? err.message : (copy?.errorGeneric ?? "Erreur lors du placement du pari"));
         } finally {
             setIsLoading(false);
         }
@@ -134,7 +158,7 @@ export default function BetModal({
             <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
                 {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b">
-                    <h2 className="text-xl font-bold text-gray-900">Placer un pari</h2>
+                    <h2 className="text-xl font-bold text-gray-900">{copy?.title ?? "Placer un pari"}</h2>
                     <button
                         onClick={onClose}
                         className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -160,7 +184,7 @@ export default function BetModal({
                                 {match.teams_matches_team1_idToteams?.name || "Team 1"}
                             </span>
                         </div>
-                        <span className="text-sm text-gray-500">VS</span>
+                        <span className="text-sm text-gray-500">{copy?.vs ?? "VS"}</span>
                         <div className="flex items-center space-x-3">
                             <span className="text-sm font-medium">
                                 {match.teams_matches_team2_idToteams?.name || "Team 2"}
@@ -184,13 +208,13 @@ export default function BetModal({
                     <div className="bg-blue-50 rounded-lg p-4 mb-4">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm text-gray-600">Vous pariez sur</p>
+                                <p className="text-sm text-gray-600">{copy?.betOn ?? "Vous pariez sur"}</p>
                                 <p className="font-semibold text-blue-900">
-                                    {selectedTeam?.name || "Équipe sélectionnée"}
+                                    {selectedTeam?.name || copy?.selectedTeamFallback || "Équipe sélectionnée"}
                                 </p>
                             </div>
                             <div className="text-right">
-                                <p className="text-sm text-gray-600">Cote</p>
+                                <p className="text-sm text-gray-600">{copy?.odds ?? "Cote"}</p>
                                 <p className="text-lg font-bold text-blue-900">{odds.toFixed(2)}</p>
                             </div>
                         </div>
@@ -198,15 +222,18 @@ export default function BetModal({
 
                     {/* Balance */}
                     <div className="mb-4">
-                        <p className="text-sm text-gray-600 mb-1">Solde disponible</p>
-                        <p className="text-lg font-semibold text-green-600">{Number(userBalance).toFixed(2)}€</p>
+                        <p className="text-sm text-gray-600 mb-1">{copy?.balanceLabel ?? "Solde disponible"}</p>
+                        <p className="text-lg font-semibold text-green-600">
+                            {Number(userBalance).toFixed(2)}
+                            {copy?.currencySuffix ?? "€"}
+                        </p>
                     </div>
 
                     {/* Amount Input */}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
                             <label htmlFor="bet-amount" className="block text-sm font-medium text-gray-700 mb-2">
-                                Montant du pari
+                                {copy?.amountLabel ?? "Montant du pari"}
                             </label>
                             <div className="relative">
                                 <input
@@ -214,16 +241,18 @@ export default function BetModal({
                                     type="text"
                                     value={amount}
                                     onChange={(e) => handleAmountChange(e.target.value)}
-                                    placeholder="0.00"
+                                    placeholder={copy?.amountPlaceholder ?? "0.00"}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 />
-                                <span className="absolute right-3 top-2 text-gray-500">€</span>
+                                <span className="absolute right-3 top-2 text-gray-500">
+                                    {copy?.currencySuffix ?? "€"}
+                                </span>
                             </div>
                         </div>
 
                         {/* Quick Amount Buttons */}
                         <div className="mb-4">
-                            <p className="text-sm text-gray-600 mb-2">Montants rapides</p>
+                            <p className="text-sm text-gray-600 mb-2">{copy?.quickAmountsTitle ?? "Montants rapides"}</p>
                             <div className="grid grid-cols-4 gap-2">
                                 {[5, 10, 25, 50].map((value) => (
                                     <button
@@ -232,7 +261,8 @@ export default function BetModal({
                                         onClick={() => handleQuickAmount(value)}
                                         className="px-3 py-2 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
                                     >
-                                        {value}€
+                                        {value}
+                                        {copy?.currencySuffix ?? "€"}
                                     </button>
                                 ))}
                             </div>
@@ -242,14 +272,24 @@ export default function BetModal({
                         {amount && Number.parseFloat(amount) > 0 && (
                             <div className="bg-green-50 rounded-lg p-4 mb-4">
                                 <div className="flex justify-between">
-                                    <span className="text-sm text-gray-600">Gains potentiels</span>
+                                    <span className="text-sm text-gray-600">
+                                        {copy?.potentialTitle ?? "Gains potentiels"}
+                                    </span>
                                     <span className="text-lg font-bold text-green-600">
-                                        {calculatePotentialPayout().toFixed(2)}€
+                                        {calculatePotentialPayout().toFixed(2)}
+                                        {copy?.currencySuffix ?? "€"}
                                     </span>
                                 </div>
                                 <div className="flex justify-between text-sm text-gray-500 mt-1">
-                                    <span>Mise: {amount}€</span>
-                                    <span>Profit: {(calculatePotentialPayout() - Number.parseFloat(amount)).toFixed(2)}€</span>
+                                    <span>
+                                        {copy?.stakeLabel ?? "Mise"}: {amount}
+                                        {copy?.currencySuffix ?? "€"}
+                                    </span>
+                                    <span>
+                                        {copy?.profitLabel ?? "Profit"}:{" "}
+                                        {(calculatePotentialPayout() - Number.parseFloat(amount)).toFixed(2)}
+                                        {copy?.currencySuffix ?? "€"}
+                                    </span>
                                 </div>
                             </div>
                         )}
@@ -268,14 +308,14 @@ export default function BetModal({
                                 onClick={onClose}
                                 className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
                             >
-                                Annuler
+                                {copy?.cancel ?? "Annuler"}
                             </button>
                             <button
                                 type="submit"
                                 disabled={isLoading || !amount || Number.parseFloat(amount) <= 0}
                                 className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
                             >
-                                {isLoading ? "Placement..." : "Placer le pari"}
+                                {isLoading ? (copy?.submitting ?? "Placement...") : (copy?.submit ?? "Placer le pari")}
                             </button>
                         </div>
                     </form>

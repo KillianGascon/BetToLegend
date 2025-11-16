@@ -54,12 +54,23 @@ type Match = {
 type MatchCardProps = {
     readonly match: Match;
     readonly onBetClick: (match: Match, teamId: string, odds: number) => void;
+    readonly copy?: {
+        unknownGame: string;
+        status: { scheduled: string; live: string; completed: string };
+        vs: string;
+        tbd: string;
+        winnerSuffix: string;
+        betTitle: string;
+        notAvailable: string;
+        ctaView: string;
+    };
+    readonly locale?: string;
 };
 
-export default function MatchCard({ match, onBetClick }: MatchCardProps) {
+export default function MatchCard({ match, onBetClick, copy, locale }: MatchCardProps) {
 
     const formatDate = (dateString?: string) => {
-        if (!dateString) return "TBD";
+        if (!dateString) return copy?.tbd ?? "TBD";
         const date = new Date(dateString);
         return date.toLocaleDateString("fr-FR", {
             day: "2-digit",
@@ -117,7 +128,7 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
           <span className="text-sm font-medium text-gray-400">
-            {match.games?.name || "Unknown Game"}
+            {match.games?.name || copy?.unknownGame || "Unknown Game"}
           </span>
                     {match.tournaments && (
                         <span className="text-xs bg-purple-900/30 text-purple-300 px-2 py-1 rounded">
@@ -130,7 +141,7 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
                         match.status
                     )}`}
                 >
-          {getStatusText(match.status)}
+          {copy?.status?.[match.status as keyof typeof copy.status] ?? getStatusText(match.status)}
         </span>
             </div>
 
@@ -166,7 +177,7 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
                     <div className="text-2xl font-bold text-white">
                         {match.status === "finished" || match.status === "completed"
                             ? `${match.team1_score || 0} - ${match.team2_score || 0}`
-                            : "VS"}
+                            : (copy?.vs ?? "VS")}
                     </div>
                     {match.format && (
                         <div className="text-xs text-gray-400 mt-1">{match.format}</div>
@@ -206,7 +217,7 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
                 {(match.status === "finished" || match.status === "completed") &&
                     match.teams_matches_winner_idToteams && (
                         <span className="text-green-400 font-medium">
-              🏆 {match.teams_matches_winner_idToteams.name} gagne
+              🏆 {match.teams_matches_winner_idToteams.name} {copy?.winnerSuffix ?? "gagne"}
             </span>
                     )}
             </div>
@@ -215,7 +226,7 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
             {canBet && (
                 <div className="border-t border-gray-700 pt-4">
                     <h4 className="text-sm font-medium text-gray-300 mb-3">
-                        Parier sur ce match
+                        {copy?.betTitle ?? "Parier sur ce match"}
                     </h4>
                     <div className="flex space-x-3">
                         {match.team1_id && (
@@ -258,17 +269,17 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
 
             {!canBet && match.status === "scheduled" && (
                 <div className="border-t border-gray-700 pt-4 text-center text-sm text-gray-400">
-                    Les cotes ne sont pas encore disponibles pour ce match
+                    {copy?.notAvailable ?? "Les cotes ne sont pas encore disponibles pour ce match"}
                 </div>
             )}
 
             {/* CTA vers la page du match */}
             <div className="mt-4 flex justify-end">
                 <Link
-                    href={`/matchs/${match.id}`}
+                    href={`/${locale ?? ""}/matchs/${match.id}`.replace("//", "/")}
                     className="inline-flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium rounded-xl px-4 py-2 transition"
                 >
-                    Voir le match
+                    {copy?.ctaView ?? "Voir le match"}
                     <svg
                         className="w-4 h-4"
                         viewBox="0 0 20 20"

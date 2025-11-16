@@ -1,0 +1,240 @@
+{
+  "fr": {
+    "loading": "Chargement…",
+    "notFound": {
+      "title": "Match introuvable",
+      "description": "Le match demandé n’existe pas.",
+      "back": "← Retour aux matchs"
+    },
+    "header": {
+      "back": "← Matchs",
+      "vs": "{team1} vs {team2}",
+      "tournamentFormat": "{tournament} • {format}",
+      "status": {
+        "live": "En direct",
+        "scheduled": "Programmé",
+        "completed": "Terminé"
+      }
+    },
+    "scoreboard": {
+      "status": {
+        "live": "En direct",
+        "scheduled": "À venir",
+        "completed": "Terminé"
+      }
+    },
+    "details": {
+      "title": "Détails du match",
+      "tournament": "Tournoi",
+      "format": "Format",
+      "status": "Statut",
+      "dateTime": "Date & heure",
+      "location": "Lieu",
+      "oddsTeam1": "Cote équipe 1",
+      "oddsTeam2": "Cote équipe 2",
+      "unknown": "—",
+      "unknownFormat": "Format inconnu"
+    },
+    "betsPanel": {
+      "title": "Mes paris",
+      "loading": "Chargement…",
+      "empty": "Aucun pari sur ce match.",
+      "totalStake": "Mise totale",
+      "totalPotential": "Gain potentiel total",
+      "stake": "Mise",
+      "odds": "Cote",
+      "potential": "Potentiel",
+      "status": {
+        "won": "Gagné",
+        "lost": "Perdu",
+        "pending": "En attente",
+        "unknown": "—"
+      },
+      "currencySuffix": " €"
+    },
+    "aboutTeams": {
+      "title": "À propos des équipes",
+      "body": "Ajoute ici des stats H2H, les formes récentes, ou des liens vers les pages équipes."
+    },
+    "liveBet": {
+      "notLive": {
+        "title": "Parier sur ce match",
+        "description": "Les paris ouvrent uniquement lorsque le match est en direct."
+      },
+      "title": "Parier en direct",
+      "signedOutText": "Connecte-toi pour placer un pari en direct.",
+      "signIn": "Se connecter",
+      "form": {
+        "amountLabel": "Montant",
+        "amountPlaceholder": "Ex: 10.00",
+        "potentialTitle": "Gains potentiels",
+        "submit": "Placer le pari",
+        "submitting": "Placement...",
+        "disclaimer": "Les cotes peuvent évoluer. Les gains sont validés côté serveur.",
+        "teamOddsPrefix": "Cote",
+        "errorChooseTeam": "Choisis une équipe.",
+        "errorInvalidAmount": "Montant invalide.",
+        "successPattern": "Pari placé : cote {odds} • gains potentiels {payout}"
+      }
+    }
+  },
+  "en": {
+    "loading": "Loading…",
+    "notFound": {
+      "title": "Match not found",
+      "description": "The requested match does not exist.",
+      "back": "← Back to matches"
+    },
+    "header": {
+      "back": "← Matches",
+      "vs": "{team1} vs {team2}",
+      "tournamentFormat": "{tournament} • {format}",
+      "status": {
+        "live": "Live",
+        "scheduled": "Scheduled",
+        "completed": "Finished"
+      }
+    },
+    "scoreboard": {
+      "status": {
+        "live": "Live",
+        "scheduled": "Upcoming",
+        "completed": "Finished"
+      }
+    },
+    "details": {
+      "title": "Match details",
+      "tournament": "Tournament",
+      "format": "Format",
+      "status": "Status",
+      "dateTime": "Date & time",
+      "location": "Location",
+      "oddsTeam1": "Team 1 odds",
+      "oddsTeam2": "Team 2 odds",
+      "unknown": "—",
+      "unknownFormat": "Unknown format"
+    },
+    "betsPanel": {
+      "title": "My bets",
+      "loading": "Loading…",
+      "empty": "No bets on this match.",
+      "totalStake": "Total stake",
+      "totalPotential": "Total potential winnings",
+      "stake": "Stake",
+      "odds": "Odds",
+      "potential": "Potential",
+      "status": {
+        "won": "Won",
+        "lost": "Lost",
+        "pending": "Pending",
+        "unknown": "—"
+      },
+      "currencySuffix": " $"
+    },
+    "aboutTeams": {
+      "title": "About the teams",
+      "body": "Add H2H stats, recent form, or links to team pages here."
+    },
+    "liveBet": {
+      "notLive": {
+        "title": "Bet on this match",
+        "description": "Betting opens only when the match is live."
+      },
+      "title": "Live betting",
+      "signedOutText": "Sign in to place a live bet.",
+      "signIn": "Sign In",
+      "form": {
+        "amountLabel": "Amount",
+        "amountPlaceholder": "e.g. 10.00",
+        "potentialTitle": "Potential winnings",
+        "submit": "Place bet",
+        "submitting": "Placing...",
+        "disclaimer": "Odds may change. Winnings are validated server-side.",
+        "teamOddsPrefix": "Odds",
+        "errorChooseTeam": "Choose a team.",
+        "errorInvalidAmount": "Invalid amount.",
+        "successPattern": "Bet placed: odds {odds} • potential {payout}"
+      }
+    }
+  },
+  "ko": {
+    "loading": "로딩 중…",
+    "notFound": {
+      "title": "경기를 찾을 수 없습니다",
+      "description": "요청한 경기가 존재하지 않습니다.",
+      "back": "← 경기 목록으로"
+    },
+    "header": {
+      "back": "← 경기",
+      "vs": "{team1} vs {team2}",
+      "tournamentFormat": "{tournament} • {format}",
+      "status": {
+        "live": "진행 중",
+        "scheduled": "예정",
+        "completed": "종료됨"
+      }
+    },
+    "scoreboard": {
+      "status": {
+        "live": "진행 중",
+        "scheduled": "예정",
+        "completed": "종료됨"
+      }
+    },
+    "details": {
+      "title": "경기 상세",
+      "tournament": "토너먼트",
+      "format": "포맷",
+      "status": "상태",
+      "dateTime": "일시",
+      "location": "장소",
+      "oddsTeam1": "팀 1 배당",
+      "oddsTeam2": "팀 2 배당",
+      "unknown": "—",
+      "unknownFormat": "알 수 없는 포맷"
+    },
+    "betsPanel": {
+      "title": "나의 베팅",
+      "loading": "로딩 중…",
+      "empty": "이 경기에 대한 베팅이 없습니다.",
+      "totalStake": "총 베팅",
+      "totalPotential": "총 예상 수익",
+      "stake": "베팅",
+      "odds": "배당",
+      "potential": "예상",
+      "status": {
+        "won": "승리",
+        "lost": "패배",
+        "pending": "대기 중",
+        "unknown": "—"
+      },
+      "currencySuffix": " ₩"
+    },
+    "aboutTeams": {
+      "title": "팀 소개",
+      "body": "여기에 상대 전적, 최근 폼, 팀 페이지 링크 등을 추가하세요."
+    },
+    "liveBet": {
+      "notLive": {
+        "title": "이 경기 베팅",
+        "description": "경기가 라이브일 때만 베팅이 가능합니다."
+      },
+      "title": "실시간 베팅",
+      "signedOutText": "실시간 베팅을 하려면 로그인하세요.",
+      "signIn": "로그인",
+      "form": {
+        "amountLabel": "금액",
+        "amountPlaceholder": "예: 10.00",
+        "potentialTitle": "예상 수익",
+        "submit": "베팅하기",
+        "submitting": "처리 중...",
+        "disclaimer": "배당은 변동될 수 있습니다. 수익은 서버에서 확정됩니다.",
+        "teamOddsPrefix": "배당",
+        "errorChooseTeam": "팀을 선택하세요.",
+        "errorInvalidAmount": "유효하지 않은 금액입니다.",
+        "successPattern": "베팅 완료: 배당 {odds} • 예상 {payout}"
+      }
+    }
+  }
+}
+
