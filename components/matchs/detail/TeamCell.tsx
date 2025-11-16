@@ -2,7 +2,7 @@
 "use client";
 import Image from "next/image";
 
-type Team = {
+export type Team = {
   id: string;
   name: string;
   tag?: string;

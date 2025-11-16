@@ -1,6 +1,6 @@
 // components/matchs/detail/Scoreboard.tsx
 "use client";
-import TeamCell from "./TeamCell";
+import TeamCell, { Team } from "./TeamCell";
 
 export default function Scoreboard({
   team1,
@@ -10,8 +10,8 @@ export default function Scoreboard({
   status,
   statusLabels,
 }: Readonly<{
-  team1?: { id: string; name?: string; tag?: string; logo_url?: string } | null;
-  team2?: { id: string; name?: string; tag?: string; logo_url?: string } | null;
+  team1?: Team | null;
+  team2?: Team | null;
   team1Score?: number | null;
   team2Score?: number | null;
   status?: string;
