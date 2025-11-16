@@ -206,20 +206,22 @@ export default function MatchList({
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                <span className="ml-3 text-gray-300">{copy?.loading ?? "Chargement des matchs..."}</span>
+            <div className="flex flex-col items-center justify-center py-12 lg:py-20">
+                <div className="animate-spin rounded-full h-12 w-12 lg:h-16 lg:w-16 border-b-2 border-legend-red"></div>
+                <span className="mt-4 text-white font-montserrat text-base sm:text-lg lg:text-xl">
+                    {copy?.loading ?? "Chargement des matchs..."}
+                </span>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="bg-red-900/20 border border-red-500/30 rounded-md p-4">
-                <p className="text-red-300">{error}</p>
+            <div className="bg-red-900/20 border-2 border-legend-red/50 rounded-[12px] p-6 lg:p-8">
+                <p className="text-white font-montserrat text-base sm:text-lg mb-4">{error}</p>
                 <button
                     onClick={fetchMatches}
-                    className="mt-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                    className="px-6 py-3 bg-legend-red text-white rounded-[12px] font-montserrat font-medium hover:bg-legend-red/80 transition-colors duration-200 hover:scale-105 active:scale-95"
                 >
                     {copy?.errorRetry ?? "Réessayer"}
                 </button>
@@ -228,15 +230,19 @@ export default function MatchList({
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-8 lg:space-y-12">
             {/* Header */}
-            <div className="text-center">
-                <h1 className="text-3xl font-bold text-white mb-2">{copy?.headerTitle ?? "Matchs disponibles"}</h1>
-                <p className="text-gray-300">{copy?.headerSubtitle ?? "Parier sur vos équipes favorites"}</p>
+            <div className="text-center space-y-3 lg:space-y-4">
+                <h1 className="font-montserrat font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight">
+                    {copy?.headerTitle ?? "Matchs disponibles"}
+                </h1>
+                <p className="text-white/80 font-montserrat text-lg sm:text-xl lg:text-2xl">
+                    {copy?.headerSubtitle ?? "Parier sur vos équipes favorites"}
+                </p>
             </div>
 
             {/* Filters */}
-            <div className="flex flex-wrap gap-2 justify-center">
+            <div className="flex flex-wrap gap-3 lg:gap-4 justify-center">
                 {[
                     { key: "all", label: copy?.filters.all ?? "Tous", count: counts.all },
                     { key: "scheduled", label: copy?.filters.scheduled ?? "Prévus", count: counts.scheduled },
@@ -246,10 +252,10 @@ export default function MatchList({
                     <button
                         key={key}
                         onClick={() => setFilter(key as typeof filter)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                        className={`px-4 sm:px-6 py-2 sm:py-3 rounded-[12px] text-sm sm:text-base font-montserrat font-medium transition-all duration-200 ${
                             filter === key
-                                ? "bg-[#2621BF] text-white"
-                                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                                ? "bg-legend-blue text-white hover:bg-legend-blue/90 scale-105"
+                                : "bg-legend-blue/20 border-2 border-legend-blue text-white hover:bg-legend-blue/30 hover:scale-105 active:scale-95"
                         }`}
                     >
                         {label} ({count})
@@ -259,7 +265,7 @@ export default function MatchList({
 
             {/* Matches Grid */}
             {filteredMatches.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                     {filteredMatches.map((match) => (
                         <MatchCard
                             key={match.id}
@@ -271,9 +277,9 @@ export default function MatchList({
                     ))}
                 </div>
             ) : (
-                <div className="text-center py-12">
-                    <div className="text-gray-400 text-6xl mb-4">🏆</div>
-                    <h3 className="text-lg font-medium text-white mb-2">
+                <div className="text-center py-12 lg:py-20">
+                    <div className="text-6xl lg:text-8xl mb-6 lg:mb-8">🏆</div>
+                    <h3 className="font-montserrat font-bold text-xl sm:text-2xl lg:text-3xl text-white mb-3 lg:mb-4">
                         {filter === "all"
                             ? (copy?.empty.allTitle ?? "Aucun match")
                             : (copy?.empty.filteredTitle ?? "Aucun match {status}").replace(
@@ -281,7 +287,7 @@ export default function MatchList({
                                   copy?.filters[filter] ?? filter
                               )}
                     </h3>
-                    <p className="text-gray-400">
+                    <p className="text-white/70 font-montserrat text-base sm:text-lg lg:text-xl">
                         {filter === "all"
                             ? (copy?.empty.allDescription ?? "Il n'y a pas de matchs disponibles pour le moment.")
                             : (copy?.empty.filteredDescription ?? "Il n'y a pas de matchs {status} pour le moment.").replace(

@@ -154,14 +154,16 @@ export default function BetModal({
         : match.teams_matches_team2_idToteams;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-legend-blue/95 border-2 border-legend-blue rounded-[12px] shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b">
-                    <h2 className="text-xl font-bold text-gray-900">{copy?.title ?? "Placer un pari"}</h2>
+                <div className="flex items-center justify-between p-6 border-b border-white/20">
+                    <h2 className="text-xl sm:text-2xl font-montserrat font-bold text-white">
+                        {copy?.title ?? "Placer un pari"}
+                    </h2>
                     <button
                         onClick={onClose}
-                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                        className="text-white/70 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-[8px]"
                     >
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -170,60 +172,70 @@ export default function BetModal({
                 </div>
 
                 {/* Match Info */}
-                <div className="p-6 border-b bg-gray-50">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
+                <div className="p-6 border-b border-white/20 bg-white/5">
+                    <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center space-x-3 min-w-0 flex-1">
                             {match.teams_matches_team1_idToteams?.logo_url && (
                                 <img 
                                     src={match.teams_matches_team1_idToteams.logo_url} 
                                     alt={match.teams_matches_team1_idToteams.name}
-                                    className="w-6 h-6 rounded-full"
+                                    className="w-8 h-8 rounded-full flex-shrink-0"
                                 />
                             )}
-                            <span className="text-sm font-medium">
+                            <span className="text-sm sm:text-base font-montserrat font-medium text-white truncate">
                                 {match.teams_matches_team1_idToteams?.name || "Team 1"}
                             </span>
                         </div>
-                        <span className="text-sm text-gray-500">{copy?.vs ?? "VS"}</span>
-                        <div className="flex items-center space-x-3">
-                            <span className="text-sm font-medium">
+                        <span className="text-sm sm:text-base font-montserrat font-bold text-white flex-shrink-0">
+                            {copy?.vs ?? "VS"}
+                        </span>
+                        <div className="flex items-center space-x-3 min-w-0 flex-1 justify-end">
+                            <span className="text-sm sm:text-base font-montserrat font-medium text-white truncate">
                                 {match.teams_matches_team2_idToteams?.name || "Team 2"}
                             </span>
                             {match.teams_matches_team2_idToteams?.logo_url && (
                                 <img 
                                     src={match.teams_matches_team2_idToteams.logo_url} 
                                     alt={match.teams_matches_team2_idToteams.name}
-                                    className="w-6 h-6 rounded-full"
+                                    className="w-8 h-8 rounded-full flex-shrink-0"
                                 />
                             )}
                         </div>
                     </div>
-                    <div className="mt-2 text-sm text-gray-500">
+                    <div className="mt-3 text-sm text-white/70 font-montserrat">
                         {match.games?.name} • {match.format}
                     </div>
                 </div>
 
                 {/* Betting Info */}
                 <div className="p-6">
-                    <div className="bg-blue-50 rounded-lg p-4 mb-4">
-                        <div className="flex items-center justify-between">
+                    <div className="bg-legend-blue/30 border-2 border-legend-blue rounded-[12px] p-4 mb-4">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                             <div>
-                                <p className="text-sm text-gray-600">{copy?.betOn ?? "Vous pariez sur"}</p>
-                                <p className="font-semibold text-blue-900">
+                                <p className="text-sm text-white/70 font-montserrat mb-1">
+                                    {copy?.betOn ?? "Vous pariez sur"}
+                                </p>
+                                <p className="text-base sm:text-lg font-montserrat font-bold text-white">
                                     {selectedTeam?.name || copy?.selectedTeamFallback || "Équipe sélectionnée"}
                                 </p>
                             </div>
-                            <div className="text-right">
-                                <p className="text-sm text-gray-600">{copy?.odds ?? "Cote"}</p>
-                                <p className="text-lg font-bold text-blue-900">{odds.toFixed(2)}</p>
+                            <div className="text-left sm:text-right">
+                                <p className="text-sm text-white/70 font-montserrat mb-1">
+                                    {copy?.odds ?? "Cote"}
+                                </p>
+                                <p className="text-xl sm:text-2xl font-montserrat font-extrabold text-legend-red">
+                                    {odds.toFixed(2)}
+                                </p>
                             </div>
                         </div>
                     </div>
 
                     {/* Balance */}
-                    <div className="mb-4">
-                        <p className="text-sm text-gray-600 mb-1">{copy?.balanceLabel ?? "Solde disponible"}</p>
-                        <p className="text-lg font-semibold text-green-600">
+                    <div className="mb-4 bg-white/5 rounded-[12px] p-4">
+                        <p className="text-sm text-white/70 font-montserrat mb-1">
+                            {copy?.balanceLabel ?? "Solde disponible"}
+                        </p>
+                        <p className="text-xl sm:text-2xl font-montserrat font-extrabold text-legend-red">
                             {Number(userBalance).toFixed(2)}
                             {copy?.currencySuffix ?? "€"}
                         </p>
@@ -232,7 +244,7 @@ export default function BetModal({
                     {/* Amount Input */}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
-                            <label htmlFor="bet-amount" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="bet-amount" className="block text-sm sm:text-base font-montserrat font-medium text-white mb-2">
                                 {copy?.amountLabel ?? "Montant du pari"}
                             </label>
                             <div className="relative">
@@ -242,9 +254,9 @@ export default function BetModal({
                                     value={amount}
                                     onChange={(e) => handleAmountChange(e.target.value)}
                                     placeholder={copy?.amountPlaceholder ?? "0.00"}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                                 />
-                                <span className="absolute right-3 top-2 text-gray-500">
+                                <span className="absolute right-4 top-3 text-white/70 font-montserrat">
                                     {copy?.currencySuffix ?? "€"}
                                 </span>
                             </div>
@@ -252,14 +264,16 @@ export default function BetModal({
 
                         {/* Quick Amount Buttons */}
                         <div className="mb-4">
-                            <p className="text-sm text-gray-600 mb-2">{copy?.quickAmountsTitle ?? "Montants rapides"}</p>
-                            <div className="grid grid-cols-4 gap-2">
+                            <p className="text-sm sm:text-base text-white/70 font-montserrat mb-3">
+                                {copy?.quickAmountsTitle ?? "Montants rapides"}
+                            </p>
+                            <div className="grid grid-cols-4 gap-2 sm:gap-3">
                                 {[5, 10, 25, 50].map((value) => (
                                     <button
                                         key={value}
                                         type="button"
                                         onClick={() => handleQuickAmount(value)}
-                                        className="px-3 py-2 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
+                                        className="px-3 py-2 text-sm bg-legend-blue/30 border-2 border-legend-blue text-white rounded-[8px] hover:bg-legend-blue/50 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                                     >
                                         {value}
                                         {copy?.currencySuffix ?? "€"}
@@ -270,17 +284,17 @@ export default function BetModal({
 
                         {/* Potential Payout */}
                         {amount && Number.parseFloat(amount) > 0 && (
-                            <div className="bg-green-50 rounded-lg p-4 mb-4">
-                                <div className="flex justify-between">
-                                    <span className="text-sm text-gray-600">
+                            <div className="bg-legend-red/20 border-2 border-legend-red rounded-[12px] p-4 mb-4">
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="text-sm sm:text-base text-white/70 font-montserrat">
                                         {copy?.potentialTitle ?? "Gains potentiels"}
                                     </span>
-                                    <span className="text-lg font-bold text-green-600">
+                                    <span className="text-xl sm:text-2xl font-montserrat font-extrabold text-legend-red">
                                         {calculatePotentialPayout().toFixed(2)}
                                         {copy?.currencySuffix ?? "€"}
                                     </span>
                                 </div>
-                                <div className="flex justify-between text-sm text-gray-500 mt-1">
+                                <div className="flex justify-between text-sm text-white/60 font-montserrat">
                                     <span>
                                         {copy?.stakeLabel ?? "Mise"}: {amount}
                                         {copy?.currencySuffix ?? "€"}
@@ -296,24 +310,24 @@ export default function BetModal({
 
                         {/* Error Message */}
                         {error && (
-                            <div className="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
-                                <p className="text-sm text-red-600">{error}</p>
+                            <div className="bg-legend-red/20 border-2 border-legend-red rounded-[12px] p-3 mb-4">
+                                <p className="text-sm text-white font-montserrat">{error}</p>
                             </div>
                         )}
 
                         {/* Action Buttons */}
-                        <div className="flex space-x-3">
+                        <div className="flex flex-col sm:flex-row gap-3">
                             <button
                                 type="button"
                                 onClick={onClose}
-                                className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                                className="flex-1 px-4 py-3 bg-white/10 border-2 border-white/30 text-white rounded-[12px] hover:bg-white/20 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                             >
                                 {copy?.cancel ?? "Annuler"}
                             </button>
                             <button
                                 type="submit"
                                 disabled={isLoading || !amount || Number.parseFloat(amount) <= 0}
-                                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                                className="flex-1 px-4 py-3 bg-legend-red text-white rounded-[12px] hover:bg-legend-red/80 disabled:bg-white/20 disabled:border-2 disabled:border-white/30 disabled:cursor-not-allowed font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95 disabled:hover:scale-100"
                             >
                                 {isLoading ? (copy?.submitting ?? "Placement...") : (copy?.submit ?? "Placer le pari")}
                             </button>
