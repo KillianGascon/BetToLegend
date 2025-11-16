@@ -400,7 +400,7 @@ CLERK_WEBHOOK_SECRET="..."
 
 ```
 
-Les variables ont étés envoyés par mail
+Les variables ont étés envoyés par discord
 
 ### Accès à l'application
 
