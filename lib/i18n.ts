@@ -26,6 +26,13 @@ const resources = {
         code_fr: "FR",
         code_en: "EN",
         code_ko: "KO"
+      },
+      navbar: {
+        matchs: "Matchs",
+        results: "Résultats",
+        about: "À propos",
+        gestion: "Gestion",
+        signIn: "Se connecter"
       }
     }
   },
@@ -49,6 +56,13 @@ const resources = {
         code_fr: "FR",
         code_en: "EN",
         code_ko: "KO"
+      },
+      navbar: {
+        matchs: "Matches",
+        results: "Results",
+        about: "About",
+        gestion: "Management",
+        signIn: "Sign In"
       }
     }
   },
@@ -72,6 +86,13 @@ const resources = {
         code_fr: "FR",
         code_en: "EN",
         code_ko: "KO"
+      },
+      navbar: {
+        matchs: "경기",
+        results: "결과",
+        about: "소개",
+        gestion: "관리",
+        signIn: "로그인"
       }
     }
   }
