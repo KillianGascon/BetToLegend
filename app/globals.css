@@ -7,6 +7,11 @@
   --legend-red: #A01E41;
   --legend-blue: #2621BF;
   --legend-dark: #111461;
+  
+  /* Clerk color overrides */
+  --cl-color-text: white !important;
+  --cl-color-text-secondary: white !important;
+  --cl-color-text-tertiary: white !important;
 }
 
 @theme inline {
@@ -116,4 +121,103 @@ body {
 
 .cl-identityPreviewEditButton:hover {
   color: rgba(160, 30, 65, 0.8) !important;
+}
+
+/* Form Field Labels - Multiple selectors to catch all variations */
+.cl-formFieldLabel,
+.cl-formFieldLabelText,
+.cl-formFieldLabelText span,
+.cl-formFieldLabelText label,
+.cl-formFieldLabelText p,
+.cl-formFieldLabelText div,
+[class*="cl-formFieldLabel"],
+[class*="formFieldLabel"],
+.cl-formFieldRow label,
+.cl-formFieldRow .cl-formFieldLabel,
+.cl-formFieldRow [class*="Label"],
+.cl-formFieldRow [class*="label"] {
+  color: white !important;
+}
+
+/* Target all label elements within Clerk forms */
+.cl-rootBox label,
+.cl-card label,
+.cl-form label,
+[class*="cl-"] label {
+  color: white !important;
+}
+
+/* Input text */
+.cl-formFieldInputText,
+.cl-formFieldInputText input,
+.cl-formFieldInput input,
+.cl-formFieldInput {
+  color: white !important;
+}
+
+/* Error, success, and hint text */
+.cl-formFieldErrorText,
+.cl-formFieldSuccessText,
+.cl-formFieldHintText {
+  color: white !important;
+}
+
+/* Target all text within form fields - more specific */
+.cl-formFieldRow label,
+.cl-formFieldRow label span,
+.cl-formFieldRow label div,
+.cl-formFieldRow label p {
+  color: white !important;
+}
+
+/* Very broad selector for any text in form rows */
+.cl-formFieldRow *:not(button):not(input):not(select):not(textarea) {
+  color: white !important;
+}
+
+/* Footer section with dark background - remove any white backgrounds */
+.cl-footer,
+.cl-footerAction,
+.cl-footerActionText,
+.cl-footer > *,
+.cl-footerAction > *,
+[class*="cl-footer"],
+[class*="footerAction"] {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* Ensure the footer action container has dark background */
+.cl-footerAction {
+  background-color: rgba(17, 20, 97, 0.8) !important;
+  background: rgba(17, 20, 97, 0.8) !important;
+  padding: 12px 16px !important;
+  border-radius: 12px !important;
+  margin-top: 16px !important;
+}
+
+.cl-footerActionText {
+  color: white !important;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Remove any white backgrounds from parent containers */
+.cl-card .cl-footer,
+.cl-card .cl-footerAction,
+.cl-form .cl-footer,
+.cl-form .cl-footerAction,
+.cl-rootBox .cl-footer,
+.cl-rootBox .cl-footerAction {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* Target any divs or containers within footer that might have white backgrounds */
+.cl-footer div,
+.cl-footerAction div,
+.cl-footer span,
+.cl-footerAction span {
+  background-color: transparent !important;
+  background: transparent !important;
 }
