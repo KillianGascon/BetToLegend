@@ -45,22 +45,42 @@ export default function MatchHeader({
       : statusLabels.completed;
 
   return (
-    <div className="bg-gray-800 shadow-sm border-b border-gray-700">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <Link href={`/${locale}/matchs`} className="text-gray-300 hover:text-white transition">
-              {backLabel}
-            </Link>
-            <div>
-              <h1 className="text-2xl font-bold text-white">{vs}</h1>
-              <p className="text-gray-300">{tourFmt}</p>
-              <p className="text-gray-400">
-                {statusLabel}
-                {matchDate ? ` • ${new Date(matchDate).toLocaleString()}` : ""}
-                {location ? ` • ${location}` : ""}
-              </p>
-            </div>
+    <div className="container mx-auto px-6 lg:px-16 py-6 lg:py-8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+        <Link
+          href={`/${locale}/matchs`}
+          className="inline-flex items-center gap-2 text-white/70 hover:text-white font-montserrat font-medium transition-colors duration-200 hover:scale-105 active:scale-95"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          {backLabel}
+        </Link>
+        <div className="flex-1 space-y-2">
+          <h1 className="font-montserrat font-extrabold text-2xl sm:text-3xl lg:text-4xl text-white leading-tight">
+            {vs}
+          </h1>
+          <p className="text-white/80 font-montserrat text-base sm:text-lg">{tourFmt}</p>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <span
+              className={`px-3 py-1.5 rounded-[8px] text-xs sm:text-sm font-montserrat font-medium ${
+                status === "live"
+                  ? "bg-legend-red text-white"
+                  : status === "scheduled"
+                    ? "bg-legend-blue text-white"
+                    : "bg-white/20 text-white/80"
+              }`}
+            >
+              {statusLabel}
+            </span>
+            {matchDate && (
+              <span className="text-white/60 font-montserrat text-sm">
+                {new Date(matchDate).toLocaleString()}
+              </span>
+            )}
+            {location && (
+              <span className="text-white/60 font-montserrat text-sm">📍 {location}</span>
+            )}
           </div>
         </div>
       </div>

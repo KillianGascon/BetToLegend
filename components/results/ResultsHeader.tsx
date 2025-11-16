@@ -4,9 +4,15 @@ export default function ResultHeaderSection({
   subtitle,
 }: Readonly<{ title: string; subtitle: string }>) {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-      <h1 className="text-2xl font-bold">{title}</h1>
-      <p className="text-gray-400 text-sm">{subtitle}</p>
+    <div className="container mx-auto px-6 lg:px-16 py-6 lg:py-8">
+      <div className="space-y-3 lg:space-y-4">
+        <h1 className="font-montserrat font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight">
+          {title}
+        </h1>
+        <p className="text-white/80 font-montserrat text-lg sm:text-xl lg:text-2xl">
+          {subtitle}
+        </p>
+      </div>
     </div>
   );
 }

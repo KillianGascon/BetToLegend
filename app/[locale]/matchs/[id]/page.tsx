@@ -242,27 +242,54 @@ export default function MatchPage() {
   // -------- renders (après tous les hooks) --------
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
+      <div className="relative min-h-screen">
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src="/bg.png"
+            alt="Background"
+            className="w-full h-full object-cover opacity-80"
+          />
+        </div>
+        <div className="relative z-10 min-h-screen flex items-center justify-center">
+          <div className="flex flex-col items-center gap-4">
+            <div className="animate-spin rounded-full h-16 w-16 lg:h-20 lg:w-20 border-b-2 border-legend-red"></div>
+            <p className="text-white font-montserrat text-base sm:text-lg lg:text-xl">Chargement...</p>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (err || !match) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <Navbar />
+      <div className="relative min-h-screen">
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src="/bg.png"
+            alt="Background"
+            className="w-full h-full object-cover opacity-80"
+          />
         </div>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <h1 className="text-2xl font-bold mb-2">{copy.notFound.title}</h1>
-          <p className="text-gray-300 mb-6">{err ?? copy.notFound.description}</p>
-          <Link
-            href={`/${locale}/matchs`}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2621BF] hover:bg-[#3c36e0] transition"
-          >
-            {copy.notFound.back}
-          </Link>
+        <div className="relative z-10 min-h-screen flex flex-col">
+          <header className="container mx-auto px-6 py-4 lg:px-16 lg:py-6 shrink-0">
+            <Navbar />
+          </header>
+          <div className="container mx-auto px-6 lg:px-16 py-16 text-center flex-1 flex items-center justify-center">
+            <div className="max-w-2xl space-y-6">
+              <h1 className="font-montserrat font-extrabold text-3xl sm:text-4xl lg:text-5xl text-white mb-4">
+                {copy.notFound.title}
+              </h1>
+              <p className="text-white/80 font-montserrat text-lg sm:text-xl mb-8">
+                {err ?? copy.notFound.description}
+              </p>
+              <Link
+                href={`/${locale}/matchs`}
+                className="inline-flex items-center gap-2 px-6 lg:px-8 py-3 lg:py-4 rounded-[12px] bg-legend-red text-white font-montserrat font-medium text-base sm:text-lg hover:bg-legend-red/80 duration-200 hover:scale-105 active:scale-95 transition-transform"
+              >
+                {copy.notFound.back}
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -281,81 +308,99 @@ export default function MatchPage() {
   } = match;
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      {/* Navbar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Navbar />
+    <div className="relative min-h-screen">
+      {/* Background image */}
+      <div className="absolute inset-0 w-full h-full">
+        <img
+          src="/bg.png"
+          alt="Background"
+          className="w-full h-full object-cover opacity-80"
+        />
       </div>
 
-      <MatchHeader
-        locale={locale}
-        backLabel={copy.header.back}
-        vsPattern={copy.header.vs}
-        tournamentFormatPattern={copy.header.tournamentFormat}
-        tournament={tournament?.name}
-        format={format}
-        team1={team1}
-        team2={team2}
-        status={status}
-        matchDate={match_date}
-        location={tournament?.location}
-        statusLabels={copy.header.status}
-      />
+      {/* Content */}
+      <div className="relative z-10 min-h-screen flex flex-col">
+        {/* Navbar */}
+        <header className="container mx-auto px-6 py-4 lg:px-16 lg:py-6 shrink-0">
+          <Navbar />
+        </header>
 
-      {/* Body */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Col 1-2: résumé du match */}
-        <div className="lg:col-span-2 space-y-8">
-          <Scoreboard
-            team1={team1}
-            team2={team2}
-            team1Score={team1_score}
-            team2Score={team2_score}
-            status={status}
-            statusLabels={copy.scoreboard.status}
-          />
+        <MatchHeader
+          locale={locale}
+          backLabel={copy.header.back}
+          vsPattern={copy.header.vs}
+          tournamentFormatPattern={copy.header.tournamentFormat}
+          tournament={tournament?.name}
+          format={format}
+          team1={team1}
+          team2={team2}
+          status={status}
+          matchDate={match_date}
+          location={tournament?.location}
+          statusLabels={copy.header.status}
+        />
 
-          <MatchDetails
-            title={copy.details.title}
-            labels={copy.details}
-            tournament={tournament?.name}
-            format={format}
-            status={status}
-            matchDate={match_date}
-            location={tournament?.location}
-            odds={odds}
-          />
-        </div>
+        {/* Body */}
+        <main className="flex-1 container mx-auto px-6 lg:px-16 py-8 lg:py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            {/* Col 1-2: résumé du match */}
+            <div className="lg:col-span-2 space-y-6 lg:space-y-8">
+              <Scoreboard
+                team1={team1}
+                team2={team2}
+                team1Score={team1_score}
+                team2Score={team2_score}
+                status={status}
+                statusLabels={copy.scoreboard.status}
+              />
 
-        {/* Col 3: actions + paris */}
-        <div className="space-y-8">
-          <LiveBetSection
-            isLive={status === "live"}
-            matchId={match.id}
-            team1={team1}
-            team2={team2}
-            odds={odds}
-            copy={copy.liveBet}
-            // ---- NEW: rafraîchir match + paris après un pari ----
-            onBetPlaced={async () => {
-              await load();
-              await loadBets(match.id);
-            }}
-          />
+              <MatchDetails
+                title={copy.details.title}
+                labels={copy.details}
+                tournament={tournament?.name}
+                format={format}
+                status={status}
+                matchDate={match_date}
+                location={tournament?.location}
+                odds={odds}
+              />
+            </div>
 
-          <BetsPanel
-            bets={bets}
-            team1={team1}
-            team2={team2}
-            loading={betsLoading}
-            labels={copy.betsPanel}
-          />
+            {/* Col 3: actions + paris */}
+            <div className="space-y-6 lg:space-y-8">
+              <LiveBetSection
+                isLive={status === "live"}
+                matchId={match.id}
+                team1={team1}
+                team2={team2}
+                odds={odds}
+                copy={copy.liveBet}
+                // ---- NEW: rafraîchir match + paris après un pari ----
+                onBetPlaced={async () => {
+                  await load();
+                  await loadBets(match.id);
+                }}
+              />
 
-          <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6">
-            <h3 className="text-white font-semibold mb-2">{copy.aboutTeams.title}</h3>
-            <p className="text-gray-400 text-sm">{copy.aboutTeams.body}</p>
+              <BetsPanel
+                bets={bets}
+                team1={team1}
+                team2={team2}
+                loading={betsLoading}
+                labels={copy.betsPanel}
+              />
+
+              <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-6">
+                <h3 className="text-white font-montserrat font-bold text-lg sm:text-xl mb-3">
+                  {copy.aboutTeams.title}
+                </h3>
+                <p className="text-white/70 font-montserrat text-sm sm:text-base">
+                  {copy.aboutTeams.body}
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );

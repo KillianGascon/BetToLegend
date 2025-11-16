@@ -562,43 +562,78 @@ export default function AdminPage() {
 
     // --------- UI ---------
     return (
-        <div className="min-h-screen bg-gray-900">
+        <div className="relative min-h-screen">
+            {/* Background image */}
+            <div className="absolute inset-0 w-full h-full">
+                <img
+                    src="/bg.png"
+                    alt="Background"
+                    className="w-full h-full object-cover opacity-80"
+                />
+            </div>
 
-            <Navbar />
-            
-            
-            <div className="flex">
-                {/* Sidebar */}
-                <div className="w-64 bg-gray-800 shadow-xl h-screen overflow-hidden sticky top-0 self-start">
-                    <div className="h-full flex flex-col">
-                        <div className="p-6 border-b border-gray-700">
-                            <h1 className="text-2xl font-bold text-white mb-8">{copy.title}</h1>
-                        </div>
-                        <div className="flex-1 overflow-y-auto">
-                            <nav className="p-4 space-y-2">
+            {/* Content */}
+            <div className="relative z-10 min-h-screen flex flex-col">
+                {/* Navbar */}
+                <header className="container mx-auto px-6 py-4 lg:px-16 lg:py-6 shrink-0">
+                    <Navbar />
+                </header>
+
+                <div className="flex-1 flex flex-col lg:flex-row">
+                    {/* Mobile Selector - Only visible on small screens */}
+                    <div className="lg:hidden container mx-auto px-6 py-4">
+                        <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-4">
+                            <label className="block text-sm font-montserrat font-medium text-white/70 mb-2">
+                                {copy.title}
+                            </label>
+                            <select
+                                value={activeSection}
+                                onChange={(e) => setActiveSection(e.target.value)}
+                                className="w-full px-4 py-3 bg-black/60 border-2 border-legend-blue rounded-[12px] text-white focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
+                            >
                                 {sidebarItems.map((item) => (
-                                    <button
-                                        key={item.id}
-                                        onClick={() => setActiveSection(item.id)}
-                                        className={`w-full flex items-center px-4 py-3 text-left rounded-lg transition-colors ${
-                                            activeSection === item.id
-                                                ? "bg-blue-600 text-white border-r-4 border-blue-400"
-                                                : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                                        }`}
-                                    >
-                                        <span className="text-xl mr-3">{item.icon}</span>
-                                        <span className="font-medium">{item.label}</span>
-                                    </button>
+                                    <option key={item.id} value={item.id} className="bg-black text-white">
+                                        {item.icon} {item.label}
+                                    </option>
                                 ))}
-                            </nav>
+                            </select>
                         </div>
                     </div>
-                </div>
 
-                {/* Main Content */}
-                <div className="flex-1 p-8 bg-gray-900">
-                    <div className="max-w-7xl mx-auto">
-                        {renderActiveSection()}
+                    {/* Sidebar - Hidden on small screens, visible on large screens */}
+                    <div className="hidden lg:block w-64 bg-legend-blue/30 border-r-2 border-legend-blue shadow-xl h-[calc(100vh-80px)] overflow-hidden sticky top-20 self-start">
+                        <div className="h-full flex flex-col">
+                            <div className="p-6 border-b border-white/20">
+                                <h1 className="text-2xl sm:text-3xl font-montserrat font-extrabold text-white mb-8">
+                                    {copy.title}
+                                </h1>
+                            </div>
+                            <div className="flex-1 overflow-y-auto">
+                                <nav className="p-4 space-y-2">
+                                    {sidebarItems.map((item) => (
+                                        <button
+                                            key={item.id}
+                                            onClick={() => setActiveSection(item.id)}
+                                            className={`w-full flex items-center px-4 py-3 text-left rounded-[12px] transition-all duration-200 font-montserrat ${
+                                                activeSection === item.id
+                                                    ? "bg-legend-red text-white border-2 border-legend-red scale-105"
+                                                    : "bg-legend-blue/20 border-2 border-legend-blue text-white hover:bg-legend-blue/30 hover:scale-105 active:scale-95"
+                                            }`}
+                                        >
+                                            <span className="text-xl mr-3">{item.icon}</span>
+                                            <span className="font-medium text-sm sm:text-base">{item.label}</span>
+                                        </button>
+                                    ))}
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="flex-1 p-6 lg:p-8 xl:p-12">
+                        <div className="max-w-7xl mx-auto">
+                            {renderActiveSection()}
+                        </div>
                     </div>
                 </div>
             </div>

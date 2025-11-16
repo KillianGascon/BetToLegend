@@ -61,29 +61,33 @@ export default function BetsPanel({
     };
 
   return (
-    <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6">
-      <div className="flex items-center justify-between gap-2 mb-2">
-        <h3 className="text-white font-semibold">{labels.title}</h3>
-        {loading && <span className="text-xs text-gray-400">{labels.loading}</span>}
+    <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-6">
+      <div className="flex items-center justify-between gap-2 mb-4">
+        <h3 className="text-white font-montserrat font-bold text-lg sm:text-xl">{labels.title}</h3>
+        {loading && (
+          <span className="text-xs sm:text-sm text-white/60 font-montserrat">{labels.loading}</span>
+        )}
       </div>
 
       {bets.length === 0 ? (
-        <p className="text-gray-400 text-sm">{labels.empty}</p>
+        <p className="text-white/70 font-montserrat text-sm sm:text-base">{labels.empty}</p>
       ) : (
         <>
-          <div className="flex items-center justify-between text-sm text-gray-300 mb-3">
-            <span>{labels.totalStake}</span>
-            <span className="text-white font-semibold">
-              {totalStake.toFixed(2)}
-              {labels.currencySuffix}
-            </span>
-          </div>
-          <div className="flex items-center justify-between text-sm text-gray-300 mb-4">
-            <span>{labels.totalPotential}</span>
-            <span className="text-white font-semibold">
-              {totalPotential.toFixed(2)}
-              {labels.currencySuffix}
-            </span>
+          <div className="bg-white/5 rounded-[12px] p-4 mb-3">
+            <div className="flex items-center justify-between text-sm sm:text-base mb-2">
+              <span className="text-white/70 font-montserrat">{labels.totalStake}</span>
+              <span className="text-white font-montserrat font-bold">
+                {totalStake.toFixed(2)}
+                {labels.currencySuffix}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-sm sm:text-base">
+              <span className="text-white/70 font-montserrat">{labels.totalPotential}</span>
+              <span className="text-legend-red font-montserrat font-extrabold text-lg sm:text-xl">
+                {totalPotential.toFixed(2)}
+                {labels.currencySuffix}
+              </span>
+            </div>
           </div>
 
           <ul className="space-y-3">
@@ -94,32 +98,41 @@ export default function BetsPanel({
               const dt = b.placed_at ? new Date(b.placed_at).toLocaleString() : "";
 
               return (
-                <li key={b.id} className="p-3 rounded-xl bg-gray-900 border border-gray-700">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-white font-medium">{teamName(b.team_id)}</div>
-                      <div className="text-gray-400 text-xs">{dt}</div>
+                <li
+                  key={b.id}
+                  className="p-4 rounded-[12px] bg-white/5 border-2 border-white/10 hover:border-legend-blue transition-all duration-200"
+                >
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-white font-montserrat font-bold text-sm sm:text-base mb-1">
+                        {teamName(b.team_id)}
+                      </div>
+                      <div className="text-white/60 font-montserrat text-xs">{dt}</div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-gray-300 text-sm">
-                        {labels.stake}{" "}
-                        <span className="text-white font-semibold">
-                          {amount.toFixed(2)}
-                          {labels.currencySuffix}
-                        </span>
+                    <div className="text-left sm:text-right w-full sm:w-auto">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                        <div className="text-white/70 font-montserrat text-xs sm:text-sm">
+                          {labels.stake}{" "}
+                          <span className="text-white font-montserrat font-semibold">
+                            {amount.toFixed(2)}
+                            {labels.currencySuffix}
+                          </span>
+                        </div>
+                        <div className="text-white/70 font-montserrat text-xs sm:text-sm">
+                          {labels.odds}{" "}
+                          <span className="text-white font-montserrat font-semibold">
+                            {odds.toFixed(2)}
+                          </span>
+                        </div>
+                        <div className="text-white/70 font-montserrat text-xs sm:text-sm">
+                          {labels.potential}{" "}
+                          <span className="text-legend-red font-montserrat font-extrabold">
+                            {payout.toFixed(2)}
+                            {labels.currencySuffix}
+                          </span>
+                        </div>
                       </div>
-                      <div className="text-gray-300 text-sm">
-                        {labels.odds}{" "}
-                        <span className="text-white font-semibold">{odds.toFixed(2)}</span>
-                      </div>
-                      <div className="text-gray-300 text-sm">
-                        {labels.potential}{" "}
-                        <span className="text-white font-semibold">
-                          {payout.toFixed(2)}
-                          {labels.currencySuffix}
-                        </span>
-                      </div>
-                      <div className="text-xs mt-1">
+                      <div className="mt-2">
                         <StatusPill status={b.status} labels={labels.status} />
                       </div>
                     </div>

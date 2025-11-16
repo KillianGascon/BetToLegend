@@ -3,8 +3,10 @@
 
 export default function EmptyState({ label }: Readonly<{ label: string }>) {
   return (
-    <div className="bg-gray-800 border border-gray-700 rounded-2xl p-6 text-center text-gray-400">
-      {label}
+    <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-8 lg:p-12 text-center">
+      <p className="text-white/70 font-montserrat text-base sm:text-lg lg:text-xl">
+        {label}
+      </p>
     </div>
   );
 }

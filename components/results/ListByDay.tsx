@@ -23,12 +23,16 @@ export default function ListByDay({
   const days = Array.from(byDay.keys()).sort((a, b) => (a < b ? 1 : -1)).slice(0, 14);
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-lg font-semibold">{title}</h2>
+    <div className="space-y-8 lg:space-y-12">
+      <h2 className="font-montserrat font-bold text-2xl sm:text-3xl lg:text-4xl text-white">
+        {title}
+      </h2>
       {days.map((d) => (
-        <div key={d}>
-          <div className="text-sm text-gray-400 mb-2">{formatDateLabel(d)}</div>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div key={d} className="space-y-4 lg:space-y-6">
+          <div className="text-base sm:text-lg text-white/80 font-montserrat font-medium">
+            {formatDateLabel(d)}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
             {byDay.get(d)!.map((m) => (
               <MatchCard key={m.id} match={m} copy={matchCardCopy} />
             ))}

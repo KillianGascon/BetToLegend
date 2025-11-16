@@ -3,22 +3,35 @@
 import {
   SignedIn,
   SignedOut,
-  SignInButton,
   UserButton,
 } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [role, setRole] = useState<string>("user");
 
   const params = useParams();
+  const pathname = usePathname();
+  
+  // Try to get locale from params first, then from pathname
   const rawLocale = typeof params?.locale === "string" ? params.locale : undefined;
-  const locale = ["fr", "en", "ko"].includes(rawLocale || "") ? rawLocale! : "fr";
-
-  const basePath = `/${locale}`;
+  let locale = ["fr", "en", "ko"].includes(rawLocale || "") ? rawLocale! : undefined;
+  
+  // Fallback to pathname if no locale in params
+  if (!locale && pathname) {
+    const pathSegments = pathname.split("/").filter(Boolean);
+    const pathLocale = pathSegments[0];
+    if (["fr", "en", "ko"].includes(pathLocale)) {
+      locale = pathLocale as "fr" | "en" | "ko";
+    }
+  }
+  
+  // Final fallback to "fr"
+  const finalLocale = locale || "fr";
+  const basePath = `/${finalLocale}`;
 
   useEffect(() => {
     fetch("/api/me")
@@ -81,15 +94,16 @@ export default function Navbar() {
       {/* Auth buttons */}
       <div className="flex w-2/12 justify-center items-center gap-3">
         <SignedOut>
-          <SignInButton>
+          <Link href={`/sign-in`}>
             <button
               type="button"
               className="bg-[#2621BF] w-full text-white rounded-xl font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-6 cursor-pointer hover:bg-[#3c36e0] transition-colors"
             >
               Sign In
             </button>
-          </SignInButton>
+          </Link>
         </SignedOut>
+
         <SignedIn>
           <UserButton />
         </SignedIn>

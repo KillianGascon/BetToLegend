@@ -79,22 +79,26 @@ export default function PlayersSection(props: PlayersSectionProps) {
     } = props;
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6 lg:space-y-8">
             {/* Header */}
-            <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
-                <h2 className="text-2xl font-bold text-white mb-2">{copy.headerTitle}</h2>
-                <p className="text-gray-300">{copy.headerSubtitle}</p>
+            <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-6 lg:p-8">
+                <h2 className="font-montserrat font-bold text-2xl sm:text-3xl lg:text-4xl text-white mb-3">
+                    {copy.headerTitle}
+                </h2>
+                <p className="text-white/80 font-montserrat text-base sm:text-lg lg:text-xl">
+                    {copy.headerSubtitle}
+                </p>
             </div>
 
             {/* Form */}
-            <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
-                <h3 className="text-lg font-semibold text-white mb-4">
+            <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-6 lg:p-8">
+                <h3 className="font-montserrat font-bold text-xl sm:text-2xl text-white mb-6">
                     {editingPlayerId ? copy.formTitleEdit : copy.formTitleCreate}
                 </h3>
-                <form onSubmit={onSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <form onSubmit={onSubmit} className="space-y-4 lg:space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
                                 {copy.labels.username}
                             </label>
                             <input
@@ -102,11 +106,11 @@ export default function PlayersSection(props: PlayersSectionProps) {
                                 placeholder={copy.placeholders.username}
                                 value={playerForm.username || ""}
                                 onChange={(e) => setPlayerForm({...playerForm, username: e.target.value})}
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
                                 {copy.labels.realName}
                             </label>
                             <input
@@ -114,11 +118,11 @@ export default function PlayersSection(props: PlayersSectionProps) {
                                 placeholder={copy.placeholders.realName}
                                 value={playerForm.real_name || ""}
                                 onChange={(e) => setPlayerForm({...playerForm, real_name: e.target.value})}
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
                                 {copy.labels.country}
                             </label>
                             <input
@@ -126,11 +130,11 @@ export default function PlayersSection(props: PlayersSectionProps) {
                                 placeholder={copy.placeholders.country}
                                 value={playerForm.country || ""}
                                 onChange={(e) => setPlayerForm({...playerForm, country: e.target.value})}
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
                                 {copy.labels.age}
                             </label>
                             <input
@@ -138,11 +142,11 @@ export default function PlayersSection(props: PlayersSectionProps) {
                                 placeholder={copy.placeholders.age}
                                 value={playerForm.age || ""}
                                 onChange={(e) => setPlayerForm({...playerForm, age: Number(e.target.value)})}
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
                                 {copy.labels.role}
                             </label>
                             <input
@@ -150,11 +154,11 @@ export default function PlayersSection(props: PlayersSectionProps) {
                                 placeholder={copy.placeholders.role}
                                 value={playerForm.role || ""}
                                 onChange={(e) => setPlayerForm({...playerForm, role: e.target.value})}
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
                                 {copy.labels.twitch}
                             </label>
                             <input
@@ -164,11 +168,11 @@ export default function PlayersSection(props: PlayersSectionProps) {
                                 onChange={(e) =>
                                     setPlayerForm({...playerForm, twitch_followers: Number(e.target.value)})
                                 }
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
                                 {copy.labels.youtube}
                             </label>
                             <input
@@ -181,25 +185,25 @@ export default function PlayersSection(props: PlayersSectionProps) {
                                         youtube_subscribers: Number(e.target.value),
                                     })
                                 }
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
                                 {copy.labels.avatar}
                             </label>
                             <input
                                 type="file"
                                 accept="image/*"
                                 onChange={(e) => setPlayerFile(e.target.files?.[0] || null)}
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat file:mr-4 file:py-2 file:px-4 file:rounded-[8px] file:border-0 file:text-sm file:font-montserrat file:font-medium file:bg-legend-blue file:text-white hover:file:bg-legend-blue/80"
                             />
                         </div>
                     </div>
                     <div className="flex gap-3">
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
+                            className="px-6 py-3 bg-legend-red text-white rounded-[12px] hover:bg-legend-red/80 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                         >
                             {editingPlayerId ? copy.buttons.submitUpdate : copy.buttons.submitCreate}
                         </button>
@@ -211,7 +215,7 @@ export default function PlayersSection(props: PlayersSectionProps) {
                                     setPlayerFile(null);
                                     setEditingPlayerId(null);
                                 }}
-                                className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
+                                className="px-6 py-3 bg-white/10 border-2 border-white/30 text-white rounded-[12px] hover:bg-white/20 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                             >
                                 {copy.buttons.cancel}
                             </button>
@@ -221,30 +225,32 @@ export default function PlayersSection(props: PlayersSectionProps) {
             </div>
 
             {/* Players List */}
-            <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700">
-                <div className="px-6 py-4 border-b border-gray-700">
-                    <h3 className="text-lg font-semibold text-white">{copy.listTitle}</h3>
+            <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] overflow-hidden">
+                <div className="px-6 py-4 border-b border-white/20">
+                    <h3 className="font-montserrat font-bold text-lg sm:text-xl text-white">{copy.listTitle}</h3>
                 </div>
-                <div className="divide-y divide-gray-700">
+                <div className="divide-y divide-white/10">
                     {players.map((p) => (
-                        <div key={p.id} className="p-6 hover:bg-gray-700 transition-colors">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center space-x-4">
+                        <div key={p.id} className="p-6 hover:bg-legend-blue/30 transition-colors duration-200">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                <div className="flex items-center space-x-4 flex-1 min-w-0">
                                     {p.avatar_url && (
                                         <img
                                             src={p.avatar_url}
                                             alt="avatar"
-                                            className="w-12 h-12 rounded-lg object-cover"
+                                            className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg object-cover flex-shrink-0"
                                         />
                                     )}
-                                    <div>
-                                        <h4 className="text-lg font-semibold text-white">{p.username}</h4>
-                                        <p className="text-gray-300">
+                                    <div className="min-w-0">
+                                        <h4 className="font-montserrat font-bold text-base sm:text-lg text-white mb-1">
+                                            {p.username}
+                                        </h4>
+                                        <p className="text-white/70 font-montserrat text-sm sm:text-base mb-1">
                                             {p.role || copy.misc.noRole} • {p.country}
                                             {p.age && ` • ${p.age} ${copy.misc.yearsOld}`}
                                         </p>
                                         {(p.twitch_followers || p.youtube_subscribers) && (
-                                            <p className="text-sm text-gray-400">
+                                            <p className="text-sm text-white/60 font-montserrat">
                                                 {p.twitch_followers && `Twitch: ${p.twitch_followers} followers`}
                                                 {p.twitch_followers && p.youtube_subscribers && " • "}
                                                 {p.youtube_subscribers && `YouTube: ${p.youtube_subscribers}`}
@@ -259,13 +265,13 @@ export default function PlayersSection(props: PlayersSectionProps) {
                                             setPlayerForm(rest);
                                             setEditingPlayerId(p.id);
                                         }}
-                                        className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                        className="px-4 py-2 text-sm bg-legend-blue text-white rounded-[12px] hover:bg-legend-blue/80 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                                     >
                                         {copy.buttons.modify}
                                     </button>
                                     <button
                                         onClick={() => deletePlayer(p.id)}
-                                        className="px-3 py-1 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                                        className="px-4 py-2 text-sm bg-legend-red text-white rounded-[12px] hover:bg-legend-red/80 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                                     >
                                         {copy.buttons.delete}
                                     </button>
@@ -274,8 +280,10 @@ export default function PlayersSection(props: PlayersSectionProps) {
                         </div>
                     ))}
                     {players.length === 0 && (
-                        <div className="p-6 text-center text-gray-400">
-                            {copy.empty}
+                        <div className="p-6 lg:p-8 text-center">
+                            <p className="text-white/70 font-montserrat text-base sm:text-lg">
+                                {copy.empty}
+                            </p>
                         </div>
                     )}
                 </div>

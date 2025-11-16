@@ -10,16 +10,22 @@ export default function SignInPrompt({
   },
 }: Readonly<{ copy?: { title: string; description: string; signIn: string } }>) {
   return (
-    <div className="flex items-center justify-center py-20">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold text-white mb-4">{copy.title}</h1>
-        <p className="text-gray-300 mb-6">{copy.description}</p>
+    <div className="container mx-auto px-6 lg:px-16 h-full flex items-center justify-center">
+      <div className="text-center space-y-6 lg:space-y-8 max-w-2xl">
+        <div className="space-y-4 lg:space-y-6">
+          <h1 className="font-montserrat font-extrabold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-tight">
+            {copy.title}
+          </h1>
+          <p className="text-white/80 font-montserrat text-lg sm:text-xl lg:text-2xl">
+            {copy.description}
+          </p>
+        </div>
         <ClerkProvider>
           <SignedOut>
             <SignInButton>
               <button
                 type="button"
-                className="bg-[#2621BF] w-full text-white rounded-xl font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-6 cursor-pointer hover:bg-[#3c36e0] transition-colors"
+                className="px-6 lg:px-8 py-3 lg:py-4 rounded-[12px] bg-legend-red text-white font-montserrat font-medium text-base sm:text-lg lg:text-xl hover:bg-legend-red/80 duration-200 hover:scale-105 active:scale-95 transition-transform"
               >
                 {copy.signIn}
               </button>

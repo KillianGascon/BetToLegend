@@ -54,38 +54,69 @@ export default function MatchesPage() {
 
     if (!isSignedIn) {
         return (
-            <div className="min-h-screen bg-gray-900">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <Navbar />
+            <div className="relative min-h-screen">
+                {/* Background image */}
+                {/* <div className="absolute inset-0 w-full h-full">
+                    <img
+                        src="/bg.png"
+                        alt="Background"
+                        className="w-full h-full object-cover opacity-80"
+                    />
+                </div> */}
+
+                {/* Content */}
+                <div className="relative z-10 min-h-screen flex flex-col">
+                    {/* Navbar */}
+                    <header className="container mx-auto px-6 py-4 lg:px-16 lg:py-6 shrink-0">
+                        <Navbar />
+                    </header>
+
+                    {/* Sign In Prompt */}
+                    <main className="flex-1">
+                        <SignInPrompt copy={matchesLocales[localeKey].signin} />
+                    </main>
                 </div>
-        <SignInPrompt copy={matchesLocales[localeKey].signin} />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-900">
-            {/* Navbar */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <Navbar />
+        <div className="relative min-h-screen">
+            {/* Background image */}
+            <div className="absolute inset-0 w-full h-full">
+                <img
+                    src="/bg.png"
+                    alt="Background"
+                    className="w-full h-full object-cover opacity-80"
+                />
             </div>
 
-            {/* Header with User Info */}
-      <UserHeader
-        displayName={user?.firstName || user?.username || ""}
-        balance={userBalance}
-        copy={matchesLocales[localeKey].header}
-      />
+            {/* Content */}
+            <div className="relative z-10 min-h-screen flex flex-col">
+                {/* Navbar */}
+                <header className="container mx-auto px-6 py-4 lg:px-16 lg:py-6 shrink-0">
+                    <Navbar />
+                </header>
 
-            {/* Main Content */}
-      <MatchesContent
-        userBalance={userBalance}
-        onBalanceUpdate={handleBalanceUpdate}
-        listCopy={matchesLocales[localeKey].list}
-        cardCopy={matchesLocales[localeKey].card}
-        betModalCopy={matchesLocales[localeKey].betModal}
-        locale={localeKey}
-      />
+                {/* Header with User Info */}
+                <UserHeader
+                    displayName={user?.firstName || user?.username || ""}
+                    balance={userBalance}
+                    copy={matchesLocales[localeKey].header}
+                />
+
+                {/* Main Content */}
+                <main className="flex-1">
+                    <MatchesContent
+                        userBalance={userBalance}
+                        onBalanceUpdate={handleBalanceUpdate}
+                        listCopy={matchesLocales[localeKey].list}
+                        cardCopy={matchesLocales[localeKey].card}
+                        betModalCopy={matchesLocales[localeKey].betModal}
+                        locale={localeKey}
+                    />
+                </main>
+            </div>
         </div>
     );
 }
