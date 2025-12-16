@@ -90,3 +90,51 @@ Mais si vous ne vous en sentez pas capable, cela peut représenter une trop gran
 
 (Je souligne que dans un vrai projet professionnel, ce serait une des premières briques à mettre en place.)
 
+
+Docker Implementation Walkthrough
+I have added Docker support to your project. Here is a summary of the changes and how to use them.
+
+Changes Made
+1. 
+next.config.ts
+Enabled standalone output. This tells Next.js to automatically trace import dependencies and create a smaller production build that doesn't require the strict node_modules structure of development.
+
+const nextConfig: NextConfig = {
+  output: "standalone",
+};
+2. 
+.dockerignore
+Added a 
+.dockerignore
+ file to ensure we don't copy unnecessary files (like your local node_modules or secrets) into the Docker image.
+
+3. 
+Dockerfile
+Created a multi-stage 
+Dockerfile
+.
+
+How to Build and Run
+To build the Docker image:
+
+docker build -t bet-to-legend .
+To run the container:
+
+docker run -p 3000:3000 bet-to-legend
+detailed Explanation of the Dockerfile
+The 
+Dockerfile
+ uses a technique called multi-stage builds to keep the final image size small.
+
+Stage 1: deps: Installs dependencies. We separate this so that if you change your code but not your 
+package.json
+, Docker caches this layer and doesn't re-install node_modules.
+Stage 2: builder:
+Copies the modules from deps.
+Runs npx prisma generate to create the Prisma client.
+Runs npm run build to compile the Next.js app.
+Stage 3: runner:
+Starts with a fresh, empty Node.js alpine image.
+Copies only the necessary files from the builder stage (standalone folder, static assets, public folder).
+Sets up a non-root user (nextjs) for security.
+Exposes port 3000 and starts the server with node server.js.
