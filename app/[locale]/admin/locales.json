@@ -1,0 +1,313 @@
+{
+  "fr": {
+    "title": "Admin Dashboard",
+    "sidebar": {
+      "teams": "Équipes",
+      "games": "Jeux",
+      "players": "Joueurs",
+      "teamplayers": "Équipes/Joueurs",
+      "matches": "Matchs",
+      "tournaments": "Tournois"
+    },
+    "teams": {
+      "headerTitle": "⚙️ Gestion des équipes",
+      "headerSubtitle": "Créez et gérez les équipes de votre plateforme",
+      "formTitleCreate": "Ajouter une nouvelle équipe",
+      "formTitleEdit": "Modifier l'équipe",
+      "labels": {
+        "name": "Nom de l'équipe",
+        "tag": "Tag",
+        "country": "Pays",
+        "founded": "Année de fondation",
+        "logo": "Logo de l'équipe"
+      },
+      "placeholders": { "name": "Nom", "tag": "Tag", "country": "Pays", "founded": "Année fondation" },
+      "buttons": { "submitCreate": "Créer équipe", "submitUpdate": "Enregistrer les modifications", "cancel": "Annuler", "modify": "Modifier", "delete": "Supprimer" },
+      "listTitle": "Équipes existantes",
+      "empty": "Aucune équipe créée pour le moment."
+    },
+    "games": {
+      "headerTitle": "🎯 Gestion des jeux",
+      "headerSubtitle": "Ajoutez et gérez les jeux disponibles sur votre plateforme",
+      "formTitleCreate": "Ajouter un nouveau jeu",
+      "formTitleEdit": "Modifier le jeu",
+      "labels": { "name": "Nom du jeu", "category": "Catégorie" },
+      "placeholders": { "name": "Nom du jeu", "category": "Catégorie (ex: FPS, MOBA...)" },
+      "buttons": { "submitCreate": "Créer un jeu", "submitUpdate": "Modifier le jeu", "cancel": "Annuler", "modify": "Modifier", "delete": "Supprimer" },
+      "listTitle": "Jeux existants",
+      "empty": "Aucun jeu créé pour le moment."
+    },
+    "players": {
+      "headerTitle": "👤 Gestion des joueurs",
+      "headerSubtitle": "Ajoutez et gérez les joueurs de votre plateforme",
+      "formTitleCreate": "Ajouter un nouveau joueur",
+      "formTitleEdit": "Modifier le joueur",
+      "labels": {
+        "username": "Nom d'utilisateur",
+        "realName": "Nom réel",
+        "country": "Pays",
+        "age": "Âge",
+        "role": "Rôle",
+        "twitch": "Followers Twitch",
+        "youtube": "Abonnés YouTube",
+        "avatar": "Avatar"
+      },
+      "placeholders": {
+        "username": "Username",
+        "realName": "Nom réel",
+        "country": "Pays (FR, US...)",
+        "age": "Âge",
+        "role": "Rôle (ex: Top, Jungler)",
+        "twitch": "Followers Twitch",
+        "youtube": "Abonnés YouTube"
+      },
+      "buttons": { "submitCreate": "Créer joueur", "submitUpdate": "Mettre à jour le joueur", "cancel": "Annuler", "modify": "Modifier", "delete": "Supprimer" },
+      "listTitle": "Joueurs existants",
+      "empty": "Aucun joueur créé pour le moment.",
+      "misc": { "noRole": "Aucun rôle", "yearsOld": "ans" }
+    },
+    "teamPlayers": {
+      "headerTitle": "👥 Gestion des joueurs dans les équipes",
+      "headerSubtitle": "Assignez des joueurs aux équipes et gérez leurs rôles",
+      "formTitle": "Ajouter un joueur à une équipe",
+      "labels": { "team": "Équipe", "player": "Joueur", "position": "Poste", "salary": "Salaire", "joinDate": "Date d'entrée" },
+      "placeholders": { "position": "Poste (ex: ADC)", "salary": "Salaire (€)" },
+      "buttons": { "submit": "Ajouter joueur à l'équipe", "remove": "Retirer" },
+      "listTitle": "Assignations actuelles",
+      "empty": "Aucune assignation pour le moment.",
+      "misc": { "position": "Poste", "salary": "Salaire", "enteredOn": "📅 Entré le" }
+    },
+    "matches": {
+      "headerTitle": "🎮 Gestion des matchs",
+      "headerSubtitle": "Créez et gérez les matchs entre équipes",
+      "formTitleCreate": "Créer un nouveau match",
+      "formTitleEdit": "Modifier le match",
+      "labels": { "game": "Jeu", "format": "Format", "team1": "Équipe 1", "team2": "Équipe 2", "date": "Date du match", "status": "Statut", "score1": "Score équipe 1", "score2": "Score équipe 2" },
+      "placeholders": { "format": "Format (ex: BO3)", "select": "-- Sélectionner --", "selectGame": "-- Sélectionner un jeu --" },
+      "status": { "scheduled": "Prévu", "live": "En cours", "completed": "Terminé" },
+      "buttons": { "submitCreate": "Créer match", "submitUpdate": "Mettre à jour le match", "cancel": "Annuler", "modify": "Modifier", "delete": "Supprimer", "closeAndSettle": "Clôturer & régler" },
+      "listTitle": "Matchs existants",
+      "empty": "Aucun match créé pour le moment.",
+      "tournament": { "label": "🏆 Tournoi:", "none": "Aucun", "assignPlaceholder": "-- Assigner à un tournoi --" }
+    },
+    "tournaments": {
+      "headerTitle": "🏆 Gestion des tournois",
+      "headerSubtitle": "Créez et gérez les tournois de votre plateforme",
+      "formTitleCreate": "Créer un nouveau tournoi",
+      "formTitleEdit": "Modifier le tournoi",
+      "labels": { "name": "Nom du tournoi", "game": "Jeu associé", "prizePool": "Prize Pool (€)", "location": "Lieu", "startDate": "Date de début", "endDate": "Date de fin", "status": "Statut" },
+      "placeholders": { "name": "Nom du tournoi", "prizePool": "Prize Pool (€)", "location": "Lieu", "selectGame": "-- Sélectionner un jeu --" },
+      "status": { "upcoming": "À venir", "ongoing": "En cours", "finished": "Terminé" },
+      "buttons": { "submitCreate": "Créer tournoi", "submitUpdate": "Modifier le tournoi", "cancel": "Annuler", "modify": "Modifier", "delete": "Supprimer" },
+      "listTitle": "Tournois existants",
+      "empty": "Aucun tournoi créé pour le moment.",
+      "misc": { "prize": "💰 Prize Pool:", "dateRangeSep": " → ", "dateUnknown": "?", "locationPrefix": "📍 " }
+    },
+    "messages": {
+      "selectTournament": "Sélectionnez un tournoi.",
+      "updateErrorPrefix": "Erreur lors de la mise à jour:",
+      "updateMatchError": "Erreur lors de la mise à jour du match"
+    },
+    "actions": {
+      "retry": "Réessayer"
+    }
+  },
+  "en": {
+    "title": "Admin Dashboard",
+    "sidebar": {
+      "teams": "Teams",
+      "games": "Games",
+      "players": "Players",
+      "teamplayers": "Teams/Players",
+      "matches": "Matches",
+      "tournaments": "Tournaments"
+    },
+    "teams": {
+      "headerTitle": "⚙️ Teams management",
+      "headerSubtitle": "Create and manage teams on your platform",
+      "formTitleCreate": "Add a new team",
+      "formTitleEdit": "Edit team",
+      "labels": { "name": "Team name", "tag": "Tag", "country": "Country", "founded": "Founded year", "logo": "Team logo" },
+      "placeholders": { "name": "Name", "tag": "Tag", "country": "Country", "founded": "Founded year" },
+      "buttons": { "submitCreate": "Create team", "submitUpdate": "Save changes", "cancel": "Cancel", "modify": "Edit", "delete": "Delete" },
+      "listTitle": "Existing teams",
+      "empty": "No team created yet."
+    },
+    "games": {
+      "headerTitle": "🎯 Games management",
+      "headerSubtitle": "Add and manage games available on your platform",
+      "formTitleCreate": "Add a new game",
+      "formTitleEdit": "Edit game",
+      "labels": { "name": "Game name", "category": "Category" },
+      "placeholders": { "name": "Game name", "category": "Category (e.g., FPS, MOBA...)" },
+      "buttons": { "submitCreate": "Create game", "submitUpdate": "Edit game", "cancel": "Cancel", "modify": "Edit", "delete": "Delete" },
+      "listTitle": "Existing games",
+      "empty": "No game created yet."
+    },
+    "players": {
+      "headerTitle": "👤 Players management",
+      "headerSubtitle": "Add and manage players on your platform",
+      "formTitleCreate": "Add a new player",
+      "formTitleEdit": "Edit player",
+      "labels": {
+        "username": "Username",
+        "realName": "Real name",
+        "country": "Country",
+        "age": "Age",
+        "role": "Role",
+        "twitch": "Twitch followers",
+        "youtube": "YouTube subscribers",
+        "avatar": "Avatar"
+      },
+      "placeholders": {
+        "username": "Username",
+        "realName": "Real name",
+        "country": "Country (FR, US...)",
+        "age": "Age",
+        "role": "Role (e.g., Top, Jungler)",
+        "twitch": "Twitch followers",
+        "youtube": "YouTube subscribers"
+      },
+      "buttons": { "submitCreate": "Create player", "submitUpdate": "Update player", "cancel": "Cancel", "modify": "Edit", "delete": "Delete" },
+      "listTitle": "Existing players",
+      "empty": "No player created yet.",
+      "misc": { "noRole": "No role", "yearsOld": "years" }
+    },
+    "teamPlayers": {
+      "headerTitle": "👥 Manage players in teams",
+      "headerSubtitle": "Assign players to teams and manage their roles",
+      "formTitle": "Add a player to a team",
+      "labels": { "team": "Team", "player": "Player", "position": "Position", "salary": "Salary", "joinDate": "Join date" },
+      "placeholders": { "position": "Position (e.g., ADC)", "salary": "Salary (€)" },
+      "buttons": { "submit": "Add player to team", "remove": "Remove" },
+      "listTitle": "Current assignments",
+      "empty": "No assignment yet.",
+      "misc": { "position": "Position", "salary": "Salary", "enteredOn": "📅 Joined on" }
+    },
+    "matches": {
+      "headerTitle": "🎮 Matches management",
+      "headerSubtitle": "Create and manage matches between teams",
+      "formTitleCreate": "Create a new match",
+      "formTitleEdit": "Edit match",
+      "labels": { "game": "Game", "format": "Format", "team1": "Team 1", "team2": "Team 2", "date": "Match date", "status": "Status", "score1": "Team 1 score", "score2": "Team 2 score" },
+      "placeholders": { "format": "Format (e.g., BO3)", "select": "-- Select --", "selectGame": "-- Select a game --" },
+      "status": { "scheduled": "Scheduled", "live": "Live", "completed": "Finished" },
+      "buttons": { "submitCreate": "Create match", "submitUpdate": "Update match", "cancel": "Cancel", "modify": "Edit", "delete": "Delete", "closeAndSettle": "Close & settle" },
+      "listTitle": "Existing matches",
+      "empty": "No match created yet.",
+      "tournament": { "label": "🏆 Tournament:", "none": "None", "assignPlaceholder": "-- Assign to a tournament --" }
+    },
+    "tournaments": {
+      "headerTitle": "🏆 Tournaments management",
+      "headerSubtitle": "Create and manage tournaments on your platform",
+      "formTitleCreate": "Create a new tournament",
+      "formTitleEdit": "Edit tournament",
+      "labels": { "name": "Tournament name", "game": "Linked game", "prizePool": "Prize Pool (€)", "location": "Location", "startDate": "Start date", "endDate": "End date", "status": "Status" },
+      "placeholders": { "name": "Tournament name", "prizePool": "Prize Pool (€)", "location": "Location", "selectGame": "-- Select a game --" },
+      "status": { "upcoming": "Upcoming", "ongoing": "Ongoing", "finished": "Finished" },
+      "buttons": { "submitCreate": "Create tournament", "submitUpdate": "Edit tournament", "cancel": "Cancel", "modify": "Edit", "delete": "Delete" },
+      "listTitle": "Existing tournaments",
+      "empty": "No tournament created yet.",
+      "misc": { "prize": "💰 Prize Pool:", "dateRangeSep": " → ", "dateUnknown": "?", "locationPrefix": "📍 " }
+    },
+    "messages": {
+      "selectTournament": "Select a tournament.",
+      "updateErrorPrefix": "Update error:",
+      "updateMatchError": "Error updating match"
+    },
+    "actions": {
+      "retry": "Retry"
+    }
+  },
+  "ko": {
+    "title": "관리자 대시보드",
+    "sidebar": {
+      "teams": "팀",
+      "games": "게임",
+      "players": "선수",
+      "teamplayers": "팀/선수",
+      "matches": "경기",
+      "tournaments": "토너먼트"
+    },
+    "teams": {
+      "headerTitle": "⚙️ 팀 관리",
+      "headerSubtitle": "플랫폼의 팀을 생성하고 관리하세요",
+      "formTitleCreate": "새 팀 추가",
+      "formTitleEdit": "팀 수정",
+      "labels": { "name": "팀 이름", "tag": "태그", "country": "국가", "founded": "창단 연도", "logo": "팀 로고" },
+      "placeholders": { "name": "이름", "tag": "태그", "country": "국가", "founded": "창단 연도" },
+      "buttons": { "submitCreate": "팀 생성", "submitUpdate": "변경 사항 저장", "cancel": "취소", "modify": "수정", "delete": "삭제" },
+      "listTitle": "기존 팀",
+      "empty": "아직 생성된 팀이 없습니다."
+    },
+    "games": {
+      "headerTitle": "🎯 게임 관리",
+      "headerSubtitle": "플랫폼에서 사용 가능한 게임을 추가하고 관리하세요",
+      "formTitleCreate": "새 게임 추가",
+      "formTitleEdit": "게임 수정",
+      "labels": { "name": "게임 이름", "category": "카테고리" },
+      "placeholders": { "name": "게임 이름", "category": "카테고리 (예: FPS, MOBA...)" },
+      "buttons": { "submitCreate": "게임 생성", "submitUpdate": "게임 수정", "cancel": "취소", "modify": "수정", "delete": "삭제" },
+      "listTitle": "기존 게임",
+      "empty": "아직 생성된 게임이 없습니다."
+    },
+    "players": {
+      "headerTitle": "👤 선수 관리",
+      "headerSubtitle": "플랫폼의 선수를 추가하고 관리하세요",
+      "formTitleCreate": "새 선수 추가",
+      "formTitleEdit": "선수 수정",
+      "labels": { "username": "사용자 이름", "realName": "실명", "country": "국가", "age": "나이", "role": "포지션", "twitch": "트위치 팔로워", "youtube": "유튜브 구독자", "avatar": "아바타" },
+      "placeholders": { "username": "Username", "realName": "실명", "country": "국가 (FR, US...)", "age": "나이", "role": "포지션 (예: Top, Jungler)", "twitch": "트위치 팔로워", "youtube": "유튜브 구독자" },
+      "buttons": { "submitCreate": "선수 생성", "submitUpdate": "선수 업데이트", "cancel": "취소", "modify": "수정", "delete": "삭제" },
+      "listTitle": "기존 선수",
+      "empty": "아직 생성된 선수가 없습니다.",
+      "misc": { "noRole": "포지션 없음", "yearsOld": "살" }
+    },
+    "teamPlayers": {
+      "headerTitle": "👥 팀 내 선수 관리",
+      "headerSubtitle": "선수를 팀에 배정하고 역할을 관리하세요",
+      "formTitle": "팀에 선수 추가",
+      "labels": { "team": "팀", "player": "선수", "position": "포지션", "salary": "급여", "joinDate": "합류일" },
+      "placeholders": { "position": "포지션 (예: ADC)", "salary": "급여 (€)" },
+      "buttons": { "submit": "팀에 선수 추가", "remove": "제거" },
+      "listTitle": "현재 배정",
+      "empty": "아직 배정이 없습니다.",
+      "misc": { "position": "포지션", "salary": "급여", "enteredOn": "📅 합류일" }
+    },
+    "matches": {
+      "headerTitle": "🎮 경기 관리",
+      "headerSubtitle": "팀 간 경기를 생성하고 관리하세요",
+      "formTitleCreate": "새 경기 생성",
+      "formTitleEdit": "경기 수정",
+      "labels": { "game": "게임", "format": "포맷", "team1": "팀 1", "team2": "팀 2", "date": "경기 일시", "status": "상태", "score1": "팀 1 점수", "score2": "팀 2 점수" },
+      "placeholders": { "format": "포맷 (예: BO3)", "select": "-- 선택 --", "selectGame": "-- 게임 선택 --" },
+      "status": { "scheduled": "예정", "live": "진행 중", "completed": "종료됨" },
+      "buttons": { "submitCreate": "경기 생성", "submitUpdate": "경기 업데이트", "cancel": "취소", "modify": "수정", "delete": "삭제", "closeAndSettle": "종료 및 정산" },
+      "listTitle": "기존 경기",
+      "empty": "아직 생성된 경기가 없습니다.",
+      "tournament": { "label": "🏆 토너먼트:", "none": "없음", "assignPlaceholder": "-- 토너먼트에 배정 --" }
+    },
+    "tournaments": {
+      "headerTitle": "🏆 토너먼트 관리",
+      "headerSubtitle": "플랫폼의 토너먼트를 생성하고 관리하세요",
+      "formTitleCreate": "새 토너먼트 생성",
+      "formTitleEdit": "토너먼트 수정",
+      "labels": { "name": "토너먼트 이름", "game": "연결된 게임", "prizePool": "상금 (€)", "location": "장소", "startDate": "시작일", "endDate": "종료일", "status": "상태" },
+      "placeholders": { "name": "토너먼트 이름", "prizePool": "상금 (€)", "location": "장소", "selectGame": "-- 게임 선택 --" },
+      "status": { "upcoming": "예정", "ongoing": "진행 중", "finished": "종료됨" },
+      "buttons": { "submitCreate": "토너먼트 생성", "submitUpdate": "토너먼트 수정", "cancel": "취소", "modify": "수정", "delete": "삭제" },
+      "listTitle": "기존 토너먼트",
+      "empty": "아직 생성된 토너먼트가 없습니다.",
+      "misc": { "prize": "💰 상금:", "dateRangeSep": " → ", "dateUnknown": "?", "locationPrefix": "📍 " }
+    },
+    "messages": {
+      "selectTournament": "토너먼트를 선택하세요.",
+      "updateErrorPrefix": "업데이트 오류:",
+      "updateMatchError": "경기 업데이트 중 오류가 발생했습니다"
+    },
+    "actions": {
+      "retry": "다시 시도"
+    }
+  }
+}
+

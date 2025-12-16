@@ -27,6 +27,47 @@ type TournamentsSectionProps = {
     startEditingTournament: (tournament: Tournament) => void;
     deleteTournament: (id: string) => void;
     setTournamentForm: (updater: Partial<Tournament>) => void;
+    copy: {
+        headerTitle: string;
+        headerSubtitle: string;
+        formTitleCreate: string;
+        formTitleEdit: string;
+        labels: {
+            name: string;
+            game: string;
+            prizePool: string;
+            location: string;
+            startDate: string;
+            endDate: string;
+            status: string;
+        };
+        placeholders: {
+            name: string;
+            prizePool: string;
+            location: string;
+            selectGame: string;
+        };
+        status: {
+            upcoming: string;
+            ongoing: string;
+            finished: string;
+        };
+        buttons: {
+            submitCreate: string;
+            submitUpdate: string;
+            cancel: string;
+            modify: string;
+            delete: string;
+        };
+        listTitle: string;
+        empty: string;
+        misc: {
+            prize: string;
+            dateRangeSep: string;
+            dateUnknown: string;
+            locationPrefix: string;
+        };
+    };
 };
 
 export default function TournamentsSection(props: TournamentsSectionProps) {
@@ -40,49 +81,54 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
         startEditingTournament,
         deleteTournament,
         setTournamentForm,
+        copy,
     } = props;
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6 lg:space-y-8">
             {/* Header */}
-            <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
-                <h2 className="text-2xl font-bold text-white mb-2">🏆 Gestion des tournois</h2>
-                <p className="text-gray-300">Créez et gérez les tournois de votre plateforme</p>
+            <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-6 lg:p-8">
+                <h2 className="font-montserrat font-bold text-2xl sm:text-3xl lg:text-4xl text-white mb-3">
+                    {copy.headerTitle}
+                </h2>
+                <p className="text-white/80 font-montserrat text-base sm:text-lg lg:text-xl">
+                    {copy.headerSubtitle}
+                </p>
             </div>
 
             {/* Form */}
-            <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
-                <h3 className="text-lg font-semibold text-white mb-4">
-                    {editingTournamentId ? "Modifier le tournoi" : "Créer un nouveau tournoi"}
+            <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-6 lg:p-8">
+                <h3 className="font-montserrat font-bold text-xl sm:text-2xl text-white mb-6">
+                    {editingTournamentId ? copy.formTitleEdit : copy.formTitleCreate}
                 </h3>
-                <form onSubmit={onSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <form onSubmit={onSubmit} className="space-y-4 lg:space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Nom du tournoi
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
+                                {copy.labels.name}
                             </label>
                             <input
                                 type="text"
-                                placeholder="Nom du tournoi"
+                                placeholder={copy.placeholders.name}
                                 value={tournamentForm.name || ""}
                                 onChange={(e) =>
                                     setTournamentForm({...tournamentForm, name: e.target.value})
                                 }
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Jeu associé
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
+                                {copy.labels.game}
                             </label>
                             <select
                                 value={tournamentForm.game_id || ""}
                                 onChange={(e) =>
                                     setTournamentForm({...tournamentForm, game_id: e.target.value})
                                 }
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             >
-                                <option value="">-- Sélectionner un jeu --</option>
+                                <option value="">{copy.placeholders.selectGame}</option>
                                 {games.map((g) => (
                                     <option key={g.id} value={g.id}>
                                         {g.name}
@@ -91,12 +137,12 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                             </select>
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Prize Pool (€)
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
+                                {copy.labels.prizePool}
                             </label>
                             <input
                                 type="number"
-                                placeholder="Prize Pool (€)"
+                                placeholder={copy.placeholders.prizePool}
                                 value={tournamentForm.prize_pool || ""}
                                 onChange={(e) =>
                                     setTournamentForm({
@@ -104,16 +150,16 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                                         prize_pool: Number(e.target.value),
                                     })
                                 }
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Lieu
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
+                                {copy.labels.location}
                             </label>
                             <input
                                 type="text"
-                                placeholder="Lieu"
+                                placeholder={copy.placeholders.location}
                                 value={tournamentForm.location || ""}
                                 onChange={(e) =>
                                     setTournamentForm({
@@ -121,12 +167,12 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                                         location: e.target.value,
                                     })
                                 }
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Date de début
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
+                                {copy.labels.startDate}
                             </label>
                             <input
                                 type="date"
@@ -137,12 +183,12 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                                         start_date: e.target.value,
                                     })
                                 }
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Date de fin
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
+                                {copy.labels.endDate}
                             </label>
                             <input
                                 type="date"
@@ -153,12 +199,12 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                                         end_date: e.target.value,
                                     })
                                 }
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Statut
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
+                                {copy.labels.status}
                             </label>
                             <select
                                 value={tournamentForm.status || "upcoming"}
@@ -168,28 +214,28 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
                                         status: e.target.value,
                                     })
                                 }
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             >
-                                <option value="upcoming">À venir</option>
-                                <option value="ongoing">En cours</option>
-                                <option value="finished">Terminé</option>
+                                <option value="upcoming">{copy.status.upcoming}</option>
+                                <option value="ongoing">{copy.status.ongoing}</option>
+                                <option value="finished">{copy.status.finished}</option>
                             </select>
                         </div>
                     </div>
                     <div className="flex gap-3">
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
+                            className="px-6 py-3 bg-legend-red text-white rounded-[12px] hover:bg-legend-red/80 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                         >
-                            {editingTournamentId ? "Modifier le tournoi" : "Créer tournoi"}
+                            {editingTournamentId ? copy.buttons.submitUpdate : copy.buttons.submitCreate}
                         </button>
                         {editingTournamentId && (
                             <button
                                 type="button"
                                 onClick={cancelEditTournament}
-                                className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
+                                className="px-6 py-3 bg-white/10 border-2 border-white/30 text-white rounded-[12px] hover:bg-white/20 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                             >
-                                Annuler
+                                {copy.buttons.cancel}
                             </button>
                         )}
                     </div>
@@ -197,57 +243,61 @@ export default function TournamentsSection(props: TournamentsSectionProps) {
             </div>
 
             {/* Tournaments List */}
-            <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700">
-                <div className="px-6 py-4 border-b border-gray-700">
-                    <h3 className="text-lg font-semibold text-white">Tournois existants</h3>
+            <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] overflow-hidden">
+                <div className="px-6 py-4 border-b border-white/20">
+                    <h3 className="font-montserrat font-bold text-lg sm:text-xl text-white">{copy.listTitle}</h3>
                 </div>
-                <div className="divide-y divide-gray-700">
+                <div className="divide-y divide-white/10">
                     {tournaments.map((t) => (
-                        <div key={t.id} className="p-6 hover:bg-gray-700 transition-colors">
-                            <div className="flex items-center justify-between">
-                                <div className="flex-1">
-                                    <h4 className="text-lg font-semibold text-white">{t.name}</h4>
-                                    <p className="text-gray-300">
+                        <div key={t.id} className="p-6 hover:bg-legend-blue/30 transition-colors duration-200">
+                            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+                                <div className="flex-1 min-w-0">
+                                    <h4 className="font-montserrat font-bold text-base sm:text-lg text-white mb-2">
+                                        {t.name}
+                                    </h4>
+                                    <p className="text-white/70 font-montserrat text-sm sm:text-base mb-2">
                                         {games.find((g) => g.id === t.game_id)?.name || "?"} • {t.status}
                                     </p>
-                                    <div className="mt-2 space-y-1">
-                                        <p className="text-sm text-gray-400">
-                                            💰 Prize Pool: {t.prize_pool ? `${t.prize_pool} €` : "N/A"}
+                                    <div className="space-y-1">
+                                        <p className="text-sm text-white/60 font-montserrat">
+                                            {copy.misc.prize} {t.prize_pool ? `${t.prize_pool} €` : "N/A"}
                                         </p>
-                                        <p className="text-sm text-gray-400">
+                                        <p className="text-sm text-white/60 font-montserrat">
                                             📅 {t.start_date
                                                 ? new Date(t.start_date).toLocaleDateString("fr-FR")
-                                                : "?"}{" "}
-                                            →{" "}
+                                                : copy.misc.dateUnknown}{" "}
+                                            {copy.misc.dateRangeSep}
                                             {t.end_date
                                                 ? new Date(t.end_date).toLocaleDateString("fr-FR")
-                                                : "?"}
+                                                : copy.misc.dateUnknown}
                                         </p>
-                                        <p className="text-sm text-gray-400">
-                                            📍 {t.location || "—"}
+                                        <p className="text-sm text-white/60 font-montserrat">
+                                            {copy.misc.locationPrefix}{t.location || "—"}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex space-x-2">
                                     <button
                                         onClick={() => startEditingTournament(t)}
-                                        className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                        className="px-4 py-2 text-sm bg-legend-blue text-white rounded-[12px] hover:bg-legend-blue/80 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                                     >
-                                        Modifier
+                                        {copy.buttons.modify}
                                     </button>
                                     <button
                                         onClick={() => deleteTournament(t.id)}
-                                        className="px-3 py-1 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                                        className="px-4 py-2 text-sm bg-legend-red text-white rounded-[12px] hover:bg-legend-red/80 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                                     >
-                                        Supprimer
+                                        {copy.buttons.delete}
                                     </button>
                                 </div>
                             </div>
                         </div>
                     ))}
                     {tournaments.length === 0 && (
-                        <div className="p-6 text-center text-gray-400">
-                            Aucun tournoi créé pour le moment.
+                        <div className="p-6 lg:p-8 text-center">
+                            <p className="text-white/70 font-montserrat text-base sm:text-lg">
+                                {copy.empty}
+                            </p>
                         </div>
                     )}
                 </div>

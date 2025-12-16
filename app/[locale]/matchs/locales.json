@@ -1,0 +1,207 @@
+{
+  "fr": {
+    "signin": {
+      "title": "Connexion requise",
+      "description": "Vous devez être connecté pour accéder aux matchs et placer des paris.",
+      "signIn": "Se connecter"
+    },
+    "header": {
+      "greetingWithName": "Bonjour, {name} !",
+      "welcome": "Bienvenue sur BetToLegend",
+      "balanceLabel": "Solde disponible",
+      "currencySuffix": "€"
+    },
+    "list": {
+      "headerTitle": "Matchs disponibles",
+      "headerSubtitle": "Parier sur vos équipes favorites",
+      "loading": "Chargement des matchs...",
+      "errorRetry": "Réessayer",
+      "successPlaced": "Pari placé avec succès !",
+      "filters": {
+        "all": "Tous",
+        "scheduled": "Prévus",
+        "live": "En cours",
+        "completed": "Terminés"
+      },
+      "empty": {
+        "allTitle": "Aucun match",
+        "allDescription": "Il n'y a pas de matchs disponibles pour le moment.",
+        "filteredTitle": "Aucun match {status}",
+        "filteredDescription": "Il n'y a pas de matchs {status} pour le moment."
+      }
+    },
+    "betModal": {
+      "title": "Placer un pari",
+      "vs": "VS",
+      "betOn": "Vous pariez sur",
+      "selectedTeamFallback": "Équipe sélectionnée",
+      "odds": "Cote",
+      "balanceLabel": "Solde disponible",
+      "amountLabel": "Montant du pari",
+      "amountPlaceholder": "0.00",
+      "currencySuffix": "€",
+      "quickAmountsTitle": "Montants rapides",
+      "potentialTitle": "Gains potentiels",
+      "stakeLabel": "Mise",
+      "profitLabel": "Profit",
+      "errorInvalidAmount": "Veuillez entrer un montant valide",
+      "errorInsufficient": "Solde insuffisant",
+      "errorMinAmount": "Le montant minimum est de {min}€",
+      "errorGeneric": "Erreur lors du placement du pari",
+      "cancel": "Annuler",
+      "submitting": "Placement...",
+      "submit": "Placer le pari"
+    },
+    "card": {
+      "unknownGame": "Jeu inconnu",
+      "status": {
+        "scheduled": "Prévu",
+        "live": "En cours",
+        "completed": "Terminé"
+      },
+      "vs": "VS",
+      "tbd": "À définir",
+      "winnerSuffix": "gagne",
+      "betTitle": "Parier sur ce match",
+      "notAvailable": "Les cotes ne sont pas encore disponibles pour ce match",
+      "ctaView": "Voir le match"
+    }
+  },
+  "en": {
+    "signin": {
+      "title": "Sign-in required",
+      "description": "You must be signed in to access matches and place bets.",
+      "signIn": "Sign In"
+    },
+    "header": {
+      "greetingWithName": "Hello, {name}!",
+      "welcome": "Welcome to BetToLegend",
+      "balanceLabel": "Available balance",
+      "currencySuffix": "$"
+    },
+    "list": {
+      "headerTitle": "Available matches",
+      "headerSubtitle": "Bet on your favorite teams",
+      "loading": "Loading matches...",
+      "errorRetry": "Retry",
+      "successPlaced": "Bet placed successfully!",
+      "filters": {
+        "all": "All",
+        "scheduled": "Scheduled",
+        "live": "Live",
+        "completed": "Completed"
+      },
+      "empty": {
+        "allTitle": "No matches",
+        "allDescription": "There are no matches available right now.",
+        "filteredTitle": "No {status} matches",
+        "filteredDescription": "There are no {status} matches at the moment."
+      }
+    },
+    "betModal": {
+      "title": "Place a bet",
+      "vs": "VS",
+      "betOn": "You are betting on",
+      "selectedTeamFallback": "Selected team",
+      "odds": "Odds",
+      "balanceLabel": "Available balance",
+      "amountLabel": "Bet amount",
+      "amountPlaceholder": "0.00",
+      "currencySuffix": "$",
+      "quickAmountsTitle": "Quick amounts",
+      "potentialTitle": "Potential winnings",
+      "stakeLabel": "Stake",
+      "profitLabel": "Profit",
+      "errorInvalidAmount": "Please enter a valid amount",
+      "errorInsufficient": "Insufficient balance",
+      "errorMinAmount": "Minimum amount is {min}$",
+      "errorGeneric": "Error placing the bet",
+      "cancel": "Cancel",
+      "submitting": "Placing...",
+      "submit": "Place bet"
+    },
+    "card": {
+      "unknownGame": "Unknown Game",
+      "status": {
+        "scheduled": "Scheduled",
+        "live": "Live",
+        "completed": "Completed"
+      },
+      "vs": "VS",
+      "tbd": "TBD",
+      "winnerSuffix": "wins",
+      "betTitle": "Bet on this match",
+      "notAvailable": "Odds are not available yet for this match",
+      "ctaView": "View match"
+    }
+  },
+  "ko": {
+    "signin": {
+      "title": "로그인이 필요합니다",
+      "description": "경기에 접근하고 베팅하려면 로그인해야 합니다.",
+      "signIn": "로그인"
+    },
+    "header": {
+      "greetingWithName": "안녕하세요, {name}님!",
+      "welcome": "BetToLegend에 오신 것을 환영합니다",
+      "balanceLabel": "사용 가능 잔액",
+      "currencySuffix": "₩"
+    },
+    "list": {
+      "headerTitle": "이용 가능한 경기",
+      "headerSubtitle": "좋아하는 팀에 베팅하세요",
+      "loading": "경기 불러오는 중...",
+      "errorRetry": "다시 시도",
+      "successPlaced": "베팅이 성공적으로 완료되었습니다!",
+      "filters": {
+        "all": "전체",
+        "scheduled": "예정",
+        "live": "진행 중",
+        "completed": "종료됨"
+      },
+      "empty": {
+        "allTitle": "경기 없음",
+        "allDescription": "현재 이용 가능한 경기가 없습니다.",
+        "filteredTitle": "{status} 경기 없음",
+        "filteredDescription": "현재 {status} 경기가 없습니다."
+      }
+    },
+    "betModal": {
+      "title": "베팅하기",
+      "vs": "VS",
+      "betOn": "베팅 대상",
+      "selectedTeamFallback": "선택된 팀",
+      "odds": "배당",
+      "balanceLabel": "사용 가능 잔액",
+      "amountLabel": "베팅 금액",
+      "amountPlaceholder": "0.00",
+      "currencySuffix": "₩",
+      "quickAmountsTitle": "빠른 금액",
+      "potentialTitle": "예상 수익",
+      "stakeLabel": "베팅",
+      "profitLabel": "이익",
+      "errorInvalidAmount": "유효한 금액을 입력하세요",
+      "errorInsufficient": "잔액이 부족합니다",
+      "errorMinAmount": "최소 금액은 {min}입니다",
+      "errorGeneric": "베팅 중 오류가 발생했습니다",
+      "cancel": "취소",
+      "submitting": "처리 중...",
+      "submit": "베팅하기"
+    },
+    "card": {
+      "unknownGame": "알 수 없는 게임",
+      "status": {
+        "scheduled": "예정",
+        "live": "진행 중",
+        "completed": "종료됨"
+      },
+      "vs": "VS",
+      "tbd": "미정",
+      "winnerSuffix": "승리",
+      "betTitle": "이 경기 베팅하기",
+      "notAvailable": "이 경기는 아직 배당이 제공되지 않습니다",
+      "ctaView": "경기 보기"
+    }
+  }
+}
+

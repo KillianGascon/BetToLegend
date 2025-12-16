@@ -27,7 +27,7 @@ type Tournament = {
 type MatchOdds = {
     id: string;
     team_id: string;
-    odds: number;
+    odds: number | string;
     teams: Team;
 };
 
@@ -54,12 +54,23 @@ type Match = {
 type MatchCardProps = {
     readonly match: Match;
     readonly onBetClick: (match: Match, teamId: string, odds: number) => void;
+    readonly copy?: {
+        unknownGame: string;
+        status: { scheduled: string; live: string; completed: string };
+        vs: string;
+        tbd: string;
+        winnerSuffix: string;
+        betTitle: string;
+        notAvailable: string;
+        ctaView: string;
+    };
+    readonly locale?: string;
 };
 
-export default function MatchCard({ match, onBetClick }: MatchCardProps) {
+export default function MatchCard({ match, onBetClick, copy, locale }: MatchCardProps) {
 
     const formatDate = (dateString?: string) => {
-        if (!dateString) return "TBD";
+        if (!dateString) return copy?.tbd ?? "TBD";
         const date = new Date(dateString);
         return date.toLocaleDateString("fr-FR", {
             day: "2-digit",
@@ -83,10 +94,18 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
         }
     };
 
+    const toNum = (v: unknown) => {
+        if (v === null || v === undefined) return undefined;
+        const n = typeof v === "string" ? parseFloat(v) : Number(v);
+        return Number.isFinite(n) ? n : undefined;
+    };    
+
     const getOddsForTeam = (teamId: string) => {
-        const odds = match.match_odds?.find(odd => odd.team_id === teamId);
-        return odds?.odds || 1;
+        const row = match.match_odds?.find(odd => odd.team_id === teamId);
+        const n = toNum(row?.odds);
+        return n && n > 0 ? n : 1; // fallback 1 si pas de valeur valide
     };
+    
 
     const getStatusText = (status?: string) => {
         switch (status) {
@@ -101,76 +120,80 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
         }
     };
 
-    const canBet = match.status === "scheduled" && match.match_odds && match.match_odds.length > 0;
+    const canBet = match.status === "live" && match.match_odds && match.match_odds.length > 0;
 
     return (
-        <div className="bg-gray-800 rounded-lg shadow-md border border-gray-700 p-6 hover:shadow-lg transition-shadow">
+        <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-6 lg:p-8 hover:bg-legend-blue/30 hover:border-legend-red/50 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]">
             {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
-          <span className="text-sm font-medium text-gray-400">
-            {match.games?.name || "Unknown Game"}
-          </span>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-6">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                    <span className="text-sm sm:text-base font-montserrat font-medium text-white/90">
+                        {match.games?.name || copy?.unknownGame || "Unknown Game"}
+                    </span>
                     {match.tournaments && (
-                        <span className="text-xs bg-purple-900/30 text-purple-300 px-2 py-1 rounded">
-              {match.tournaments.name}
-            </span>
+                        <span className="text-xs sm:text-sm bg-legend-red/30 border border-legend-red text-white px-3 py-1 rounded-[8px] font-montserrat font-medium">
+                            {match.tournaments.name}
+                        </span>
                     )}
                 </div>
                 <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                        match.status
-                    )}`}
+                    className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-[8px] text-xs sm:text-sm font-montserrat font-medium ${
+                        match.status === "live"
+                            ? "bg-legend-red text-white"
+                            : match.status === "scheduled"
+                              ? "bg-legend-blue text-white"
+                              : "bg-white/20 text-white/80"
+                    }`}
                 >
-          {getStatusText(match.status)}
-        </span>
+                    {copy?.status?.[match.status as keyof typeof copy.status] ?? getStatusText(match.status)}
+                </span>
             </div>
 
             {/* Teams */}
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 mb-6">
+                <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
                     {match.teams_matches_team1_idToteams?.logo_url ? (
                         <Image
                             src={match.teams_matches_team1_idToteams.logo_url}
                             alt={match.teams_matches_team1_idToteams.name}
-                            width={32}
-                            height={32}
-                            className="rounded-full object-contain"
+                            width={48}
+                            height={48}
+                            className="rounded-full object-contain flex-shrink-0"
                         />
                     ) : (
-                        <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-              <span className="text-xs font-bold text-gray-600">
-                {match.teams_matches_team1_idToteams?.tag?.charAt(0) || "?"}
-              </span>
+                        <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-base sm:text-lg font-montserrat font-bold text-white">
+                                {match.teams_matches_team1_idToteams?.tag?.charAt(0) || "?"}
+                            </span>
                         </div>
                     )}
-                    <div>
-                        <h3 className="font-semibold text-white">
+                    <div className="min-w-0">
+                        <h3 className="font-montserrat font-bold text-base sm:text-lg lg:text-xl text-white truncate">
                             {match.teams_matches_team1_idToteams?.name || "Team 1"}
                         </h3>
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm sm:text-base text-white/70 font-montserrat">
                             {match.teams_matches_team1_idToteams?.tag || "T1"}
                         </p>
                     </div>
                 </div>
 
-                <div className="text-center">
-                    <div className="text-2xl font-bold text-white">
+                <div className="text-center flex-shrink-0">
+                    <div className="text-2xl sm:text-3xl lg:text-4xl font-montserrat font-extrabold text-white">
                         {match.status === "finished" || match.status === "completed"
                             ? `${match.team1_score || 0} - ${match.team2_score || 0}`
-                            : "VS"}
+                            : (copy?.vs ?? "VS")}
                     </div>
                     {match.format && (
-                        <div className="text-xs text-gray-400 mt-1">{match.format}</div>
+                        <div className="text-xs sm:text-sm text-white/60 font-montserrat mt-1">{match.format}</div>
                     )}
                 </div>
 
-                <div className="flex items-center space-x-3">
-                    <div className="text-right">
-                        <h3 className="font-semibold text-white">
+                <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0 justify-end">
+                    <div className="text-right min-w-0">
+                        <h3 className="font-montserrat font-bold text-base sm:text-lg lg:text-xl text-white truncate">
                             {match.teams_matches_team2_idToteams?.name || "Team 2"}
                         </h3>
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm sm:text-base text-white/70 font-montserrat">
                             {match.teams_matches_team2_idToteams?.tag || "T2"}
                         </p>
                     </div>
@@ -178,38 +201,38 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
                         <Image
                             src={match.teams_matches_team2_idToteams.logo_url}
                             alt={match.teams_matches_team2_idToteams.name}
-                            width={32}
-                            height={32}
-                            className="rounded-full object-contain"
+                            width={48}
+                            height={48}
+                            className="rounded-full object-contain flex-shrink-0"
                         />
                     ) : (
-                        <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-              <span className="text-xs font-bold text-gray-600">
-                {match.teams_matches_team2_idToteams?.tag?.charAt(0) || "?"}
-              </span>
+                        <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-base sm:text-lg font-montserrat font-bold text-white">
+                                {match.teams_matches_team2_idToteams?.tag?.charAt(0) || "?"}
+                            </span>
                         </div>
                     )}
                 </div>
             </div>
 
             {/* Match Info */}
-            <div className="flex items-center justify-between text-sm text-gray-400 mb-4">
-                <span>📅 {formatDate(match.match_date)}</span>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 text-sm sm:text-base text-white/70 font-montserrat mb-6 pb-6 border-b border-white/10">
+                <span className="flex items-center gap-2">📅 {formatDate(match.match_date)}</span>
                 {(match.status === "finished" || match.status === "completed") &&
                     match.teams_matches_winner_idToteams && (
-                        <span className="text-green-400 font-medium">
-              🏆 {match.teams_matches_winner_idToteams.name} gagne
-            </span>
+                        <span className="text-legend-red font-montserrat font-bold flex items-center gap-2">
+                            🏆 {match.teams_matches_winner_idToteams.name} {copy?.winnerSuffix ?? "gagne"}
+                        </span>
                     )}
             </div>
 
             {/* Betting Section */}
             {canBet && (
-                <div className="border-t border-gray-700 pt-4">
-                    <h4 className="text-sm font-medium text-gray-300 mb-3">
-                        Parier sur ce match
+                <div className="mb-6">
+                    <h4 className="text-sm sm:text-base font-montserrat font-medium text-white mb-4">
+                        {copy?.betTitle ?? "Parier sur ce match"}
                     </h4>
-                    <div className="flex space-x-3">
+                    <div className="flex flex-col sm:flex-row gap-3">
                         {match.team1_id && (
                             <button
                                 onClick={() =>
@@ -219,12 +242,12 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
                                         getOddsForTeam(match.team1_id as string)
                                     )
                                 }
-                                className="flex-1 bg-[#2621BF] text-white py-2 px-4 rounded-md hover:bg-[#3c36e0] transition-colors text-sm font-medium"
+                                className="flex-1 bg-legend-blue text-white py-3 px-4 rounded-[12px] hover:bg-legend-blue/80 transition-all duration-200 text-sm sm:text-base font-montserrat font-medium hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
                             >
-                                {match.teams_matches_team1_idToteams?.name || "Team 1"}
-                                <span className="ml-2 text-xs bg-[#3c36e0] px-2 py-1 rounded">
-                  {getOddsForTeam(match.team1_id as string).toFixed(2)}
-                </span>
+                                <span className="truncate">{match.teams_matches_team1_idToteams?.name || "Team 1"}</span>
+                                <span className="bg-white/20 px-2 py-1 rounded-[8px] text-xs font-bold flex-shrink-0">
+                                    {getOddsForTeam(match.team1_id as string).toFixed(2)}
+                                </span>
                             </button>
                         )}
                         {match.team2_id && (
@@ -236,12 +259,12 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
                                         getOddsForTeam(match.team2_id as string)
                                     )
                                 }
-                                className="flex-1 bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition-colors text-sm font-medium"
+                                className="flex-1 bg-legend-red text-white py-3 px-4 rounded-[12px] hover:bg-legend-red/80 transition-all duration-200 text-sm sm:text-base font-montserrat font-medium hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
                             >
-                                {match.teams_matches_team2_idToteams?.name || "Team 2"}
-                                <span className="ml-2 text-xs bg-red-500 px-2 py-1 rounded">
-                  {getOddsForTeam(match.team2_id as string).toFixed(2)}
-                </span>
+                                <span className="truncate">{match.teams_matches_team2_idToteams?.name || "Team 2"}</span>
+                                <span className="bg-white/20 px-2 py-1 rounded-[8px] text-xs font-bold flex-shrink-0">
+                                    {getOddsForTeam(match.team2_id as string).toFixed(2)}
+                                </span>
                             </button>
                         )}
                     </div>
@@ -249,20 +272,20 @@ export default function MatchCard({ match, onBetClick }: MatchCardProps) {
             )}
 
             {!canBet && match.status === "scheduled" && (
-                <div className="border-t border-gray-700 pt-4 text-center text-sm text-gray-400">
-                    Les cotes ne sont pas encore disponibles pour ce match
+                <div className="mb-6 text-center text-sm sm:text-base text-white/60 font-montserrat">
+                    {copy?.notAvailable ?? "Les cotes ne sont pas encore disponibles pour ce match"}
                 </div>
             )}
 
             {/* CTA vers la page du match */}
-            <div className="mt-4 flex justify-end">
+            <div className="flex justify-end">
                 <Link
-                    href={`/matchs/${match.id}`}
-                    className="inline-flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium rounded-xl px-4 py-2 transition"
+                    href={`/${locale ?? ""}/matchs/${match.id}`.replace("//", "/")}
+                    className="inline-flex items-center gap-2 bg-legend-blue/30 border-2 border-legend-blue text-white text-sm sm:text-base font-montserrat font-medium rounded-[12px] px-4 sm:px-6 py-2 sm:py-3 hover:bg-legend-blue/50 transition-all duration-200 hover:scale-105 active:scale-95"
                 >
-                    Voir le match
+                    {copy?.ctaView ?? "Voir le match"}
                     <svg
-                        className="w-4 h-4"
+                        className="w-4 h-4 sm:w-5 sm:h-5"
                         viewBox="0 0 20 20"
                         fill="currentColor"
                         aria-hidden="true"

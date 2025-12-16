@@ -8,4 +8,3 @@ export { default as HorizontalCarousel } from "./HorizontalCarousel";
 export { default as ListByDay } from "./ListByDay";
 export { default as MiniRow } from "./MiniRow";
 export { default as Logo } from "./Logo";
-

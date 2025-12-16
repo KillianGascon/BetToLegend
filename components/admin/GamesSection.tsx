@@ -15,6 +15,17 @@ type GamesSectionProps = {
     startEditingGame: (game: Game) => void;
     deleteGame: (id: string) => void;
     setGameForm: (updater: Partial<Game>) => void;
+    copy?: {
+        headerTitle: string;
+        headerSubtitle: string;
+        formTitleCreate: string;
+        formTitleEdit: string;
+        labels: { name: string; category: string };
+        placeholders: { name: string; category: string };
+        buttons: { submitCreate: string; submitUpdate: string; cancel: string; modify: string; delete: string };
+        listTitle: string;
+        empty: string;
+    };
 };
 
 export default function GamesSection(props: GamesSectionProps) {
@@ -27,66 +38,71 @@ export default function GamesSection(props: GamesSectionProps) {
         startEditingGame,
         deleteGame,
         setGameForm,
+        copy,
     } = props;
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6 lg:space-y-8">
             {/* Header */}
-            <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
-                <h2 className="text-2xl font-bold text-white mb-2">🎯 Gestion des jeux</h2>
-                <p className="text-gray-300">Ajoutez et gérez les jeux disponibles sur votre plateforme</p>
+            <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-6 lg:p-8">
+                <h2 className="font-montserrat font-bold text-2xl sm:text-3xl lg:text-4xl text-white mb-3">
+                    {copy?.headerTitle ?? "🎯 Gestion des jeux"}
+                </h2>
+                <p className="text-white/80 font-montserrat text-base sm:text-lg lg:text-xl">
+                    {copy?.headerSubtitle ?? "Ajoutez et gérez les jeux disponibles sur votre plateforme"}
+                </p>
             </div>
 
             {/* Form */}
-            <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700 p-6">
-                <h3 className="text-lg font-semibold text-white mb-4">
-                    {editingGameId ? "Modifier le jeu" : "Ajouter un nouveau jeu"}
+            <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] p-6 lg:p-8">
+                <h3 className="font-montserrat font-bold text-xl sm:text-2xl text-white mb-6">
+                    {editingGameId ? (copy?.formTitleEdit ?? "Modifier le jeu") : (copy?.formTitleCreate ?? "Ajouter un nouveau jeu")}
                 </h3>
-                <form onSubmit={onSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <form onSubmit={onSubmit} className="space-y-4 lg:space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Nom du jeu
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
+                                {copy?.labels?.name ?? "Nom du jeu"}
                             </label>
                             <input
                                 type="text"
-                                placeholder="Nom du jeu"
+                                placeholder={copy?.placeholders?.name ?? "Nom du jeu"}
                                 value={gameForm.name || ""}
                                 onChange={(e) =>
                                     setGameForm({...gameForm, name: e.target.value})
                                 }
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1">
-                                Catégorie
+                            <label className="block text-sm sm:text-base font-montserrat font-medium text-white/70 mb-2">
+                                {copy?.labels?.category ?? "Catégorie"}
                             </label>
                             <input
                                 type="text"
-                                placeholder="Catégorie (ex: FPS, MOBA...)"
+                                placeholder={copy?.placeholders?.category ?? "Catégorie (ex: FPS, MOBA...)"}
                                 value={gameForm.category || ""}
                                 onChange={(e) =>
                                     setGameForm({...gameForm, category: e.target.value})
                                 }
-                                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full px-4 py-3 bg-white/10 border-2 border-legend-blue rounded-[12px] text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-legend-red focus:border-legend-red font-montserrat"
                             />
                         </div>
                     </div>
                     <div className="flex gap-3">
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
+                            className="px-6 py-3 bg-legend-red text-white rounded-[12px] hover:bg-legend-red/80 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                         >
-                            {editingGameId ? "Modifier le jeu" : "Créer un jeu"}
+                            {editingGameId ? (copy?.buttons?.submitUpdate ?? "Modifier le jeu") : (copy?.buttons?.submitCreate ?? "Créer un jeu")}
                         </button>
                         {editingGameId && (
                             <button
                                 type="button"
                                 onClick={cancelEditGame}
-                                className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-colors"
+                                className="px-6 py-3 bg-white/10 border-2 border-white/30 text-white rounded-[12px] hover:bg-white/20 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                             >
-                                Annuler
+                                {copy?.buttons?.cancel ?? "Annuler"}
                             </button>
                         )}
                     </div>
@@ -94,38 +110,42 @@ export default function GamesSection(props: GamesSectionProps) {
             </div>
 
             {/* Games List */}
-            <div className="bg-gray-800 rounded-lg shadow-sm border border-gray-700">
-                <div className="px-6 py-4 border-b border-gray-700">
-                    <h3 className="text-lg font-semibold text-white">Jeux existants</h3>
+            <div className="bg-legend-blue/20 border-2 border-legend-blue rounded-[12px] overflow-hidden">
+                <div className="px-6 py-4 border-b border-white/20">
+                    <h3 className="font-montserrat font-bold text-lg sm:text-xl text-white">{copy?.listTitle ?? "Jeux existants"}</h3>
                 </div>
-                <div className="divide-y divide-gray-700">
+                <div className="divide-y divide-white/10">
                     {games.map((g) => (
-                        <div key={g.id} className="p-6 hover:bg-gray-700 transition-colors">
-                            <div className="flex items-center justify-between">
+                        <div key={g.id} className="p-6 hover:bg-legend-blue/30 transition-colors duration-200">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                                 <div>
-                                    <h4 className="text-lg font-semibold text-white">{g.name}</h4>
-                                    <p className="text-gray-300">Catégorie: {g.category}</p>
+                                    <h4 className="font-montserrat font-bold text-base sm:text-lg text-white">{g.name}</h4>
+                                    <p className="text-white/70 font-montserrat text-sm sm:text-base">
+                                        {(copy ? (copy.labels?.category ?? "Catégorie") : "Catégorie")}: {g.category}
+                                    </p>
                                 </div>
                                 <div className="flex space-x-2">
                                     <button
                                         onClick={() => startEditingGame(g)}
-                                        className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                        className="px-4 py-2 text-sm bg-legend-blue text-white rounded-[12px] hover:bg-legend-blue/80 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                                     >
-                                        Modifier
+                                        {copy?.buttons?.modify ?? "Modifier"}
                                     </button>
                                     <button
                                         onClick={() => deleteGame(g.id)}
-                                        className="px-3 py-1 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                                        className="px-4 py-2 text-sm bg-legend-red text-white rounded-[12px] hover:bg-legend-red/80 font-montserrat font-medium transition-all duration-200 hover:scale-105 active:scale-95"
                                     >
-                                        Supprimer
+                                        {copy?.buttons?.delete ?? "Supprimer"}
                                     </button>
                                 </div>
                             </div>
                         </div>
                     ))}
                     {games.length === 0 && (
-                        <div className="p-6 text-center text-gray-400">
-                            Aucun jeu créé pour le moment.
+                        <div className="p-6 lg:p-8 text-center">
+                            <p className="text-white/70 font-montserrat text-base sm:text-lg">
+                                {copy?.empty ?? "Aucun jeu créé pour le moment."}
+                            </p>
                         </div>
                     )}
                 </div>
